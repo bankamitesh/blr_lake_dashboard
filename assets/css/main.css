@@ -1,0 +1,67 @@
+/** {
+  margin: 0;
+  padding: 0;
+}*/
+.mdl-layout__header {
+  background-color:#6ab344;
+  color: white;
+}
+
+
+.mdl-mega-footer {
+  padding: 16px 40px;
+  color: #e4e0e0;
+  background-color: #6ab344;
+}
+
+.page-content{
+  min-height:768px;
+}
+
+.img1 {
+    width: 100px;
+    height: 50px;
+}
+ 
+
+
+
+
+.formcard {
+  background-color: #6ab344;
+}
+
+
+
+
+.admin-device-create > .mdl-card__actions {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+/*
+.admin-device-create > .mdl-card__title {
+  align-items: flex-start;
+}*/
+
+
+.admin-device-create > .mdl-card__title > h4 {
+  margin-top: 0;
+}
+
+
+.admin-device-create > .mdl-card__title,
+.admin-device-create > .mdl-card__supporting-text,
+.admin-device-create > .mdl-card__actions,
+.admin-device-create > .mdl-card__actions > .mdl-button {
+  color: #000;
+}
+
+.pad-bottom{
+  padding-top: 50px;
+}
+
+.tbl-row-text-font{
+  font-size: 22px;
+}
