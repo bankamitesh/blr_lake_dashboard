@@ -88,6 +88,25 @@ include ("lake-app.inc");
                <label class="mdl-textfield__label" for="text7">Address...</label>
             </div>
 
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="long">
+        <label class="mdl-textfield__label" for="sample3">Max Area...</label>
+      </div>
+
+       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="long">
+        <label class="mdl-textfield__label" for="sample3">Max Volume...</label>
+      </div>
+
+       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="long">
+        <label class="mdl-textfield__label" for="sample3">Rechange Rate...</label>
+      </div>
+      <h5>Usage</h5>
+      <label class="mdl-checkbox mdl-js-checkbox" for="checkbox1">
+            <input type="checkbox" id="checkbox1" class="mdl-checkbox__input" checked>
+            <span class="mdl-checkbox__label">Walking</span>
+      </label>
 
 		</form>
 	</div>

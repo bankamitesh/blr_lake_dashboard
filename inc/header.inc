@@ -3,7 +3,7 @@
           	<div class="mdl-layout__header-row">
           		<!-- Title -->
 
-          		<span class="mdl-layout-title"><img class="img1" src="/images/logo_blue_white.png"></span>
+          		<span class="mdl-layout-title"><img class="img1" src="/assets/images/logo_blue_white.png"></span>
           		<div class="mdl-layout-spacer"></div>
           		<div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
           		mdl-textfield--floating-label mdl-textfield--align-right">
