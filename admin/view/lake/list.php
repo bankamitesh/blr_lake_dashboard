@@ -8,17 +8,6 @@ include ("lake-app.inc");
       <link rel="stylesheet" href="/assets/css/material.min.css">
       <link rel="stylesheet" href="/assets/css/main.css">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
-    <style type="text/css">
-        .mdl-data-table {
-            table-layout:fixed;
-            width:100%; 
-            }
-            .mdl-data-table th, td{
-  text-align: center !important;
-}
-    </style>
-
    </head>
 <body>
    <!-- Always shows a header, even in smaller screens. -->
@@ -36,8 +25,7 @@ include ("lake-app.inc");
       <span>Create</span>&nbsp;
 		<h2 class="mdl-card__title-text formcard">
         
-        <form action="/admin/lake/create.php"><button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored mdl-js-ripple-effect"><i class="material-icons">add</i></button> </form
-       >
+      <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored mdl-js-ripple-effect"><i class="material-icons">add</i></button>
       </h2>
 	</div>
 

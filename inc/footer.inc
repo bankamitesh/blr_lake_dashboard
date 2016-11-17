@@ -1,10 +1,14 @@
-        <footer class="mdl-mega-footer">
-          <div class="mdl-mega-footer--middle-section">   
-          </div>
-          <div class="mdl-mega-footer--bottom-section">
-            <ul class="mdl-mega-footer--link-list">
-              <li><a href="http://www.yuktix.com">Yuktix Website</a></li>
-              <li><a href="http://blog.yuktix.com">Blog</a></li>
-            </ul>
-          </div>
-        </footer>
+<footer class="mdl-mega-footer top-bottom head-foot">
+ <div class="mdl-mega-footer--middle-section">
+ </div>
+ <div class="mdl-mega-footer--bottom-section">
+  <div class="mdl-logo">
+    More Information
+  </div>
+  <ul class="mdl-mega-footer--link-list">
+    <li><a href="#">About Us</a></li>
+    <li><a href="#">Contact Us</a></li>
+    <li><a href="#">Privacy and Terms</a></li>
+  </ul>
+</div>
+</footer>

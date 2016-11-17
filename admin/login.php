@@ -1,12 +1,13 @@
 <?php  
 
 	include ("lake-app.inc");
-	use \com\indigloo\Url as Url;
+	include(APP_WEB_DIR.'/inc/header.inc');
 
+	use \com\indigloo\Url ;
 
 	$gparams = new \stdClass ;
 	$gparams->debug = false ;
-	$gparams->base = 'http://'.$_SERVER["HTTP_HOST"];
+	$gparams->base = Url::base() ;
 
 	if(array_key_exists("jsdebug", $_REQUEST)) {
 		$gparams->debug = true ;
@@ -20,15 +21,26 @@
 	<link rel="stylesheet" href="/assets/css/material.min.css">
 	<link rel="stylesheet" href="/assets/css/main.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<style type="text/css">
+		.hide{
+			display: none;
+		}
+		.material-icons{
+			display: none;
+		}
+	</style>
 
 </head>
 <body ng-controller="yuktix.lake.admin.login">
 	<!-- Always shows a header, even in smaller screens. -->
 	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-		<?php include (WEB_ROOT_DIR.'/inc/header.inc'); ?>
+	  <div class="mdl-layout-spacer"></div>
+	
+		
 		<main class="mdl-layout__content">
 			<div class="page-content">
-				<?php include (WEB_ROOT_DIR.'/inc/page_error.inc'); ?>
+			<div class=""></div>
+				<?php include (APP_WEB_DIR.'/inc/page_error.inc'); ?>
 				<!-- card -->
 				<div class="mdl-grid pad-bottom">
 					<div class="mdl-layout-spacer"></div>
@@ -49,7 +61,7 @@
 								<!-- </form> -->
 							</div>
 							<div class="mdl-card__actions mdl-card--border">
-								<button ng-disabled="form1.$invalid" ng-click="do_login()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Login</button>
+								<button ng-disabled="form1.$invalid" ng-click="do_login()" class="mdl-button mdl-js-button mdl-button--raised mdl-color-text--indigo">Login</button>
 							</div>
 						</form>	
 					</div>
@@ -59,7 +71,7 @@
 
 
 			</div>
-			<?php include (WEB_ROOT_DIR.'/inc/footer.inc'); ?>
+			<?php include (APP_WEB_DIR.'/inc/footer.inc'); ?>
 		</main>
 	</div>
 	<script src="/assets/js/material.min.js"></script>

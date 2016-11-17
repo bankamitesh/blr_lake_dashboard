@@ -1,0 +1,88 @@
+/*To Eliminate redudunt code and for reuasability we use include*/
+include ("lake-app.inc");
+
+/*Inorder to set WEB_ROOT_DIR  for searching a included file for our web app autotomatically we need set that include path in php.ini  */
+
+ +include path - lookup our code first and then pear libraries
+
+  include_path = "/var/www/apps"
+
+/*Paste that lake-app.inc in /var/www/apps*/
+
++lake-app.inc file have the following code
+
+<?php
+
+define(WEB_ROOT_DIR, "/home/manju/code/blr_lake_dashboard") ;
+
+?>
+
+
+
+----------------------------------------------------------------------------------------------
+
+
+/*To trace out entire code we need to turn on the jsdebug=1 this is done by as follows*/
+
+    //we need to create new php variable i.e gparams 
+
+    $gparams = new \stdClass ;
+
+
+
+    //First we shoulde assign $gparams->debug = false becouse it should not be true.It should only true When we pass it through URL i,e jsdebug=1
+
+	$gparams->debug = false ;
+
+
+
+    //if we pass jsdebug=1 in the URL then $gparams->debug = true.this is done by the bellow code.
+
+	if(array_key_exists("jsdebug", $_REQUEST)) {
+		$gparams->debug = true ;
+	}
+
+	//$_SERVER['HTTP_HOST']	Returns the Host header from the current request and it is assigned to  $gparams-  >base
+	
+	$gparams->base = 'http://'.$_SERVER["HTTP_HOST"];
+
+-------------------------------------------------------------------------------------------------------	
+
+/*Login.php code:how code works*/
+
++Step:1-first we need include angular.js and main.js
+
+  -main.js file has all major error handling,factory and formvalidation methods.
+
++Step:2-Next,we need to put ng-app="YuktixApp" and ng-controller="yuktix.lake.admin.login"
+  
+   -YuktixApp module is defined in main.js
+
+   -We need to define a Controller Within required page becouse it is page specific.
+
++Step:3-Create a Contorller or Define a Controller Within a page like this:
+
+  
+   -yuktixApp.controller("yuktix.lake.admin.login",function($scope,user,$window) {
+
+         //your code goes here.
+
+      });    
++Step:4-We need to inject the following in controller
+
+       -$scope
+       -ueser
+       -window
+
++step:5-
+
+       	                <form name="loginForm">
+								
+							<input name="login" ng-model="login.name"  class="mdl-textfield__input" type="text" id="login" required>
+									
+								
+							<input name="password" ng-model="login.password" class="mdl-textfield__input" type="password" id="password" required>
+									
+							
+								<button ng-disabled="form1.$invalid" ng-click="do_login()" class="mdl-button mdl-js-button mdl-button--raised mdl-color-text--indigo">Login</button>
+						</form>	       
