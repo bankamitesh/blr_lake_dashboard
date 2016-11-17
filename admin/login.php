@@ -117,7 +117,7 @@
 						return;
 					}
 
-					$window.location.href = "/admin/lake/list.php";
+					$window.location.href = "/admin/view/lake/list.php";
 
 				},function(response) {
 					$scope.processResponse(response);

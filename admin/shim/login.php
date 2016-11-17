@@ -21,10 +21,16 @@
     $postData = json_decode($rawPostData) ;
     $name = $postData->name ;
     $password = $postData->password ;
+
+    $xmsg = sprintf("from request: name:%s, password:%s",$name,$password);
+    Logger::getInstance()->info($xmsg);
+
+
     $responseObj = new \stdClass ;
 
-    if(array_key_exists($login, $logins)) {
-        $dbPassword = $logins[$login] ;
+    if(array_key_exists($name, $logins)) {
+        $dbPassword = $logins[$name] ;
+
         if(strcmp($dbPassword, $password) == 0 ) {
             // success
             $responseObj->code = 200;

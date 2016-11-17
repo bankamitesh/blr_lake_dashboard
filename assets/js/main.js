@@ -542,7 +542,7 @@
 
          	user.login = function(base,debug,loginObj) {
             	
-            	var myurl = base + '/admin/data/login.php' ;
+            	var myurl = base + '/admin/shim/login.php' ;
             	  
             	if(debug) {
 					console.log("POST " + myurl); 
@@ -567,6 +567,34 @@
             
                 
             return user ;
+        });
+
+
+             yuktixApp.factory('lake', function($http) {
+
+            var lake = {} ;
+
+         	 lake.list = function(base,debug) {
+				 
+	            	var myurl = base + '/admin/shim/list.php' ;
+	            	var postData = {} ;
+	            	if(debug) { console.log("POST /admin/shim/list.php"); console.log(postData);}
+	            	
+	            	var promise = $http({
+						method : 'POST',
+						url : myurl,
+						data : postData,
+						headers: {'Content-Type': 'application/json'}
+					}).then(
+	                    function (response) { return response ; }, 
+	                    function(response) { return response ; }
+	                );
+
+	            	return promise;
+	         };
+            
+                
+            return lake ;
         });
              
         

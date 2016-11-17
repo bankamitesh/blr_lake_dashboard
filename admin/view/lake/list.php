@@ -1,18 +1,28 @@
 <?php  
 
-include ("lake-app.inc");
+  include ("lake-app.inc");
+  include(APP_WEB_DIR.'/inc/header.inc');
+
+  use \com\indigloo\Url ;
+
+  $gparams = new \stdClass ;
+  $gparams->debug = false ;
+  $gparams->base = Url::base() ;
+
+  if(array_key_exists("jsdebug", $_REQUEST)) {
+    $gparams->debug = true ;
+  }
 
 ?>
-<html>
+<html ng-app="YuktixApp">
    <head>
       <link rel="stylesheet" href="/assets/css/material.min.css">
       <link rel="stylesheet" href="/assets/css/main.css">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
    </head>
-<body>
+<body ng-controller="yuktix.admin.lake.list">
    <!-- Always shows a header, even in smaller screens. -->
    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-   <?php include (WEB_ROOT_DIR.'/inc/header.inc'); ?>
       <main class="mdl-layout__content">
          <div class="page-content">
 <!-- card -->
@@ -71,9 +81,73 @@ include ("lake-app.inc");
 
 
          </div>
-          <?php include (WEB_ROOT_DIR.'/inc/footer.inc'); ?>
+          <?php include (APP_WEB_DIR.'/inc/footer.inc'); ?>
       </main>
    </div>
     <script src="/assets/js/material.min.js"></script>
+    <script src="/assets/js/angular.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script>
+      
+      yuktixApp.controller("yuktix.admin.lake.list",function($scope,lake) {
+
+           
+      $scope.getList = function() {
+             
+
+        $scope.showProgress("Getting data from Server...");
+             
+
+        // contact user factory
+        lake.list($scope.base,$scope.debug)
+        .then( function(response) {
+
+          var status = response.status || 500;
+          var data = response.data || {};
+
+         
+          if($scope.debug) { 
+            console.log("server response:: devices:%O", data); 
+          }
+
+          if (status != 200 || data.code != 200) {
+            console.log(response);
+            var error = data.error || (status + ":error Retrieving  Data from Server");
+            $scope.showError(error);
+            return;
+          }
+
+          var recordList = response.data.result || [] ;
+          $scope.lakes=recordList;
+
+          if($scope.debug) {
+            console.log("records list from server",recordList);
+          }
+
+         
+
+        },function(response) {
+          $scope.processResponse(response);
+        });
+
+      };
+
+   
+      
+      $scope.gparams = <?php echo json_encode($gparams); ?> ;
+        $scope.debug = $scope.gparams.debug ;
+        $scope.base = $scope.gparams.base ;
+        $scope.lakes =[];
+        $scope.errorMessage = "";
+        $scope.getList();
+
+
+      });
+
+       
+        
+
+
+    </script>
 </body>
 </html>
