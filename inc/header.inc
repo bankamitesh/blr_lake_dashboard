@@ -1,28 +1,22 @@
+<?php
+    // application header
+    // classes should be loaded first or we get incomplete class object errors
+    // Also, do not output anything in class_loader (apart from errors ) - otherwise you will
+    // get session header related warnings. Please keep this order.
 
-          <header class="mdl-layout__header mdl-layout__header--waterfall">
-          	<div class="mdl-layout__header-row">
-          		<!-- Title -->
 
-          		<span class="mdl-layout-title"><img class="img1" src="/assets/images/logo_blue_white.png"></span>
-          		<div class="mdl-layout-spacer"></div>
-          		<div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
-          		mdl-textfield--floating-label mdl-textfield--align-right">
-          		<label class="mdl-button mdl-js-button mdl-button--icon src-btn"
-          		for="waterfall-exp">
-          		<i class="material-icons">search</i>
-          	</label>
-          	<div class="mdl-textfield__expandable-holder">
-          		<input class="mdl-textfield__input" type="text" name="sample"
-          		id="waterfall-exp">
-          	</div>
-          </div>
-      </div>
-  </header>
+    include(APP_CLASS_LOADER);
 
-       <div class="mdl-layout__drawer">
-         <span class="mdl-layout-title">HTML5 Tutorial</span>
-         <nav class="mdl-navigation">
-            <a class="mdl-navigation__link" href="">Home</a>
-            <a class="mdl-navigation__link" href="">About</a>    
-         </nav>
-      </div>
+    use com\indigloo\core\Web  ;
+    use com\indigloo\Configuration as Config  ;
+
+    include(APP_WEB_DIR . '/inc/mysql-session.inc');
+    include(APP_WEB_DIR . '/inc/global-error.inc');
+
+    $gWeb = Web::getInstance();
+    $gWeb->start();
+
+    //define constants
+    define("G_APP_NAME", "lakeapp");
+    
+?>
