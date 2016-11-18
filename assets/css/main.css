@@ -106,3 +106,16 @@ div.absolute {
 .mdl-data-table th, td{
   text-align: center !important;
 }
+
+/*upload icon css*/
+    body {
+  display: flex;
+}
+
+.file_input {
+  float: left;
+}
+
+.none {
+  display: none;
+}
