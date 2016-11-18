@@ -21,28 +21,20 @@
 	<link rel="stylesheet" href="/assets/css/material.min.css">
 	<link rel="stylesheet" href="/assets/css/main.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<style type="text/css">
-		.hide{
-			display: none;
-		}
-		.material-icons{
-			display: none;
-		}
-	</style>
-
 </head>
 <body ng-controller="yuktix.lake.admin.login">
 	<!-- Always shows a header, even in smaller screens. -->
 	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+	  <?php include (APP_WEB_DIR.'/inc/toolbar.inc'); ?>
 	  <div class="mdl-layout-spacer"></div>
 	
-		
 		<main class="mdl-layout__content">
 			<div class="page-content">
-			<div class=""></div>
-				<?php include (APP_WEB_DIR.'/inc/page_error.inc'); ?>
+			<div class="pad-bottom"></div>
+					<?php include (APP_WEB_DIR.'/inc/page_error.inc'); ?>
 				<!-- card -->
-				<div class="mdl-grid pad-bottom">
+				<div class="mdl-grid">
 					<div class="mdl-layout-spacer"></div>
 					<div class="mdl-cell mdl-cell--6-col mdl-shadow--4dp">
 						<div class="mdl-card__title formcard mdl-color-text--white">
