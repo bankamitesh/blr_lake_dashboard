@@ -19,7 +19,7 @@
 }
 
 .mdl-layout__content {
-    background-color: #f1f1f1;
+    background-color: white;
 }
 
 .img1 {
@@ -32,7 +32,7 @@
 
 
 .formcard {
-  background-color: #2E7D32;
+  background-color: rgb(216, 218, 214);
 
 }
 /*#BDBDBD,#558B2F,#2E7D32*/

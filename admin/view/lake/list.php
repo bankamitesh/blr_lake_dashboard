@@ -37,9 +37,9 @@
 <div class="mdl-layout-spacer"></div>
 	<div class="mdl-cell mdl-card mdl-cell--6-col mdl-shadow--4dp">
 	<div class="mdl-card__title formcard mdl-color-text--white">
-		<h2 class="mdl-card__title-text formcard">Lakes</h2>
+		<h2 class="mdl-card__title-text formcard mdl-color-text--indigo">Lakes</h2>
 		<div class="mdl-layout-spacer"></div>
-      <span>Create</span>&nbsp;
+      <span class="mdl-color-text--indigo">Create</span>&nbsp;
 		<h2 class="mdl-card__title-text formcard">
         
       <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored mdl-js-ripple-effect" ng-click="lake_create()"><i class="material-icons">add</i></button>

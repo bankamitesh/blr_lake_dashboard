@@ -1,5 +1,5 @@
 
-  <header class="mdl-layout__header mdl-layout__header--waterfall">
+  <header class="mdl-layout__header">
           	<div class="mdl-layout__header-row">
           		<!-- Title -->
               <div class="mdl-layout-spacer"></div>
@@ -16,5 +16,14 @@
           		id="waterfall-exp">
           	</div>
           </div> -->
+        Rajiv<button id="demo-menu-lower-right"
+          class="mdl-button mdl-js-button mdl-button--icon">
+          <i class="material-icons">account_box</i>
+        </button>
+
+        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+        for="demo-menu-lower-right">
+        <li class="mdl-menu__item">Logout</li>
+      </ul>
       </div>
   </header>
