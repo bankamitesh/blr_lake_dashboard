@@ -1,33 +1,31 @@
 <?php  
 
-include ("lake-app.inc");
+  include ("lake-app.inc");
+  include(APP_WEB_DIR.'/inc/header.inc');
+
+  use \com\indigloo\Url ;
+
+  $gparams = new \stdClass ;
+  $gparams->debug = false ;
+  $gparams->base = Url::base() ;
+
+  if(array_key_exists("jsdebug", $_REQUEST)) {
+    $gparams->debug = true ;
+  }
 
 ?>
-<html ng-app="myApp">
+<html ng-app="YuktixApp">
    <head>
       <link rel="stylesheet" href="/assets/css/material.min.css">
       <link rel="stylesheet" href="/assets/css/main.css">
       <link rel="stylesheet" href="/assets/css/mdl-selectfield.min.css">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-      <style type="text/css">
-      	body {
-  display: flex;
-}
-
-.file_input {
-  float: left;
-}
-
-.none {
-  display: none;
-}
-      </style>
    </head>
-<body ng-controller="myCtrl">
+<body ng-controller="yuktix.admin.lake.create">
    <!-- Always shows a header, even in smaller screens. -->
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
-     <?php include (WEB_ROOT_DIR.'/inc/header.inc'); ?>
+     <?php include (APP_WEB_DIR.'/inc/toolbar.inc'); ?>
 
 <main class="mdl-layout__content">
 
@@ -46,7 +44,7 @@ include ("lake-app.inc");
 	   <div class="pad-left-form-field">
 
 		    <form action="">
-
+            <div class="pad-top-form-field"></div>
 			      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 				      <input class="mdl-textfield__input" type="text" id="name">
 				      <label class="mdl-textfield__label" for="sample3">Lake Name...</label>
@@ -235,70 +233,22 @@ include ("lake-app.inc");
 		</form>
 	</div>
     <div class="mdl-card__actions mdl-card--border">
-		<button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" type="submit">Save</button>
+		<button class="mdl-button mdl-js-button mdl-button--raised mdl-color-text--indigo" type="submit">Save</button>
 	</div>
 	</div>
 	<div class="mdl-layout-spacer"></div>
 </div> 
 <!-- end card -->        
-
+<div class="pad-bottom"></div>>
 
          </div>
-         <?php include (WEB_ROOT_DIR.'/inc/footer.inc'); ?>
+         <?php include (APP_WEB_DIR.'/inc/footer.inc'); ?>
       </main>
    </div>
     <script src="/assets/js/material.min.js"></script>
     <script src="/assets/js/mdl-selectfield.min.js"></script>
-    <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
-     <script>
-         var myApp = angular.module('myApp', []);
-         
-         myApp.directive('fileModel', ['$parse', function ($parse) {
-            return {
-               restrict: 'A',
-               link: function(scope, element, attrs) {
-                  var model = $parse(attrs.fileModel);
-                  var modelSetter = model.assign;
-                  
-                  element.bind('change', function(){
-                     scope.$apply(function(){
-                        modelSetter(scope, element[0].files[0]);
-                     });
-                  });
-               }
-            };
-         }]);
-      
-         myApp.service('fileUpload', ['$http', function ($http) {
-            this.uploadFileToUrl = function(file, uploadUrl){
-               var fd = new FormData();
-               fd.append('file', file);
-            
-               $http.post(uploadUrl, fd, {
-                  transformRequest: angular.identity,
-                  headers: {'Content-Type': undefined}
-               })
-            
-               .success(function(){
-               })
-            
-               .error(function(){
-               });
-            }
-         }]);
-      
-         myApp.controller('myCtrl', ['$scope', 'fileUpload', function($scope, fileUpload){
-            $scope.uploadFile = function(){
-               var file = $scope.myFile;
-               
-               console.log('file is ' );
-               console.dir(file);
-               
-               //var uploadUrl = "";
-               fileUpload.uploadFileToUrl(file, 'fileUpload/');
-            };
-         }]);
-			
-      </script>
+    <script src="/assets/js/angular.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+     
 </body>
 </html>
