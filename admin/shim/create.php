@@ -12,7 +12,7 @@
 
 	use \com\yuktix\auth\Login as Login ;
     use \com\indigloo\exception\UIException as UIException;
-	use \com\indigloo\util\StringUtil as StringUtil ;
+
 	
 	set_exception_handler('webgloo_ajax_exception_handler');
 	$gWeb = \com\indigloo\core\Web::getInstance ();
@@ -25,12 +25,12 @@
     
     $dbh = NULL ;
 
-    try { 
+    try {
 
         $dbh = PDOWrapper::getHandle();
         $sql = "insert INTO atree_lake(name, cname,about,lat,lon,address, max_area, " 
                 . " max_volume, recharge_rate, agency_code, type_code, usage_code, "
-                . " created_on) VALUES(:name, :cname, :about, :lat, :lon, :address, " 
+                . " created_on) VALUES (:name, :cname, :about, :lat, :lon, :address, "
                 . ":max_area, :max_volume, :recharge_rate, :agency_code, :type_code, :usage_code, "
                 . " now())" ; 
 
@@ -40,6 +40,8 @@
         
         // bind params 
         $cname = StringUtil::convertNameToKey($postData->name) ;
+        $usageCode = json_encode($postData->usageCode);
+
         $stmt->bindParam(":name",$postData->name, \PDO::PARAM_STR);
         $stmt->bindParam(":cname",$cname, \PDO::PARAM_STR);
         $stmt->bindParam(":about",$postData->about, \PDO::PARAM_STR);
@@ -51,9 +53,11 @@
         $stmt->bindParam(":recharge_rate",$postData->rechargeRate, \PDO::PARAM_STR);
         $stmt->bindParam(":agency_code",$postData->agencyCode, \PDO::PARAM_INT);
         $stmt->bindParam(":type_code",$postData->typeCode, \PDO::PARAM_INT);
-        $stmt->bindParam(":usage_code",$postData->usageCode, \PDO::PARAM_STR);
-    
-        $dbh->exec($sql);
+        $stmt->bindParam(":usage_code",$usageCode, \PDO::PARAM_STR);
+
+        $stmt->execute();
+        $stmt = NULL;
+
         //Tx end
         $dbh->commit();
         $dbh = null;
@@ -62,13 +66,12 @@
 
         $dbh->rollBack();
         $dbh = null;
-        $message = $ex->getMessage();
-        throw new DBException($message);
+        throw $ex ;
     }
 
     $responseObj = new \stdClass ;
     $responseObj->code = 200;
-    $responseObj->response = "lake create is success!" ;
+    $responseObj->response = "lake lakeObj is success!" ;
     echo json_encode($responseObj) ;
     exit(0) ;
 

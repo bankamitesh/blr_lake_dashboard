@@ -265,7 +265,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 <script src="/assets/js/main.js"></script>
 
 <script>
-    yuktixApp.controller("yuktix.admin.lake.io.lakeObj", function ($scope, lake, $window) {
+    yuktixApp.controller("yuktix.admin.lake.io.create", function ($scope, lake, $window) {
 
 
         $scope.lake_create = function () {
@@ -279,11 +279,11 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             $scope.showProgress("verifying your login details");
             if ($scope.debug) {
                 console.log("form values");
-                console.log($scope.lakeObj);
+                console.log($scope.create);
             }
 
             // contact user factory
-            lake.lakeCreate($scope.base, $scope.debug, $scope.lakeObj)
+            lake.lakeCreate($scope.base, $scope.debug, $scope.create)
                 .then(function (response) {
 
                     var status = response.status || 500;
@@ -338,7 +338,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
 
         // data initialization
-        $scope.lakeObj = {};
+        $scope.create = {};
         $scope.errorMessage = "";
 
         $scope.gparams = <?php echo json_encode($gparams); ?> ;

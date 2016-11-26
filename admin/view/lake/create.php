@@ -54,15 +54,24 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             <div class="pad-top-form-field"></div>
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" name="name" id="name"
-                                       ng-model="create.name">
+                                       ng-model="lakeObj.name">
                                 <label class="mdl-textfield__label" for="sample3">Lake Name...</label>
                             </div>
                             <br>
 
 
+                            <select
+                                ng-model="selectedLakeType"
+                                ng-change="select_lake_type(selectedLakeType)"
+                                ng-options="lakeType.name for lakeType in allLakeTypes">
+
+                            </select>
+                            <br>
+
+
                             <div class="mdl-textfield mdl-js-textfield">
                                 <textarea class="mdl-textfield__input" type="text" rows="3" id="about" name="about"
-                                          ng-model="create.about"></textarea>
+                                          ng-model="lakeObj.about"></textarea>
                                 <label class="mdl-textfield__label" for="text7">About...</label>
                             </div>
 
@@ -92,7 +101,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             <div class="pad-top-form-field">
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                     <input class="mdl-textfield__input" type="text" id="lat" name="lattitude"
-                                           ng-model="create.lattitude">
+                                           ng-model="lakeObj.lat">
                                     <label class="mdl-textfield__label" for="sample3">Lattitude...</label>
                                 </div>
                             </div>
@@ -100,7 +109,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" id="long" name="longtitude"
-                                       ng-model="create.longtitude">
+                                       ng-model="lakeObj.lon">
                                 <label class="mdl-textfield__label" for="sample3">Longtitude...</label>
                             </div>
                             <br>
@@ -108,7 +117,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                             <div class="mdl-textfield mdl-js-textfield">
                                 <textarea class="mdl-textfield__input" type="text" rows="3" id="address" name="address"
-                                          ng-model="create.address"></textarea>
+                                          ng-model="lakeObj.address"></textarea>
                                 <label class="mdl-textfield__label" for="text7">Address...</label>
                             </div>
                             <br>
@@ -116,7 +125,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" id="area" name="maxArea"
-                                       ng-model="create.maxArea">
+                                       ng-model="lakeObj.maxArea">
                                 <label class="mdl-textfield__label" for="sample3">Max Area...</label>
                             </div>
                             <br>
@@ -124,7 +133,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" id="long" name="maxVolume"
-                                       ng-model="create.maxVolume">
+                                       ng-model="lakeObj.maxVolume">
                                 <label class="mdl-textfield__label" for="sample3">Max Volume...</label>
                             </div>
                             <br>
@@ -132,7 +141,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" id="long" name="rechargeRate"
-                                       ng-model="create.rechargeRate">
+                                       ng-model="lakeObj.rechargeRate">
                                 <label class="mdl-textfield__label" for="sample3">Rechange Rate...</label>
                             </div>
 
@@ -140,67 +149,17 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             <h5>Usage</h5>
                             <div class="mdl-grid mdl-grid--no-spacing">
 
-                                <div class="mdl-cell mdl-cell--3-col">
-                                    <label class="mdl-checkbox mdl-js-checkbox" for="checkbox1">
-                                        <input type="checkbox" id="checkbox1" class="mdl-checkbox__input" name="walking"
-                                               ng-model="create.walking">
-                                        <span class="mdl-checkbox__label">Waliking</span>
-                                    </label>
-                                </div>
+                                <div class="mdl-cell mdl-cell--3-col" ng-repeat="usage in allLakeUsages">
+                                    <label class="mdl-checkbox mdl-js-checkbox" for="{{usage.id}}">
+                                        <input
+                                            type="checkbox"
+                                            id="{{usage.id}}" class="mdl-checkbox__input"
+                                            ng-checked="lakeObj.usageCode.indexOf(usage.id) > -1"
+                                            ng-click="toggle_usage_code(usage.id)"
+                                            value="{usage.value}"
+                                            name="{usage.name}">
 
-                                <div class="mdl-cell mdl-cell--3-col">
-                                    <label class="mdl-checkbox mdl-js-checkbox" for="checkbox2">
-                                        <input type="checkbox" id="checkbox2" class="mdl-checkbox__input" name="birding"
-                                               ng-model="create.birding">
-                                        <span class="mdl-checkbox__label">Birding</span>
-                                    </label>
-                                </div>
-
-                                <div class="mdl-cell mdl-cell--3-col">
-                                    <label class="mdl-checkbox mdl-js-checkbox" for="checkbox3">
-                                        <input type="checkbox" id="checkbox3" class="mdl-checkbox__input" name="fishing"
-                                               ng-model="create.fishing">
-                                        <span class="mdl-checkbox__label">Fishing</span>
-                                    </label>
-                                </div>
-
-                                <div class="mdl-cell mdl-cell--3-col">
-                                    <label class="mdl-checkbox mdl-js-checkbox" for="checkbox4">
-                                        <input type="checkbox" id="checkbox4" class="mdl-checkbox__input"
-                                               name="livestock" ng-model="create.livestock">
-                                        <span class="mdl-checkbox__label">Livestock</span>
-                                    </label>
-                                </div>
-
-                                <div class="mdl-cell mdl-cell--3-col">
-                                    <label class="mdl-checkbox mdl-js-checkbox" for="checkbox5">
-                                        <input type="checkbox" id="checkbox5" class="mdl-checkbox__input" name="idol"
-                                               ng-model="create.idol">
-                                        <span class="mdl-checkbox__label">Idol Immersion</span>
-                                    </label>
-                                </div>
-
-                                <div class="mdl-cell mdl-cell--3-col">
-                                    <label class="mdl-checkbox mdl-js-checkbox" for="checkbox6">
-                                        <input type="checkbox" id="checkbox6" class="mdl-checkbox__input"
-                                               name="swimming" ng-model="create.swimming">
-                                        <span class="mdl-checkbox__label">Swimming</span>
-                                    </label>
-                                </div>
-
-                                <div class="mdl-cell mdl-cell--3-col">
-                                    <label class="mdl-checkbox mdl-js-checkbox" for="checkbox7">
-                                        <input type="checkbox" id="checkbox7" class="mdl-checkbox__input"
-                                               name="drinking" ng-model="create.drinking">
-                                        <span class="mdl-checkbox__label">Drinking</span>
-                                    </label>
-                                </div>
-
-                                <div class="mdl-cell mdl-cell--3-col">
-                                    <label class="mdl-checkbox mdl-js-checkbox" for="checkbox8">
-                                        <input type="checkbox" id="checkbox8" class="mdl-checkbox__input" name="other"
-                                               ng-model="create.other">
-                                        <span class="mdl-checkbox__label">Other</span>
+                                        <span class="mdl-checkbox__label" ng-bind="usage.value"></span>
                                     </label>
                                 </div>
 
@@ -208,67 +167,26 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
 
                             <div class="pad-top-form-field">
-                                <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
-                                    <select id="profile_information_form_dob_2i" name="management"
-                                            class="date required mdl-selectfield__select" ng-model="create.management"
-                                            required>
-                                        <option value=""></option>
-                                        <option value="IN">BBMP</option>
-                                        <option value="CN">BDA</option>
-                                        <option value="JP">CITIZEN GROUP</option>
-                                        <option value="JP">FOREST DEPT</option>
-                                        <option value="JP">LDA</option>
-                                        <option value="JP">OTHER</option>
+                                <!--<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">-->
+
+                                    <select
+                                        ng-model="selectedAgency"
+                                        ng-change="select_agency(selectedAgency)"
+                                        ng-options="agency.name for agency in allLakeAgencies">
+
                                     </select>
+
+
                                     <label for="management" class="mdl-selectfield__label">Lake Management...</label>
                                     <span class="mdl-selectfield__error">Input is not a empty!</span>
-                                </div>
-                            </div>
-
-
-                            <h5>Agency</h5>
-                            <div class="file_input_div">
-                                <div class="file_input">
-                                    <label
-                                        class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
-                                        <i class="material-icons">file_upload</i>
-                                        <input id="file_input_file" class="none" type="file" file-model="myFile"/>
-                                    </label>
-                                </div>
-                                <div id="file_input_text_div" class="mdl-textfield mdl-js-textfield textfield-demo">
-                                    <input class="file_input_text mdl-textfield__input" type="text" disabled readonly
-                                           id="file_input_text"/>
-                                    <label class="mdl-textfield__label" for="file_input_text">Choose File</label>
-                                </div>
-                            </div>
-                            <button ng-click="uploadFile()"
-                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                                Upload File
-                            </button>
-                            <br>
-
-
-                            <div class="pad-top-form-field">
-                                <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
-                                    <select id="profile_information_form_dob_2i" name="type"
-                                            class="date required mdl-selectfield__select" ng-model="create.type"
-                                            required>
-                                        <option value=""></option>
-                                        <option value="IN">Storm Water Fed</option>
-                                        <option value="CN">Sewage Fed</option>
-                                        <option value="JP">Mixed Inflow</option>
-                                    </select>
-                                    <label for="type" class="mdl-selectfield__label">Lake Type...</label>
-                                    <span class="mdl-selectfield__error">Input is not a empty!</span>
-                                </div>
-                            </div>
-                            <br>
+                                <!--</div>-->
+                            </div><br><br>
 
                         </form>
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-color-text--indigo"
-                                ng-click="lake_create()" type="submit">Save
+                                ng-click="create_lake()" type="submit">Save
                         </button>
                     </div>
                 </div>
@@ -287,38 +205,82 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 <script src="/assets/js/main.js"></script>
 
 <script>
+
     yuktixApp.controller("yuktix.admin.lake.create", function ($scope, lake, $window) {
 
+        $scope.initLakeData = function () {
 
-        $scope.lake_create = function () {
+            $scope.allLakeUsages.push({"id" : "1", "value" : "Walking","name" : "usageCode"});
+            $scope.allLakeUsages.push({"id" : "2", "value" : "Bird Watching","name" : "usageCode"});
 
+            $scope.allLakeTypes.push({"id" : "1", "name" : "Storm Water Fed"});
+            $scope.allLakeTypes.push({"id" : "2", "name" : "Sewage Fed"});
+            $scope.allLakeTypes.push({"id" : "3", "name" : "Mixed Inflow Fed"});
+
+            $scope.allLakeAgencies.push({"id": "1", "name" : "BBMP"}) ;
+            $scope.allLakeAgencies.push({"id": "2", "name" : "LDA"}) ;
+            $scope.allLakeAgencies.push({"id": "3", "name" : "BDA"}) ;
+
+
+
+        };
+
+        $scope.select_agency = function(agency) {
+
+            $scope.lakeObj.agencyCode = agency.id ;
+            $scope.selectedAgency = agency ;
+
+        } ;
+
+        $scope.select_lake_type = function(lakeType) {
+
+            $scope.lakeObj.typeCode = lakeType.id ;
+            $scope.selectedLakeType = lakeType ;
+
+        } ;
+
+        $scope.toggle_usage_code = function(code) {
+
+            var idx = $scope.lakeObj.usageCode.indexOf(code);
+
+            if (idx > -1) {
+                // already selected: turn off
+                $scope.lakeObj.usageCode.splice(idx, 1);
+            } else {
+                // new selection
+                $scope.lakeObj.usageCode.push(code);
+            }
+
+        };
+
+        $scope.create_lake = function () {
 
             var errorObject = $scope.createForm.$error;
             if ($scope.validateForm(errorObject)) {
                 return;
             }
 
-            $scope.showProgress("verifying your login details");
+            $scope.showProgress("submitting data to server");
             if ($scope.debug) {
                 console.log("form values");
-                console.log($scope.create);
+                console.log($scope.lakeObj);
             }
 
-            // contact user factory
-            lake.lakeCreate($scope.base, $scope.debug, $scope.create)
+            // lake factory
+            lake.create($scope.base, $scope.debug, $scope.lakeObj)
                 .then(function (response) {
 
                     var status = response.status || 500;
                     var data = response.data || {};
 
                     if ($scope.debug) {
-                        console.log("server response :");
+                        console.log("API response :");
                         console.log(data);
                     }
 
                     if (status != 200 || data.code != 200) {
-                        console.log(response);
-                        var error = data.error || (status + ":error while submitiing data ");
+                        console.log("browser response object: %o" ,response);
+                        var error = data.error || (status + ":error while submitting data ");
                         $scope.showError(error);
                         return;
                     }
@@ -334,7 +296,21 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
 
         // data initialization
-        $scope.create = {};
+        $scope.lakeObj = {};
+        $scope.lakeObj.usageCode = [] ;
+
+        $scope.allLakeUsages = [] ;
+        $scope.allLakeTypes= [];
+        $scope.allLakeAgencies = [] ;
+
+        $scope.initLakeData() ;
+
+        // @todo needs index check
+        $scope.selectedAgency = $scope.allLakeAgencies[0] ;
+        $scope.selectedLakeType = $scope.allLakeTypes[0] ;
+        $scope.lakeObj.agencyCode = $scope.selectedAgency.id ;
+        $scope.lakeObj.typeCode = $scope.selectedLakeType.id ;
+
         $scope.errorMessage = "";
 
         $scope.gparams = <?php echo json_encode($gparams); ?> ;

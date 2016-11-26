@@ -594,19 +594,19 @@
 	         };
 
 
-	         lake.lakeCreate = function(base,debug,createObj) {
+	         lake.create = function(base,debug,lakeObj) {
             	
             	var myurl = base + '/admin/shim/create.php' ;
             	  
             	if(debug) {
 					console.log("POST " + myurl); 
-					console.log(createObj);
+					console.log(lakeObj);
 				}
             	
             	var promise = $http({
 					method : 'POST',
 					url : myurl,
-					data : createObj,
+					data : lakeObj,
 					headers: {'Content-Type': 'application/json'}
 				
 				}).then(
@@ -628,7 +628,7 @@
 
 			io.inletCreate = function(base,debug,createObj) {
 
-				var myurl = base + '/admin/shim/create.php' ;
+				var myurl = base + '/admin/shim/lakeObj.php' ;
 
 				if(debug) {
 					console.log("POST " + myurl);

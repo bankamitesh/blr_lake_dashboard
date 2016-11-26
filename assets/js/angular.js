@@ -2340,7 +2340,7 @@ function jqLiteData(element, key, value) {
   } else {
     if (keyDefined) {
       if (isSimpleGetter) {
-        // don't create data in this case.
+        // don't lakeObj data in this case.
         return data && data[key];
       } else {
         extend(data, key);
@@ -3737,7 +3737,7 @@ function createInjector(modulesToLoad) {
         if (e.message && e.stack && e.stack.indexOf(e.message) == -1) {
           // Safari & FF's stack traces don't contain error.message content
           // unlike those of Chrome and IE
-          // So if stack doesn't contain message, we create a new string that contains both.
+          // So if stack doesn't contain message, we lakeObj a new string that contains both.
           // Since error.stack is read-only in Safari, I'm overriding e and not e.stack here.
           /* jshint -W022 */
           e = e.message + '\n' + e.stack;
@@ -6034,7 +6034,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             childTranscludeFn = compile($template, transcludeFn, terminalPriority,
                                         replaceDirective && replaceDirective.name, {
                                           // Don't pass in:
-                                          // - controllerDirectives - otherwise we'll create duplicates controllers
+                                          // - controllerDirectives - otherwise we'll lakeObj duplicates controllers
                                           // - newIsolateScopeDirective or templateDirective - combining templates with
                                           //   element transclusion doesn't make sense.
                                           //
@@ -20720,7 +20720,7 @@ var selectDirective = ['$compile', '$parse', function($compile,   $parse) {
           nullOption = false, // if false, user will not be able to select it (used by ngOptions)
           emptyOption,
           // we can't just jqLite('<option>') since jqLite is not smart enough
-          // to create it in <select> and IE barfs otherwise.
+          // to lakeObj it in <select> and IE barfs otherwise.
           optionTemplate = jqLite(document.createElement('option')),
           optGroupTemplate =jqLite(document.createElement('optgroup')),
           unknownOption = optionTemplate.clone();
