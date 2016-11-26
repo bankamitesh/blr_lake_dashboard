@@ -1,16 +1,17 @@
-<?php  
+<?php
 
-	include ("lake-app.inc");
-	use \com\indigloo\Url as Url;
+include("lake-app.inc");
+include(APP_WEB_DIR . '/inc/header.inc');
 
+use \com\indigloo\Url;
 
-	$gparams = new \stdClass ;
-	$gparams->debug = false ;
-	$gparams->base = 'http://'.$_SERVER["HTTP_HOST"];
+$gparams = new \stdClass;
+$gparams->debug = false;
+$gparams->base = Url::base();
 
-	if(array_key_exists("jsdebug", $_REQUEST)) {
-		$gparams->debug = true ;
-	}
+if (array_key_exists("jsdebug", $_REQUEST)) {
+	$gparams->debug = true;
+}
 
 ?>
 
@@ -36,16 +37,21 @@
 }
 	</style>
 </head>
-<body ng-controller="">
+<body ng-controller="yuktix.admin.lake.io.create">
 	<!-- Always shows a header, even in smaller screens. -->
 	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 	  <div class="mdl-layout-spacer"></div>
-		<?php include (WEB_ROOT_DIR.'/inc/header.inc'); ?>
+
+		<header class="mdl-layout__header">
+			<div class="mdl-layout__header-row">
+				<?php include (APP_WEB_DIR.'/inc/title.inc'); ?>
+			</div>
+		</header>
 		
 		<main class="mdl-layout__content">
 			<div class="page-content">
 			<div class=""></div>
-				<?php include (WEB_ROOT_DIR.'/inc/page_error.inc'); ?>
+				<?php include (APP_WEB_DIR.'/inc/page_error.inc'); ?>
 				<!-- card -->
 				<div class="mdl-grid pad-bottom">
 					<div class="mdl-layout-spacer"></div>
@@ -56,15 +62,6 @@
 						<div class="pad-left-form-field">
 							<form name="IoCreateForm">
 
-                                <div class="pad-top-form-field">
-								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="name">
-									<label class="mdl-textfield__label" for="sample3">Lake Name...</label>
-								</div>
-								</div><br>
-
-
-								<div> 
 									<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
 										<select id="profile_information_form_dob_2i" name="profile_information_form[dob(2i)]" class="date required mdl-selectfield__select" required>
 											<option value=""></option>
@@ -76,7 +73,7 @@
 										<label for="profile_information_form_dob_2i" class="mdl-selectfield__label">Type...</label>
 										<span class="mdl-selectfield__error">Input is not a empty!</span>
 									</div>
-								</div><br>
+								<br>
 
 
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -102,7 +99,7 @@
 								</div><br>
 
 
-								<h5>Upload Inlet Photos </h5>
+								<h5>Photos </h5>
 								<div class="file_input_div">
 									<div class="file_input">
 										<label class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
@@ -121,7 +118,7 @@
 
 
                                 
-								<div class="pad-top-form-field"> 
+								<!--<div class="pad-top-form-field">
 								<h5>Stage-Flow Data</h5>
 									<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
 										<select id="profile_information_form_dob_2i" name="profile_information_form[dob(2i)]" class="date required mdl-selectfield__select" required>
@@ -133,9 +130,22 @@
 										<label for="profile_information_form_dob_2i" class="mdl-selectfield__label">Monitoring Status...</label>
 										<span class="mdl-selectfield__error">Input is not a empty!</span>
 									</div>
-								</div><br>
+								</div><br>-->
+								<div class="pad-top-form-field"></div>
+								<label class="mdl-radio mdl-js-radio" for="option1">
+									<input type="radio" id="option1" name="gender" class="mdl-radio__button" ng-click="showData("sensor")">
+									<span class="mdl-radio__label">Sensor Installed</span>
+								</label><br><br>
 
+								<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option2">
+									<input type="radio" id="option2" name="gender" class="mdl-radio__button" >
+									<span class="mdl-radio__label">Constant Value</span>
+								</label><br><br>
 
+								<label class="mdl-radio mdl-js-radio" for="option3">
+									<input type="radio" id="option3" name="gender" class="mdl-radio__button">
+									<span class="mdl-radio__label">Lake level Related</span>
+								</label><br>
 
 								<div class="mdl-textfield mdl-js-textfield">
 									<textarea class="mdl-textfield__input" type="text" rows= "3" id="about" ></textarea>
@@ -169,8 +179,8 @@
                                 </div>
 								</div>
 
-
-								<h5>SensorStage-Flow CSV Upload </h5>
+								<div ng-show="IsVisible">
+								<h5>SensorStage-Flow CSV</h5>
 								<div class="file_input_div">
 									<div class="file_input">
 										<label class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
@@ -185,11 +195,12 @@
 								</div>
 								<button ng-click = "uploadFile()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
 									Upload File
-								</button><br>
+								</button>
+								</div><br>
 
-
+								<div ng-show="IsVisible">
                                 <div class="pad-top-form-field"></div>
-								<h5>LakeStage-Flow CSV Upload </h5>
+								<h5>LakeStage-Flow CSV</h5>
 								<div class="file_input_div">
 									<div class="file_input">
 										<label class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
@@ -204,16 +215,18 @@
 								</div>
 								<button ng-click = "uploadFile()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
 									Upload File
-								</button><br>
+								</button>
+								</div><br>
 
 
                                 <div class="pad-top-form-field"></div>
-
+								<div ng-show="IsVisible">
 								<h5>Constant</h5>
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 									<input class="mdl-textfield__input" type="text" id="name">
 									<label class="mdl-textfield__label" for="sample3">FlowRate...</label>
 								</div>
+							    </div>
 
                                 
                                 <div class="pad-top-form-field"></div>
@@ -239,12 +252,82 @@
 
 
 			</div>
-			<?php include (WEB_ROOT_DIR.'/inc/footer.inc'); ?>
+			<?php include (APP_WEB_DIR.'/inc/footer.inc'); ?>
 		</main>
 	</div>
 	<script src="/assets/js/material.min.js"></script>
 	 <script src="/assets/js/mdl-selectfield.min.js"></script>
 	<script src="/assets/js/angular.min.js"></script>
 	<script src="/assets/js/main.js"></script>
+
+	<script>
+		yuktixApp.controller("yuktix.admin.lake.io.create", function ($scope, lake, $window) {
+
+
+			$scope.lake_create = function () {
+
+
+				var errorObject = $scope.createForm.$error;
+				if ($scope.validateForm(errorObject)) {
+					return;
+				}
+
+				$scope.showProgress("verifying your login details");
+				if ($scope.debug) {
+					console.log("form values");
+					console.log($scope.create);
+				}
+
+				// contact user factory
+				lake.lakeCreate($scope.base, $scope.debug, $scope.create)
+					.then(function (response) {
+
+						var status = response.status || 500;
+						var data = response.data || {};
+
+						if ($scope.debug) {
+							console.log("server response :");
+							console.log(data);
+						}
+
+						if (status != 200 || data.code != 200) {
+							console.log(response);
+							var error = data.error || (status + ":error while submitiing data ");
+							$scope.showError(error);
+							return;
+						}
+
+						$window.location.href = "/admin/view/lake/list.php";
+
+					}, function (response) {
+						$scope.processResponse(response);
+					});
+
+
+			};
+
+			$scope.IsVisible = false;
+			$scope.showData = function(value){
+
+			if($scope.value=="sensor") {
+
+				$scope.IsVisible = true;
+
+			}
+
+			};
+
+
+			// data initialization
+			$scope.create = {};
+			$scope.errorMessage = "";
+
+			$scope.gparams = <?php echo json_encode($gparams); ?> ;
+			$scope.debug = $scope.gparams.debug;
+			$scope.base = $scope.gparams.base;
+
+
+		});
+	</script>
 </body>
 </html>

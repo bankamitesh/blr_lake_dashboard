@@ -24,8 +24,12 @@
    <!-- Always shows a header, even in smaller screens. -->
    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
-   <?php include (APP_WEB_DIR.'/inc/toolbar.inc'); ?>
-    <?php include (APP_WEB_DIR.'/inc/drawer.inc'); ?>
+       <header class="mdl-layout__header">
+           <div class="mdl-layout__header-row">
+               <?php include (APP_WEB_DIR.'/inc/title.inc'); ?>
+               <?php include (APP_WEB_DIR.'/inc/logout_menu_bar.inc'); ?>
+           </div>
+       </header>
 
       <main class="mdl-layout__content">
          <div class="page-content">
@@ -55,7 +59,7 @@
             <tr>
             <td class="mdl-data-table__cell--non-numeric">Lake1</td>
             <td>
-               <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"><i class="material-icons">edit</i></button>
+               <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" ng-click="lake_edit()"><i class="material-icons">edit</i></button>
             </td>
             <td>
                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"><i class="material-icons">delete</i></button>
@@ -145,6 +149,12 @@
       $window.location.href = "/admin/view/lake/create.php";
 
       };
+
+          $scope.lake_edit=function(){
+
+              $window.location.href = "/admin/view/lake/edit.php";
+
+          };
 
 
    

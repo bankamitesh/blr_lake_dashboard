@@ -620,6 +620,38 @@
                       
             return lake ;
         });
+
+
+		yuktixApp.factory('io', function($http) {
+
+			var io = {} ;
+
+			io.inletCreate = function(base,debug,createObj) {
+
+				var myurl = base + '/admin/shim/create.php' ;
+
+				if(debug) {
+					console.log("POST " + myurl);
+					console.log(createObj);
+				}
+
+				var promise = $http({
+					method : 'POST',
+					url : myurl,
+					data : createObj,
+					headers: {'Content-Type': 'application/json'}
+
+				}).then(
+					function (response) { return response ; },
+					function(response) { return response ; }
+				);
+
+				return promise;
+
+			};
+
+			return io ;
+		});
              
         
         // controller using text service for reverse func
