@@ -54,8 +54,8 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             <div class="pad-top-form-field"></div>
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" name="name" id="name"
-                                       ng-model="lakeObj.name">
-                                <label class="mdl-textfield__label" for="sample3">Lake Name...</label>
+                                       ng-model="lakeObj.name" required>
+                                <label class="mdl-textfield__label" for="sample3">Lake Name </label>
                             </div>
                             <br>
 
@@ -76,37 +76,16 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                             <div class="mdl-textfield mdl-js-textfield">
                                 <textarea class="mdl-textfield__input" type="text" rows="3" id="about" name="about"
-                                          ng-model="lakeObj.about"></textarea>
+                                          ng-model="lakeObj.about" required></textarea>
                                 <label class="mdl-textfield__label" for="text7">About...</label>
                             </div>
-
-
-                            <h5>Photo</h5>
-                            <div class="file_input_div">
-                                <div class="file_input">
-                                    <label
-                                        class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
-                                        <i class="material-icons">file_upload</i>
-                                        <input id="file_input_file" class="none" type="file" file-model="myFile"/>
-                                    </label>
-                                </div>
-                                <div id="file_input_text_div" class="mdl-textfield mdl-js-textfield textfield-demo">
-                                    <input class="file_input_text mdl-textfield__input" type="text" disabled readonly
-                                           id="file_input_text"/>
-                                    <label class="mdl-textfield__label" for="file_input_text">Choose File</label>
-                                </div>
-                            </div>
-                            <button ng-click="uploadFile()"
-                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                                Upload File
-                            </button>
                             <br>
 
 
                             <div class="pad-top-form-field">
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                     <input class="mdl-textfield__input" type="text" id="lat" name="lattitude"
-                                           ng-model="lakeObj.lat">
+                                           ng-model="lakeObj.lat" required>
                                     <label class="mdl-textfield__label" for="sample3">Lattitude...</label>
                                 </div>
                             </div>
@@ -114,7 +93,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" id="long" name="longtitude"
-                                       ng-model="lakeObj.lon">
+                                       ng-model="lakeObj.lon" required>
                                 <label class="mdl-textfield__label" for="sample3">Longtitude...</label>
                             </div>
                             <br>
@@ -122,7 +101,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                             <div class="mdl-textfield mdl-js-textfield">
                                 <textarea class="mdl-textfield__input" type="text" rows="3" id="address" name="address"
-                                          ng-model="lakeObj.address"></textarea>
+                                          ng-model="lakeObj.address" required></textarea>
                                 <label class="mdl-textfield__label" for="text7">Address...</label>
                             </div>
                             <br>
@@ -130,7 +109,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" id="area" name="maxArea"
-                                       ng-model="lakeObj.maxArea">
+                                       ng-model="lakeObj.maxArea" required>
                                 <label class="mdl-textfield__label" for="sample3">Max Area...</label>
                             </div>
                             <br>
@@ -138,7 +117,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" id="long" name="maxVolume"
-                                       ng-model="lakeObj.maxVolume">
+                                       ng-model="lakeObj.maxVolume" required>
                                 <label class="mdl-textfield__label" for="sample3">Max Volume...</label>
                             </div>
                             <br>
@@ -146,7 +125,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" id="long" name="rechargeRate"
-                                       ng-model="lakeObj.rechargeRate">
+                                       ng-model="lakeObj.rechargeRate" required>
                                 <label class="mdl-textfield__label" for="sample3">Rechange Rate...</label>
                             </div>
 
@@ -162,7 +141,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                             ng-checked="lakeObj.usageCode.indexOf(usage.id) > -1"
                                             ng-click="toggle_usage_code(usage.id)"
                                             value="{usage.value}"
-                                            name="{usage.name}">
+                                            name="{usage.name}" required>
 
                                         <span class="mdl-checkbox__label" ng-bind="usage.value"></span>
                                     </label>
@@ -215,7 +194,13 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         $scope.initLakeData = function () {
 
             $scope.allLakeUsages.push({"id" : "1", "value" : "Walking","name" : "usageCode"});
-            $scope.allLakeUsages.push({"id" : "2", "value" : "Bird Watching","name" : "usageCode"});
+            $scope.allLakeUsages.push({"id" : "2", "value" : "Birding","name" : "usageCode"});
+            $scope.allLakeUsages.push({"id" : "3", "value" : "Fishing","name" : "usageCode"});
+            $scope.allLakeUsages.push({"id" : "4", "value" : "Idol Immersion","name" : "usageCode"});
+            $scope.allLakeUsages.push({"id" : "5", "value" : "Swimming","name" : "usageCode"});
+            $scope.allLakeUsages.push({"id" : "6", "value" : "Livestock","name" : "usageCode"});
+            $scope.allLakeUsages.push({"id" : "7", "value" : "Drinking","name" : "usageCode"});
+            $scope.allLakeUsages.push({"id" : "8", "value" : "Other","name" : "usageCode"});
 
             $scope.allLakeTypes.push({"id" : "1", "name" : "Storm Water Fed"});
             $scope.allLakeTypes.push({"id" : "2", "name" : "Sewage Fed"});
