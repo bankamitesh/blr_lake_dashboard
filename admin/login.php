@@ -6,10 +6,8 @@
 		use \com\yuktix\lake\auth\Login as Login ;
 
 		// already have login?
-		if (Login::hasSession()) {
-			header("location: /admin/view/lake/list.php") ;
-			exit(0) ;
-		}
+		// do not redirect from login page.
+		// we redirect to login page for missing roles as well.
 
 		$gparams = new \stdClass ;
 		$gparams->debug = false ;

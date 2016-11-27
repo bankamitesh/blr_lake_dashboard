@@ -4,6 +4,11 @@ include("lake-app.inc");
 include(APP_WEB_DIR . '/inc/header.inc');
 
 use \com\indigloo\Url;
+use \com\yuktix\lake\auth\Login as Login ;
+
+// role check
+// redirect to login page 
+Login::isCustomerAdmin("/admin/login.php") ;
 
 $gparams = new \stdClass;
 $gparams->debug = false;
