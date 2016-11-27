@@ -22,6 +22,8 @@
         $lake->lat = $row["lat"] ;
         $lake->lon = $row["lon"] ;
 
+        $lake->address = $row["address"] ;
+
         $lake->maxArea = $row["max_area"] ;
         $lake->maxVolume = $row["max_volume"] ;
         $lake->rechargeRate = $row["recharge_rate"] ;
@@ -29,6 +31,7 @@
         $lake->typeCode = $row["type_code"];
         $lake->agencyCode = $row["agency_code"];
         $lake->usageCode = $row["usage_code"];
+        $lake->id = $row["id"];
         
         return $lake ;
 

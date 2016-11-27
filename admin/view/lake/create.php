@@ -160,7 +160,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                             required>
                                     </select>
                                     <label for="profile_information_form_dob_2i"
-                                           class="mdl-selectfield__label">Type...</label>
+                                           class="mdl-selectfield__label">Management Agency...</label>
                                     <span class="mdl-selectfield__error">Input is not a empty!</span>
                                 </div>
                             </div><br><br>
