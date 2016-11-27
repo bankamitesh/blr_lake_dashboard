@@ -59,13 +59,18 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             </div>
                             <br>
 
-
-                            <select
-                                ng-model="selectedLakeType"
-                                ng-change="select_lake_type(selectedLakeType)"
-                                ng-options="lakeType.name for lakeType in allLakeTypes">
-
-                            </select>
+                            <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
+                                <select id="profile_information_form_dob_2i" name="profile_information_form[dob(2i)]"
+                                        class="date required mdl-selectfield__select"
+                                        ng-model="selectedLakeType"
+                                        ng-change="select_lake_type(selectedLakeType)"
+                                        ng-options="lakeType.name for lakeType in allLakeTypes"
+                                        required>
+                                </select>
+                                <label for="profile_information_form_dob_2i"
+                                       class="mdl-selectfield__label">Type...</label>
+                                <span class="mdl-selectfield__error">Input is not a empty!</span>
+                            </div>
                             <br>
 
 
@@ -167,19 +172,18 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
 
                             <div class="pad-top-form-field">
-                                <!--<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">-->
-
-                                    <select
-                                        ng-model="selectedAgency"
-                                        ng-change="select_agency(selectedAgency)"
-                                        ng-options="agency.name for agency in allLakeAgencies">
-
+                                <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
+                                    <select id="profile_information_form_dob_2i" name="profile_information_form[dob(2i)]"
+                                            class="date required mdl-selectfield__select"
+                                            ng-model="selectedAgency"
+                                            ng-change="select_agency(selectedAgency)"
+                                            ng-options="agency.name for agency in allLakeAgencies"
+                                            required>
                                     </select>
-
-
-                                    <label for="management" class="mdl-selectfield__label">Lake Management...</label>
+                                    <label for="profile_information_form_dob_2i"
+                                           class="mdl-selectfield__label">Type...</label>
                                     <span class="mdl-selectfield__error">Input is not a empty!</span>
-                                <!--</div>-->
+                                </div>
                             </div><br><br>
 
                         </form>
