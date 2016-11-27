@@ -4,14 +4,13 @@
     // Also, do not output anything in class_loader (apart from errors ) - otherwise you will
     // get session header related warnings. Please keep this order.
 
-
+    ob_start() ;
     include(APP_CLASS_LOADER);
+    include(APP_WEB_DIR . '/inc/global-error.inc');
+    include(APP_WEB_DIR . '/inc/mysql-session.inc');
 
     use com\indigloo\core\Web  ;
     use com\indigloo\Configuration as Config  ;
-
-    include(APP_WEB_DIR . '/inc/mysql-session.inc');
-    include(APP_WEB_DIR . '/inc/global-error.inc');
 
     $gWeb = Web::getInstance();
     $gWeb->start();

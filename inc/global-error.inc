@@ -1,6 +1,5 @@
 <?php
 
-	
 	function webgloo_error_handler($errno,$errstr,$file,$line) {
 	
 	    // do nothing for silenced errors
@@ -47,6 +46,7 @@
 	    	\com\indigloo\Logger::getInstance()->backtrace($ex->getTrace());
 	    	
 	    	header('Location: /site/500.php');
+			exit(1) ;
 	    }
 	
 	    
@@ -93,7 +93,6 @@
 	// for every error regardless of the error_reporting setting
 	// mixed set_error_handler($callable, int error_types)
 	
-	ob_start();
 	set_error_handler('webgloo_error_handler');
 	set_exception_handler('webgloo_exception_handler');
 

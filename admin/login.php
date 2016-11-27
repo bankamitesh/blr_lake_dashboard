@@ -1,19 +1,25 @@
-		<?php
+<?php
+		include ("lake-app.inc");
+		include(APP_WEB_DIR.'/inc/header.inc');
 
-			include ("lake-app.inc");
-			include(APP_WEB_DIR.'/inc/header.inc');
+		use \com\indigloo\Url ;
+		use \com\yuktix\lake\auth\Login as Login ;
 
-			use \com\indigloo\Url ;
+		// already have login?
+		if (Login::hasSession()) {
+			header("location: /admin/view/lake/list.php") ;
+			exit(0) ;
+		}
 
-			$gparams = new \stdClass ;
-			$gparams->debug = false ;
-			$gparams->base = Url::base() ;
-		
-			if(array_key_exists("jsdebug", $_REQUEST)) {
+		$gparams = new \stdClass ;
+		$gparams->debug = false ;
+		$gparams->base = Url::base() ;
+	
+		if(array_key_exists("jsdebug", $_REQUEST)) {
 			$gparams->debug = true ;
-			}
+		}
 
-		?>
+?>
 
 		<!DOCTYPE html>
 		<html ng-app="YuktixApp">
