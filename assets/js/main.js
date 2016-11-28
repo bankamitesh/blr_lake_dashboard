@@ -43,6 +43,17 @@
 		    };
 		});
 		
+		yuktixApp.directive('filelistBind', function() {
+			return function( scope, elm, attrs ) {
+				elm.bind('change', function( evt ) {
+				scope.$apply(function() {
+					scope[ attrs.name ] = evt.target.files;
+					console.log( scope[ attrs.name ] );
+				});
+				});
+			};
+		});
+
 		yuktixApp.directive('gmap', function ($window) {
             return {
               scope: {
@@ -457,10 +468,10 @@
         // $http.then(successCallback, errorCallback) 
         // we simply return the response from service
         
-        yuktixApp.factory('text', function($http) {
-            var text = {} ;
+        yuktixApp.factory('mytest', function($http) {
+            var mytest = {} ;
 
-            text.reverse = function(token) {
+            mytest.reverse_text = function(token) {
 
                 var myurl = '/angular/php/reverse.php?token='+ encodeURI(token) ;
                 var promise = $http({
@@ -476,7 +487,26 @@
 
             };
 
-            return text ;
+			mytest.upload_file = function(base, debug, blob) {
+
+                var myurl = base + "/test/shim/upload.php" ;
+                var promise = $http({
+                    method : 'POST',
+                    url : myurl,
+                    headers : { 'Content-Type' : 'application/octet-stream' },
+					data: new Uint8Array(blob),
+					transformRequest:  angular.identity
+                }).then(
+                    function (response) { return response ; }, 
+                    function(response) { return response ; }
+                );
+
+                return promise;
+
+            };
+
+            return mytest ;
+
         });
         
         yuktixApp.factory('calendar', function() {
@@ -570,7 +600,7 @@
         });
 
 
-             yuktixApp.factory('lake', function($http) {
+        yuktixApp.factory('lake', function($http) {
 
             var lake = {} ;
 
@@ -578,7 +608,10 @@
 				 
 	            	var myurl = base + '/admin/shim/list.php' ;
 	            	var postData = {} ;
-	            	if(debug) { console.log("POST /admin/shim/list.php"); console.log(postData);}
+	            	if(debug) { 
+						console.log("POST /admin/shim/list.php"); 
+						console.log(postData);
+					}
 	            	
 	            	var promise = $http({
 						method : 'POST',
