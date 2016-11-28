@@ -4,6 +4,11 @@ include("lake-app.inc");
 include(APP_WEB_DIR . '/inc/header.inc');
 
 use \com\indigloo\Url;
+use \com\yuktix\lake\auth\Login as Login ;
+
+// role check
+// redirect to login page 
+Login::isCustomerAdmin("/admin/login.php") ;
 
 $gparams = new \stdClass;
 $gparams->debug = false;
@@ -193,14 +198,14 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
         $scope.initLakeData = function () {
 
-            $scope.allLakeUsages.push({"id" : "1", "value" : "Walking","name" : "usageCode"});
-            $scope.allLakeUsages.push({"id" : "2", "value" : "Birding","name" : "usageCode"});
-            $scope.allLakeUsages.push({"id" : "3", "value" : "Fishing","name" : "usageCode"});
-            $scope.allLakeUsages.push({"id" : "4", "value" : "Idol Immersion","name" : "usageCode"});
-            $scope.allLakeUsages.push({"id" : "5", "value" : "Swimming","name" : "usageCode"});
-            $scope.allLakeUsages.push({"id" : "6", "value" : "Livestock","name" : "usageCode"});
-            $scope.allLakeUsages.push({"id" : "7", "value" : "Drinking","name" : "usageCode"});
-            $scope.allLakeUsages.push({"id" : "8", "value" : "Other","name" : "usageCode"});
+            $scope.allLakeUsages.push({"id" : "1", "value" : "Walking", "name" : "usageCode"});
+            $scope.allLakeUsages.push({"id" : "2", "value" : "Birding", "name" : "usageCode"});
+            $scope.allLakeUsages.push({"id" : "3", "value" : "Fishing", "name" : "usageCode"});
+            $scope.allLakeUsages.push({"id" : "4", "value" : "Idol Immersion", "name" : "usageCode"});
+            $scope.allLakeUsages.push({"id" : "5", "value" : "Swimming", "name" : "usageCode"});
+            $scope.allLakeUsages.push({"id" : "6", "value" : "Livestock", "name" : "usageCode"});
+            $scope.allLakeUsages.push({"id" : "7", "value" : "Drinking", "name" : "usageCode"});
+            $scope.allLakeUsages.push({"id" : "8", "value" : "Other", "name" : "usageCode"});
 
             $scope.allLakeTypes.push({"id" : "1", "name" : "Storm Water Fed"});
             $scope.allLakeTypes.push({"id" : "2", "name" : "Sewage Fed"});
@@ -287,6 +292,8 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         // data initialization
         $scope.lakeObj = {};
         $scope.lakeObj.usageCode = [] ;
+        $scope.lakeObj.agencyCode = $scope.selectedAgency.id ;
+        $scope.lakeObj.typeCode = $scope.selectedLakeType.id ;
 
         $scope.allLakeUsages = [] ;
         $scope.allLakeTypes= [];
@@ -297,9 +304,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         // @todo needs index check
         $scope.selectedAgency = $scope.allLakeAgencies[0] ;
         $scope.selectedLakeType = $scope.allLakeTypes[0] ;
-        $scope.lakeObj.agencyCode = $scope.selectedAgency.id ;
-        $scope.lakeObj.typeCode = $scope.selectedLakeType.id ;
-
+       
         $scope.errorMessage = "";
 
         $scope.gparams = <?php echo json_encode($gparams); ?> ;

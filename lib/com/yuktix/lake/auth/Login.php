@@ -1,6 +1,6 @@
 <?php
 
-namespace com\yuktix\auth {
+namespace com\yuktix\lake\auth {
 
     use \com\indigloo\Url as Url;
     use \com\indigloo\Util as Util;
@@ -17,14 +17,9 @@ namespace com\yuktix\auth {
         const USER_FIRST_NAME = "user-first-name" ;
         const USER_LAST_NAME = "user-last-name" ;
         const USER_EMAIL = "user-email";
-        
-        const ACCOUNT_MODULE = "account-module";
         const ACCOUNT_NAME = "account-name" ;
         const ROLES_ARRAY   = "roles-array";
-        
-        const X_MACHINE_COOKIE = "x-machine-cookie";
-       	const PUBLIC_API_KEY = "public-api-key";
-       	
+        	
         //codes
         const OK_CODE = 200 ;
         const FORBIDDEN_CODE = 403 ;
@@ -47,17 +42,10 @@ namespace com\yuktix\auth {
             $_SESSION[self::USER_FIRST_NAME] = $user->firstName;
             $_SESSION[self::USER_LAST_NAME] = $user->lastName;
             $_SESSION[self::USER_EMAIL] = $user->email;
-            
-            $_SESSION[self::ACCOUNT_MODULE] = $user->module;
             $_SESSION[self::ACCOUNT_NAME] = $user->accountName;
             
             // start with user
-            $_SESSION[self::ROLES_ARRAY] = array(1);
-            
-            $cookie = isset($_COOKIE[self::X_MACHINE_COOKIE]) ? $_COOKIE[self::X_MACHINE_COOKIE] : "__NULL__" ;
-            $_SESSION[self::X_MACHINE_COOKIE] = $cookie ;
-            $_SESSION[self::PUBLIC_API_KEY] = $user->publicAPIKey ;
-            
+            $_SESSION[self::ROLES_ARRAY] = array(1); 
             return self::OK_CODE ;
 
         }
@@ -122,7 +110,7 @@ namespace com\yuktix\auth {
             return $flag ;
         }
         
-        static function isUser($loginPage="/app/login.php") {
+        static function isUser($loginPage="/admin/login.php") {
         	
         	if(!self::hasSession()) {
         		self::gotoLogin($loginPage);
@@ -131,7 +119,7 @@ namespace com\yuktix\auth {
         	return ;
         }
         
-        static function isSuperAdmin($loginPage="/app/login.php") {
+        static function isSuperAdmin($loginPage="/admin/login.php") {
         	if(!self::hasSuperAdminRole()) {
         		self::gotoLogin($loginPage) ;
         	}
@@ -139,7 +127,7 @@ namespace com\yuktix\auth {
         	return  ;
         }
         
-        static function isCustomerAdmin() {
+        static function isCustomerAdmin($loginPage="/admin/login.php") {
         	if(! (self::hasSuperAdminRole() || self::hasCustomerAdminRole())) {
         		self::gotoLogin($loginPage) ;
         	}
@@ -159,17 +147,11 @@ namespace com\yuktix\auth {
         	$login->firstName = $_SESSION[self::USER_FIRST_NAME];
         	$login->lastName = $_SESSION[self::USER_LAST_NAME];
         	$login->email = $_SESSION[self::USER_EMAIL];
-        	 
-        	$login->accountModule = $_SESSION[self::ACCOUNT_MODULE];
         	$login->accountName = $_SESSION[self::ACCOUNT_NAME];
         	 
         	$login->roles = $_SESSION[self::ROLES_ARRAY];
-        	 
         	$login->superAdmin = self::hasSuperAdminRole();
         	$login->customerAdmin = self::hasCustomerAdminRole();
-        	
-        	$login->machineCookie = $_SESSION[self::X_MACHINE_COOKIE];
-        	$login->publicAPIKey = $_SESSION[self::PUBLIC_API_KEY];
         	
         	return $login;
         }
