@@ -17,27 +17,14 @@
 	set_exception_handler('webgloo_ajax_exception_handler');
 	$gWeb = \com\indigloo\core\Web::getInstance ();
 	
-    Logger::getInstance()->info("inside mpart.php script...");
-    Logger::getInstance()->info($_POST["metadata"]);
+    // PHP $_REQUEST only works for x-www-form-urlencoded content type
+    // so we have to get the raw data when content-type is application/json 
+    $rawPostData = file_get_contents("php://input");
     
-	foreach($_FILES as $index => $file) {
-		Logger::getInstance()->info("inside mpart.php / file iteration...");
-		$fname     =  basename($file["name"]);
-		$tmpFile = $file["tmp_name"];
-		
-		if(!empty($file["error"])){
-			$responseObj = new \stdClass ;
-            $responseObj->code = 200;
-            $responseObj->error = $file["error"] ;
-            echo json_encode($responseObj) ;
-            exit(1) ;
-
-		}
-
-		if(!empty($tmpFile) && is_uploaded_file($tmpFile)) {
-			move_uploaded_file($tmpFile, "/Users/rjha/Documents/uploads/" . $fname);
-		}
-	}
+    // save to a file
+    $fh = fopen("/Users/rjha/test.png", "w");
+    fwrite($fh, $rawPostData);
+    fclose($fh);
 
     $responseObj = new \stdClass ;
     $responseObj->code = 200;

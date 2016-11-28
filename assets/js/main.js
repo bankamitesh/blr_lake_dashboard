@@ -494,13 +494,12 @@
 
             var fupload = {} ;
 
-			fupload.send_blob = function(base, debug,blob) {
+			fupload.send_blob = function(debug,myurl,blob) {
 
-                var myurl = base + "/admin/shim/upload/blob.php" ;
 				if(debug) { 
 					console.log("file upload URL is:" + myurl);
 				}
-				
+
                 var promise = $http({
                     method : 'POST',
                     url : myurl,
@@ -516,12 +515,11 @@
 
             };
 
-			fupload.send_mpart = function(base, debug,payload) {
+			fupload.send_mpart = function(debug,myurl,payload) {
 				// it is necessary to keep Content-Type: undefined 
 				// to let browser fill in the Content-Type 
 				// also we tell angularjs not to change any data/headers!
 
-                var myurl = base + "/admin/shim/upload/mpart.php" ;
 				if(debug) { 
 					console.log("file upload URL is:" + myurl);
 				}

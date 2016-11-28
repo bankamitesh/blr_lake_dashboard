@@ -96,11 +96,13 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             var fileReader = new FileReader();
 
             fileReader.onloadend = function (e) {
+
+                var myurl = $scope.base + "/test/shim/upload/blob.php" ;
                 var blob  = fileReader.result ;
                 // @todo POST binary data via $http 
                 // console.log(data);
 
-                fupload.send_blob($scope.gparams.base, $scope.debug, blob).then(function (response) {
+                fupload.send_blob( $scope.debug, blob).then(function (response) {
 
                     var status = response.status || 500;
                     var data = response.data || {};

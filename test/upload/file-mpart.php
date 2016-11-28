@@ -86,7 +86,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 <script src="/assets/js/material.min.js"></script>
 <script src="/assets/js/mdl-selectfield.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js?ver=4"></script>
+<script src="/assets/js/main.js?ver=5"></script>
 <script>
 
     yuktixApp.controller("yuktix.file.upload.mpart", function ($scope, fupload, $window) {
@@ -94,48 +94,39 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         $scope.upload_files = function() {
 
             console.log("upload files clicked...") ;
-            var fileReader = new FileReader();
-
-            fileReader.onloadend = function (e) {
-
-                var blob  = new Uint8Array(fileReader.result) ;
-                console.log(blob);
-                var payload = new FormData();
-                payload.append("myfile", $scope.files[0]);
-                payload.append("key1", "value1");
-                payload.append("key1", "value2");
-
-                
-                fupload.send_mpart($scope.gparams.base, $scope.debug, payload).then(function (response) {
-
-                    var status = response.status || 500;
-                    var data = response.data || {};
-
-                    if ($scope.debug) {
-                        console.log("API response :");
-                        console.log(data);
-                    }
-
-                    if (status != 200 || data.code != 200) {
-                        console.log("browser response object: %o" ,response);
-                        var error = data.error || (status + ":error while submitting data ");
-                        $scope.showError(error);
-                        return;
-                    }
-
-
-                }, function (response) {
-                    $scope.processResponse(response);
-                });
-
-            };
-
-            fileReader.onerror = function(err) {
-                console.log(err);
-            };
             
-            fileReader.readAsArrayBuffer($scope.files[0]) ;
+            var metadata = { 
+                "key1" : "value1", 
+                "key2" : "value2"
+            }
 
+            var myurl = $scope.base + "/test/shim/upload/mpart.php" ;
+            var payload = new FormData();
+            payload.append("myfile", $scope.files[0]);
+            payload.append("metadata", angular.toJson(metadata));
+            
+            fupload.send_mpart($scope.debug, myurl, payload).then(function (response) {
+
+                var status = response.status || 500;
+                var data = response.data || {};
+
+                if ($scope.debug) {
+                    console.log("API response :");
+                    console.log(data);
+                }
+
+                if (status != 200 || data.code != 200) {
+                    console.log("browser response object: %o" ,response);
+                    var error = data.error || (status + ":error while submitting data ");
+                    $scope.showError(error);
+                    return;
+                }
+
+
+            }, function (response) {
+                $scope.processResponse(response);
+            });
+            
         };
         
         $scope.gparams = <?php echo json_encode($gparams); ?> ;
