@@ -21,7 +21,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <link rel="stylesheet" href="/assets/css/mdl-selectfield.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
-<body ng-controller="yuktix.file.upload.test">
+<body ng-controller="yuktix.file.upload.mpart">
 <!-- Always shows a header, even in smaller screens. -->
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
@@ -86,21 +86,27 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 <script src="/assets/js/material.min.js"></script>
 <script src="/assets/js/mdl-selectfield.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js"></script>
+<script src="/assets/js/main.js?ver=4"></script>
 <script>
 
-    yuktixApp.controller("yuktix.file.upload.test", function ($scope, mytest, $window) {
+    yuktixApp.controller("yuktix.file.upload.mpart", function ($scope, fupload, $window) {
 
         $scope.upload_files = function() {
+
             console.log("upload files clicked...") ;
             var fileReader = new FileReader();
 
             fileReader.onloadend = function (e) {
-                var blob  = fileReader.result ;
-                // @todo POST binary data via $http 
-                // console.log(data);
 
-                mytest.upload_file($scope.gparams.base, $scope.debug, blob).then(function (response) {
+                var blob  = new Uint8Array(fileReader.result) ;
+                console.log(blob);
+                var payload = new FormData();
+                payload.append("myfile", $scope.files[0]);
+                payload.append("key1", "value1");
+                payload.append("key1", "value2");
+
+                
+                fupload.send_mpart($scope.gparams.base, $scope.debug, payload).then(function (response) {
 
                     var status = response.status || 500;
                     var data = response.data || {};
@@ -128,12 +134,9 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                 console.log(err);
             };
             
-            // Here you could (should) switch to another read operation
-            // such as text or binary array
-            //fileReader.readAsBinaryString($scope.files[0]);
-           fileReader.readAsArrayBuffer($scope.files[0]) ;
+            fileReader.readAsArrayBuffer($scope.files[0]) ;
 
-        }
+        };
         
         $scope.gparams = <?php echo json_encode($gparams); ?> ;
         $scope.debug = true ;
@@ -146,67 +149,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
    
 </script>
 
-<script>
 
-        /*
-        $scope.data = 'none';
-        $scope.add_file = function(){
-            console.log("add_file called");
-            var fileInput = document.getElementById('file1') ;
-            var files = fileInput.files;
-            var file;
-
-            for (var i = 0; i < files.length; i++) {
-                file = files.item(i);
-                console.log(file.name);
-            }
-
-            r = new FileReader();
-            r.onloadend = function(e){
-                var data = e.target.result;
-                //send your binary data via $http or $resource or do anything else with it
-                console.log("data collected");
-            }
-
-            //r.readAsArrayBuffer(f);
-
-        }
-        
-        ////
-         var fileInputTextDiv = document.getElementById('file_input_text_div');
-
-    var fileInputText = document.getElementById('file_input_text');
-
-    var fileInput = document.getElementById('file1');
-    fileInput.addEventListener('change', changeInputText);
-    fileInput.addEventListener('change', changeState);
-
-    function changeInputText() {
-        var str = fileInput.value;
-        var i;
-        if (str.lastIndexOf('\\')) {
-            i = str.lastIndexOf('\\') + 1;
-        } else if (str.lastIndexOf('/')) {
-            i = str.lastIndexOf('/') + 1;
-        }
-        fileInputText.value = str.slice(i, str.length);
-    }
-
-    function changeState() {
-        if (fileInputText.value.length != 0) {
-            if (!fileInputTextDiv.classList.contains("is-focused")) {
-                fileInputTextDiv.classList.add('is-focused');
-            }
-        } else {
-            if (fileInputTextDiv.classList.contains("is-focused")) {
-                fileInputTextDiv.classList.remove('is-focused');
-            }
-        }
-    }
-        
- */
-
-</script>
 
 </body>
 </html>

@@ -468,10 +468,10 @@
         // $http.then(successCallback, errorCallback) 
         // we simply return the response from service
         
-        yuktixApp.factory('mytest', function($http) {
-            var mytest = {} ;
+        yuktixApp.factory('text', function($http) {
+            var text = {} ;
 
-            mytest.reverse_text = function(token) {
+            text.reverse = function(token) {
 
                 var myurl = '/angular/php/reverse.php?token='+ encodeURI(token) ;
                 var promise = $http({
@@ -487,9 +487,20 @@
 
             };
 
-			mytest.upload_file = function(base, debug, blob) {
+            return text ;
+        });
+        
+		yuktixApp.factory('fupload', function($http) {
 
-                var myurl = base + "/test/shim/fileupload.php" ;
+            var fupload = {} ;
+
+			fupload.send_blob = function(base, debug,blob) {
+
+                var myurl = base + "/admin/shim/upload/blob.php" ;
+				if(debug) { 
+					console.log("file upload URL is:" + myurl);
+				}
+				
                 var promise = $http({
                     method : 'POST',
                     url : myurl,
@@ -505,10 +516,35 @@
 
             };
 
-            return mytest ;
+			fupload.send_mpart = function(base, debug,payload) {
+				// it is necessary to keep Content-Type: undefined 
+				// to let browser fill in the Content-Type 
+				// also we tell angularjs not to change any data/headers!
+
+                var myurl = base + "/admin/shim/upload/mpart.php" ;
+				if(debug) { 
+					console.log("file upload URL is:" + myurl);
+				}
+
+                var promise = $http({
+                    method : 'POST',
+                    url : myurl,
+                    headers : { 'Content-Type': undefined},
+					data: payload,
+					transformRequest:  angular.identity
+                }).then(
+                    function (response) { return response ; }, 
+                    function(response) { return response ; }
+                );
+
+                return promise;
+
+            };
+
+            return fupload ;
 
         });
-        
+
         yuktixApp.factory('calendar', function() {
 			 var calendar = {} ;
 			 
