@@ -489,7 +489,7 @@
 
 			mytest.upload_file = function(base, debug, blob) {
 
-                var myurl = base + "/test/shim/upload.php" ;
+                var myurl = base + "/test/shim/fileupload.php" ;
                 var promise = $http({
                     method : 'POST',
                     url : myurl,

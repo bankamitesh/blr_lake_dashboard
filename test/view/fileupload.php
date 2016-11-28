@@ -96,7 +96,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             var fileReader = new FileReader();
 
             fileReader.onloadend = function (e) {
-                blob data = fileReader.result ;
+                var blob  = fileReader.result ;
                 // @todo POST binary data via $http 
                 // console.log(data);
 
@@ -148,7 +148,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
 <script>
 
-/*
+        /*
         $scope.data = 'none';
         $scope.add_file = function(){
             console.log("add_file called");
@@ -204,7 +204,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         }
     }
         
-         */
+ */
 
 </script>
 
