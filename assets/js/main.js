@@ -617,7 +617,31 @@
                 return promise;
             	
             };
-                      
+
+
+             lake.getCodes = function(base,debug) {
+
+                 var myurl = base + '/admin/shim/codes.php' ;
+                 var postData = {} ;
+
+                 if(debug) {
+                     console.log("POST /admin/shim/codes.php");
+                     console.log(myurl);
+                 }
+
+                 var promise = $http({
+                     method : 'POST',
+                     url : myurl,
+                     data : postData,
+                     headers: {'Content-Type': 'application/json'}
+                 }).then(
+                     function (response) { return response ; },
+                     function(response) { return response ; }
+                 );
+
+                 return promise;
+             };
+
             return lake ;
         });
 

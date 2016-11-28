@@ -69,7 +69,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                         class="date required mdl-selectfield__select"
                                         ng-model="selectedLakeType"
                                         ng-change="select_lake_type(selectedLakeType)"
-                                        ng-options="lakeType.name for lakeType in allLakeTypes"
+                                        ng-options="lakeType.value for lakeType in allLakeTypes"
                                         required>
                                 </select>
                                 <label for="profile_information_form_dob_2i"
@@ -146,7 +146,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                             ng-checked="lakeObj.usageCode.indexOf(usage.id) > -1"
                                             ng-click="toggle_usage_code(usage.id)"
                                             value="{usage.value}"
-                                            name="{usage.name}" required>
+                                            name="usageCode" required>
 
                                         <span class="mdl-checkbox__label" ng-bind="usage.value"></span>
                                     </label>
@@ -161,7 +161,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                             class="date required mdl-selectfield__select"
                                             ng-model="selectedAgency"
                                             ng-change="select_agency(selectedAgency)"
-                                            ng-options="agency.name for agency in allLakeAgencies"
+                                            ng-options="agency.value for agency in allLakeAgencies"
                                             required>
                                     </select>
                                     <label for="profile_information_form_dob_2i"
@@ -196,28 +196,54 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
     yuktixApp.controller("yuktix.admin.lake.create", function ($scope, lake, $window) {
 
-        $scope.initLakeData = function () {
 
-            $scope.allLakeUsages.push({"id" : "1", "value" : "Walking", "name" : "usageCode"});
-            $scope.allLakeUsages.push({"id" : "2", "value" : "Birding", "name" : "usageCode"});
-            $scope.allLakeUsages.push({"id" : "3", "value" : "Fishing", "name" : "usageCode"});
-            $scope.allLakeUsages.push({"id" : "4", "value" : "Idol Immersion", "name" : "usageCode"});
-            $scope.allLakeUsages.push({"id" : "5", "value" : "Swimming", "name" : "usageCode"});
-            $scope.allLakeUsages.push({"id" : "6", "value" : "Livestock", "name" : "usageCode"});
-            $scope.allLakeUsages.push({"id" : "7", "value" : "Drinking", "name" : "usageCode"});
-            $scope.allLakeUsages.push({"id" : "8", "value" : "Other", "name" : "usageCode"});
-
-            $scope.allLakeTypes.push({"id" : "1", "name" : "Storm Water Fed"});
-            $scope.allLakeTypes.push({"id" : "2", "name" : "Sewage Fed"});
-            $scope.allLakeTypes.push({"id" : "3", "name" : "Mixed Inflow Fed"});
-
-            $scope.allLakeAgencies.push({"id": "1", "name" : "BBMP"}) ;
-            $scope.allLakeAgencies.push({"id": "2", "name" : "LDA"}) ;
-            $scope.allLakeAgencies.push({"id": "3", "name" : "BDA"}) ;
+        $scope.initCodes = function() {
 
 
+            $scope.showProgress("Getting data from Server...");
+
+
+            // contact user factory
+            lake.getCodes($scope.base,$scope.debug)
+                .then( function(response) {
+
+                    var status = response.status || 500;
+                    var data = response.data || {};
+
+
+                    if($scope.debug) {
+                        console.log("server response:: codes:%O", data);
+                    }
+
+                    if (status != 200 || data.code != 200) {
+                        console.log(response);
+                        var error = data.error || (status + ":error retrieving  data from Server");
+                        $scope.showError(error);
+                        return;
+
+                    }
+
+                    // @todo : check for property names
+                    // before doing data binding
+                    $scope.allLakeAgencies = data.result.lakeAgencies ;
+                    $scope.allLakeTypes = data.result.lakeTypes ;
+                    $scope.allLakeUsages = data.result.lakeUsages ;
+
+                    // @todo check array length before data binding
+                    $scope.selectedAgency = $scope.allLakeAgencies[0] ;
+                    $scope.lakeObj.agencyCode = $scope.selectedAgency.id ;
+
+                    $scope.selectedLakeType = $scope.allLakeTypes[0] ;
+                    $scope.lakeObj.typeCode = $scope.selectedLakeType.id ;
+
+                    $scope.clearPageMessage();
+
+                },function(response) {
+                    $scope.processResponse(response);
+                });
 
         };
+
 
         $scope.select_agency = function(agency) {
 
@@ -247,69 +273,24 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
         };
 
-        $scope.create_lake = function () {
-
-            var errorObject = $scope.createForm.$error;
-            if ($scope.validateForm(errorObject)) {
-                return;
-            }
-
-            $scope.showProgress("submitting data to server");
-            if ($scope.debug) {
-                console.log("form values");
-                console.log($scope.lakeObj);
-            }
-
-            // lake factory
-            lake.create($scope.base, $scope.debug, $scope.lakeObj)
-                .then(function (response) {
-
-                    var status = response.status || 500;
-                    var data = response.data || {};
-
-                    if ($scope.debug) {
-                        console.log("API response :");
-                        console.log(data);
-                    }
-
-                    if (status != 200 || data.code != 200) {
-                        console.log("browser response object: %o" ,response);
-                        var error = data.error || (status + ":error while submitting data ");
-                        $scope.showError(error);
-                        return;
-                    }
-
-                    $window.location.href = "/admin/view/lake/list.php";
-
-                }, function (response) {
-                    $scope.processResponse(response);
-                });
-
-
-        };
-
-
-        // data initialization
-        $scope.lakeObj = {};
-        $scope.lakeObj.usageCode = [] ;
-        $scope.lakeObj.agencyCode = $scope.selectedAgency.id ;
-        $scope.lakeObj.typeCode = $scope.selectedLakeType.id ;
-
-        $scope.allLakeUsages = [] ;
-        $scope.allLakeTypes= [];
-        $scope.allLakeAgencies = [] ;
-
-        $scope.initLakeData() ;
-
-        // @todo needs index check
-        $scope.selectedAgency = $scope.allLakeAgencies[0] ;
-        $scope.selectedLakeType = $scope.allLakeTypes[0] ;
-       
         $scope.errorMessage = "";
-
         $scope.gparams = <?php echo json_encode($gparams); ?> ;
         $scope.debug = $scope.gparams.debug;
         $scope.base = $scope.gparams.base;
+
+        //data initialization
+        $scope.lakeObj = {};
+        $scope.lakeObj.usageCode = [] ;
+        $scope.allLakeAgencies = [] ;
+        $scope.allLakeTypes = [] ;
+        $scope.allLakeUsages = [] ;
+
+
+        $scope.lakeCodes= {};
+        $scope.initCodes();
+
+
+
 
 
     });

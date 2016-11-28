@@ -108,14 +108,26 @@ div.absolute {
 }
 
 /*upload icon css*/
-    body {
-  display: flex;
+
+body {
+    display: flex;
+}
+
+.file_input_div {
+    width: 250px;
+    height: 40px;
 }
 
 .file_input {
-  float: left;
+    float: left;
+}
+
+#file_input_text_div {
+    width: 200px;
+    margin-top: -8px;
+    margin-left: 5px;
 }
 
 .none {
-  display: none;
+    display: none;
 }
