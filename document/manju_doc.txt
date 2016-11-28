@@ -1,7 +1,7 @@
 /*To Eliminate redudunt code and for reuasability we use include*/
 include ("lake-app.inc");
 
-/*Inorder to set WEB_ROOT_DIR  for searching a included file for our web app autotomatically we need set that include path in php.ini  */
+/*Inorder to set WEB_ROOT_DIR  for searching a included file for our web app autotomatically we need to set that include path in php.ini  */
 
  +include path - lookup our code first and then pear libraries
 

@@ -89,7 +89,7 @@ div.relative {
     position: relative;
     width: 400px;
     height: 100px;
-    /* border: 3px solid #73AD21; */
+    //border: 3px solid #73AD21;
 }
 
 div.absolute {
@@ -108,16 +108,26 @@ div.absolute {
 }
 
 /*upload icon css*/
+
 body {
-  display: flex;
+    display: flex;
 }
 
-/*
+.file_input_div {
+    width: 250px;
+    height: 40px;
+}
 
 .file_input {
-  float: left;
-} */
+    float: left;
+}
+
+#file_input_text_div {
+    width: 200px;
+    margin-top: -8px;
+    margin-left: 5px;
+}
 
 .none {
-  display: none;
+    display: none;
 }

@@ -40,7 +40,7 @@
 <!-- card -->
 <div class="mdl-grid">
 <div class="mdl-layout-spacer"></div>
-	<div class="mdl-cell mdl-card mdl-cell--12-col mdl-shadow--4dp">
+	<div class="mdl-cell mdl-card mdl-cell--10-col mdl-shadow--4dp">
 	<div class="mdl-card__title formcard mdl-color-text--white">
 		<h2 class="mdl-card__title-text formcard mdl-color-text--indigo">Lakes</h2>
 		<div class="mdl-layout-spacer"></div>
@@ -57,31 +57,22 @@
          <thead>
          <tr class="tbl-row-text-font">
              <th>NAME</th>
-             <th>ABOUT</th>
              <th>LATTITUDE</th>
              <th>LONGTITUDE</th>
              <th>ADDRESS</th>
              <th>MAX AREA</th>
              <th>MAX VOLUME</th>
-             <th>RECHARGE RATE</th>
-             <th>TYPE CODE</th>
-             <th>AGENCY CODE</th>
-             <th>USAGE CODE</th>
+
          </tr>
          </thead>
          <tbody  ng-repeat="lake in lakes">
             <tr>
             <td class="mdl-data-table__cell--non-numeric" ng-bind="lake.name"></td>
-                <td class="mdl-data-table__cell--non-numeric" ng-bind="lake.about"></td>
                 <td class="mdl-data-table__cell--non-numeric" ng-bind="lake.lat"></td>
                 <td class="mdl-data-table__cell--non-numeric" ng-bind="lake.lon"></td>
                 <td class="mdl-data-table__cell--non-numeric" ng-bind="lake.address"></td>
                 <td class="mdl-data-table__cell--non-numeric" ng-bind="lake.maxArea"></td>
                 <td class="mdl-data-table__cell--non-numeric" ng-bind="lake.maxVolume"></td>
-                <td class="mdl-data-table__cell--non-numeric" ng-bind="lake.rechargeRate"></td>
-                <td class="mdl-data-table__cell--non-numeric" ng-bind="lake.typeCode"></td>
-                <td class="mdl-data-table__cell--non-numeric" ng-bind="lake.agencyCode"></td>
-                <td class="mdl-data-table__cell--non-numeric" ng-bind="lake.usageCode"></td>
             <td>
                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" ng-click="lake_edit(lake.id)"><i class="material-icons">edit</i></button>
             </td>
@@ -136,16 +127,14 @@
             var error = data.error || (status + ":error Retrieving  Data from Server");
             $scope.showError(error);
             return;
-          }
 
+          }
 
           if($scope.debug) {
             console.log("records list from server",data);
           }
 
-
-
-         
+         $scope.clearPageMessage();
 
         },function(response) {
           $scope.processResponse(response);
@@ -166,7 +155,7 @@
                   console.log("lake row clicked: id is:" + lakeId);
               }
 
-              //$window.location.href = "/admin/view/lake/edit.php?id="+lakeId;
+              $window.location.href = "/admin/view/lake/edit.php?id="+lakeId;
 
           };
 

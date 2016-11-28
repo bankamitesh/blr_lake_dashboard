@@ -32,7 +32,7 @@
         $lake->agencyCode = $row["agency_code"];
         $lake->usageCode = $row["usage_code"];
         $lake->id = $row["id"];
-        
+
         return $lake ;
 
     }
@@ -44,6 +44,7 @@
     // so we have to get the raw data when content-type is application/json 
     $rawPostData = file_get_contents("php://input");
     $postData = json_decode($rawPostData) ;
+
 
     $mysqli = MySQL\Connection::getInstance()->getHandle();
     $sql = " select * from atree_lake " ;
