@@ -88,8 +88,8 @@ create table atree_sensor(
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
-drop table if exists atree_sensor_history;
-create table atree_sensor_history(
+drop table if exists atree_sensor_log;
+create table atree_sensor_log(
     id int NOT NULL auto_increment,
     sensor_id int not null,
     serial_number varchar(36),
@@ -114,8 +114,8 @@ create table atree_data_dump (
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
-drop table if exists atree_data_dump_history;
-create table atree_data_dump_history (
+drop table if exists atree_data_dump_log;
+create table atree_data_dump_log (
     id int NOT NULL auto_increment,
     data_dump_id int not null,
     data_dump MEDIUMBLOB ,
