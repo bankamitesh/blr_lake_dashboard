@@ -43,6 +43,17 @@
 		    };
 		});
 		
+		yuktixApp.directive('filelistBind', function() {
+			return function( scope, elm, attrs ) {
+				elm.bind('change', function( evt ) {
+				scope.$apply(function() {
+					scope[ attrs.name ] = evt.target.files;
+					console.log( scope[ attrs.name ] );
+				});
+				});
+			};
+		});
+
 		yuktixApp.directive('gmap', function ($window) {
             return {
               scope: {
@@ -479,6 +490,59 @@
             return text ;
         });
         
+		yuktixApp.factory('fupload', function($http) {
+
+            var fupload = {} ;
+
+			fupload.send_blob = function(debug,myurl,blob) {
+
+				if(debug) { 
+					console.log("file upload URL is:" + myurl);
+				}
+
+                var promise = $http({
+                    method : 'POST',
+                    url : myurl,
+                    headers : { 'Content-Type' : 'application/octet-stream' },
+					data: new Uint8Array(blob),
+					transformRequest:  angular.identity
+                }).then(
+                    function (response) { return response ; }, 
+                    function(response) { return response ; }
+                );
+
+                return promise;
+
+            };
+
+			fupload.send_mpart = function(debug,myurl,payload) {
+				// it is necessary to keep Content-Type: undefined 
+				// to let browser fill in the Content-Type 
+				// also we tell angularjs not to change any data/headers!
+
+				if(debug) { 
+					console.log("file upload URL is:" + myurl);
+				}
+
+                var promise = $http({
+                    method : 'POST',
+                    url : myurl,
+                    headers : { 'Content-Type': undefined},
+					data: payload,
+					transformRequest:  angular.identity
+                }).then(
+                    function (response) { return response ; }, 
+                    function(response) { return response ; }
+                );
+
+                return promise;
+
+            };
+
+            return fupload ;
+
+        });
+
         yuktixApp.factory('calendar', function() {
 			 var calendar = {} ;
 			 
@@ -570,7 +634,7 @@
         });
 
 
-             yuktixApp.factory('lake', function($http) {
+        yuktixApp.factory('lake', function($http) {
 
             var lake = {} ;
 
@@ -578,7 +642,10 @@
 				 
 	            	var myurl = base + '/admin/shim/list.php' ;
 	            	var postData = {} ;
-	            	if(debug) { console.log("POST /admin/shim/list.php"); console.log(postData);}
+	            	if(debug) { 
+						console.log("POST /admin/shim/list.php"); 
+						console.log(postData);
+					}
 	            	
 	            	var promise = $http({
 						method : 'POST',
