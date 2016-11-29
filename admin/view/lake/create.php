@@ -245,6 +245,12 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         };
 
 
+        //factory for submitting form data
+        
+
+
+
+
         $scope.select_agency = function(agency) {
 
             $scope.lakeObj.agencyCode = agency.id ;

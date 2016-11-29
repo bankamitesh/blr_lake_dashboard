@@ -22,20 +22,8 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/assets/css/mdl-selectfield.min.css">
-
-    <style type="text/css">
-        body {
-            display: flex;
-        }
-
-        .file_input {
-            float: left;
-        }
-
-        .none {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 <body ng-controller="yuktix.admin.lake.io.create">
 <!-- Always shows a header, even in smaller screens. -->
@@ -57,7 +45,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                 <div class="mdl-layout-spacer"></div>
                 <div class="mdl-cell mdl-cell--6-col mdl-shadow--4dp">
                     <div class="mdl-card__title formcard mdl-color-text--white">
-                        <h2 class="mdl-card__title-text formcard">Create Inlet</h2>
+                        <h2 class="mdl-card__title-text formcard mdl-color-text--indigo">Create Inlet</h2>
                     </div>
                     <div class="pad-left-form-field">
                         <form name="IoCreateForm">
@@ -104,26 +92,8 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             </div>
                             <br>
 
-
+                            <!--need to put upload component-->
                             <h5>Photos </h5>
-                            <div class="file_input_div">
-                                <div class="file_input">
-                                    <label
-                                        class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
-                                        <i class="material-icons">file_upload</i>
-                                        <input id="file_input_file" class="none" type="file" file-model="myFile"/>
-                                    </label>
-                                </div>
-                                <div id="file_input_text_div" class="mdl-textfield mdl-js-textfield textfield-demo">
-                                    <input class="file_input_text mdl-textfield__input" type="text" disabled readonly
-                                           id="file_input_text"/>
-                                    <label class="mdl-textfield__label" for="file_input_text">Choose File</label>
-                                </div>
-                            </div>
-                            <button ng-click="uploadFile()"
-                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                                Upload File
-                            </button>
                             <br>
 
 
@@ -182,55 +152,19 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                 </div>
                             </div>
 
+
                             <div ng-show="IsSensor">
                                 <h5>SensorStage-Flow CSV</h5>
-                                <div class="file_input_div">
-                                    <div class="file_input">
-                                        <label
-                                            class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
-                                            <i class="material-icons">file_upload</i>
-                                            <input id="file_input_file" class="none" type="file" file-model="myFile"/>
-                                        </label>
-                                    </div>
-                                    <div id="file_input_text_div" class="mdl-textfield mdl-js-textfield textfield-demo">
-                                        <input class="file_input_text mdl-textfield__input" type="text" disabled
-                                               readonly id="file_input_text"/>
-                                        <label class="mdl-textfield__label" for="file_input_text">Choose File</label>
-                                    </div>
-                                </div>
-                                <button ng-click="uploadFile()"
-                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                                    Upload File
-                                </button>
+
                             </div>
                             <br>
 
                             <div ng-show="IsLevel">
-                                <div class="pad-top-form-field"></div>
                                 <h5>LakeStage-Flow CSV</h5>
-                                <div class="file_input_div">
-                                    <div class="file_input">
-                                        <label
-                                            class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
-                                            <i class="material-icons">file_upload</i>
-                                            <input id="file_input_file" class="none" type="file" file-model="myFile"/>
-                                        </label>
-                                    </div>
-                                    <div id="file_input_text_div" class="mdl-textfield mdl-js-textfield textfield-demo">
-                                        <input class="file_input_text mdl-textfield__input" type="text" disabled
-                                               readonly id="file_input_text"/>
-                                        <label class="mdl-textfield__label" for="file_input_text">Choose File</label>
-                                    </div>
-                                </div>
-                                <button ng-click="uploadFile()"
-                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                                    Upload File
-                                </button>
+
                             </div>
                             <br>
-
-
-                            <div class="pad-top-form-field"></div>
+                            
                             <div ng-show="IsConst">
                                 <h5>Constant</h5>
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -246,7 +180,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             <!-- </form> -->
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-color-text--indigo">Save</button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-color-text--indigo" ng-click="create_inlet()" type="submit">Save</button>
                     </div>
                     </form>
                 </div>
@@ -263,12 +197,14 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 <script src="/assets/js/mdl-selectfield.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
 <script src="/assets/js/main.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <script>
-    yuktixApp.controller("yuktix.admin.lake.io.create", function ($scope, lake, $window) {
+    yuktixApp.controller("yuktix.admin.lake.io.create", function ($scope, io, $window) {
 
 
-        $scope.lake_create = function () {
+        $scope.create_inlet = function () {
 
 
             var errorObject = $scope.createForm.$error;
@@ -283,7 +219,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             }
 
             // contact user factory
-            lake.lakeCreate($scope.base, $scope.debug, $scope.create)
+            io.inletCreate($scope.base, $scope.debug, $scope.createObj)
                 .then(function (response) {
 
                     var status = response.status || 500;
@@ -310,9 +246,10 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
         };
 
-        $scope.IsSensor = false;
-        $scope.IsLevel = false;
-        $scope.IsConst = false;
+            $scope.IsSensor = false;
+            $scope.IsLevel = false;
+            $scope.IsConst = false;
+
         $scope.showData = function (value) {
             //If DIV is visible it will be hidden and vice versa.
             if ($scope.IsSensor = value == "sensor") {
@@ -338,7 +275,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
 
         // data initialization
-        $scope.create = {};
+        $scope.createObj = {};
         $scope.errorMessage = "";
 
         $scope.gparams = <?php echo json_encode($gparams); ?> ;
@@ -347,6 +284,11 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
 
     });
+
+    $( function() {
+        $("#custom-date-box").datepicker({ dateFormat: 'dd-mm-yy' });
+    } );
+
 </script>
 </body>
 </html>

@@ -652,7 +652,7 @@
 
 			io.inletCreate = function(base,debug,createObj) {
 
-				var myurl = base + '/admin/shim/lakeObj.php' ;
+				var myurl = base + '/admin/shim/iocreate.php' ;
 
 				if(debug) {
 					console.log("POST " + myurl);
