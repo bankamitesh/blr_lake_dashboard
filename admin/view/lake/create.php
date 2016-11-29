@@ -33,6 +33,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <header class="mdl-layout__header">
         <div class="mdl-layout__header-row">
             <?php include (APP_WEB_DIR.'/inc/title.inc'); ?>
+            <?php include (APP_WEB_DIR.'/inc/logout_menu_bar.inc'); ?>
         </div>
     </header>
 

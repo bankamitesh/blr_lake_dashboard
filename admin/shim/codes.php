@@ -39,6 +39,14 @@
         ["id" => 3, "value" => "Mixed inflow"]
     ] ;
 
+
+    $inletTypes = [
+        ["id" => 1, "value" => "Storm water fed"],
+        ["id" => 2, "value" => "Sewage fed"],
+        ["id" => 3, "value" => "Mixed inflow"]
+    ] ;
+
+
     $featureMonitoring = [
         ["id" => 1, "value" => "Sensors Installed"],
         ["id" => 2, "value" => "Related to Lake Level"],

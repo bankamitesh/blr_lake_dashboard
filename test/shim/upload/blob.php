@@ -22,7 +22,7 @@
     $rawPostData = file_get_contents("php://input");
     
     // save to a file
-    $fh = fopen("/Users/rjha/test.png", "w");
+    $fh = fopen("/home/manju/code/blr_lake_dashboard/test/blobdata/test.png", "w");
     fwrite($fh, $rawPostData);
     fclose($fh);
 

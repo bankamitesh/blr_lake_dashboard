@@ -33,6 +33,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <header class="mdl-layout__header">
         <div class="mdl-layout__header-row">
             <?php include(APP_WEB_DIR . '/inc/title.inc'); ?>
+            <?php include(APP_WEB_DIR . '/inc/logout_menu_bar.inc'); ?>
         </div>
     </header>
 
@@ -52,12 +53,11 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                             <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
                                 <select id="profile_information_form_dob_2i" name="profile_information_form[dob(2i)]"
-                                        class="date required mdl-selectfield__select" required>
-                                    <option value=""></option>
-                                    <option value="IN">Storm Water Inlet</option>
-                                    <option value="CN">Sewage Inlet</option>
-                                    <option value="JP">Mixed Inlet</option>
-                                    <option value="JP">Outlet</option>
+                                        class="date required mdl-selectfield__select"
+                                        ng-model="selectedLakeType"
+                                        ng-change="select_lake_type(selectedLakeType)"
+                                        ng-options="lakeType.value for lakeType in allLakeTypes"
+                                        required>
                                 </select>
                                 <label for="profile_information_form_dob_2i"
                                        class="mdl-selectfield__label">Type...</label>
@@ -152,26 +152,8 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                 </div>
                             </div>
 
-
-                            <div ng-show="IsSensor">
-                                <h5>SensorStage-Flow CSV</h5>
-
-                            </div>
-                            <br>
-
-                            <div ng-show="IsLevel">
-                                <h5>LakeStage-Flow CSV</h5>
-
-                            </div>
-                            <br>
                             
-                            <div ng-show="IsConst">
-                                <h5>Constant</h5>
-                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" id="name">
-                                    <label class="mdl-textfield__label" for="sample3">FlowRate...</label>
-                                </div>
-                            </div>
+                           
 
 
                             <div class="pad-top-form-field"></div>
@@ -180,7 +162,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             <!-- </form> -->
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-color-text--indigo" ng-click="create_inlet()" type="submit">Save</button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-color-text--indigo" ng-click="create_inlet()" type="submit">NEXT</button>
                     </div>
                     </form>
                 </div>
@@ -202,6 +184,62 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
 <script>
     yuktixApp.controller("yuktix.admin.lake.io.create", function ($scope, io, $window) {
+
+
+
+
+        $scope.initCodes = function() {
+
+
+            $scope.showProgress("Getting data from Server...");
+
+
+            // contact user factory
+            io.getCodes($scope.base,$scope.debug)
+                .then( function(response) {
+
+                    var status = response.status || 500;
+                    var data = response.data || {};
+
+
+                    if($scope.debug) {
+                        console.log("server response:: codes:%O", data);
+                    }
+
+                    if (status != 200 || data.code != 200) {
+                        console.log(response);
+                        var error = data.error || (status + ":error retrieving  data from Server");
+                        $scope.showError(error);
+                        return;
+
+                    }
+
+                    // @todo : check for property names
+                    // before doing data binding
+
+                    $scope.allLakeTypes = data.result.lakeTypes ;
+
+
+                    // @todo check array length before data binding
+
+                    $scope.selectedLakeType = $scope.allLakeTypes[0] ;
+                    $scope.lakeObj.typeCode = $scope.selectedLakeType.id ;
+
+                    $scope.clearPageMessage();
+
+                },function(response) {
+                    $scope.processResponse(response);
+                });
+
+        };
+
+        $scope.select_lake_type = function(lakeType) {
+
+            $scope.lakeObj.typeCode = lakeType.id ;
+            $scope.selectedLakeType = lakeType ;
+
+        } ;
+
 
 
         $scope.create_inlet = function () {
@@ -246,9 +284,9 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
         };
 
-            $scope.IsSensor = false;
-            $scope.IsLevel = false;
-            $scope.IsConst = false;
+        $scope.IsSensor = false;
+        $scope.IsLevel = false;
+        $scope.IsConst = false;
 
         $scope.showData = function (value) {
             //If DIV is visible it will be hidden and vice versa.
@@ -276,11 +314,15 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
         // data initialization
         $scope.createObj = {};
+
         $scope.errorMessage = "";
 
         $scope.gparams = <?php echo json_encode($gparams); ?> ;
         $scope.debug = $scope.gparams.debug;
         $scope.base = $scope.gparams.base;
+
+        $scope.allLakeTypes = [] ;
+        $scope.initCodes();
 
 
     });
