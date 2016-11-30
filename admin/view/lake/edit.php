@@ -25,11 +25,12 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/assets/css/material.min.css">
     <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
-    <link rel="stylesheet" href="/assets/css/mdl-selectfield.min.css">
+   
 
    <!--
+
     <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.pink-deep_purple.min.css" />
-  <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_blue-red.min.css" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_blue-red.min.css" />
     <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
     <link rel="stylesheet" href="/assets/css/main.css?version=1">
     -->
@@ -41,6 +42,12 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         .lake-edit-links a {
             text-decoration: none ;
             color: black ;
+        }
+
+        select {
+            width:310px;
+            height:28px; 
+            font-size: 16px; 
         }
 
     </style>
@@ -135,41 +142,31 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             </div>
                             <br>
 
-                            <div>
-                                <h4> Lake Type </h4>
-                            </div>
+                            <div> <span> Lake Type </span> </div>
 
-                            <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
-                                <select id="lake_type_select" name="profile_information_form[dob(2i)]"
-                                        class="date required mdl-selectfield__select"
+                            <div>
+                                <select id="lake_type_select"
                                         ng-model="selectedLakeType"
                                         ng-change="select_lake_type(selectedLakeType)"
-                                        ng-options="lakeType.value for lakeType in allLakeTypes"
-                                        >
+                                        ng-options="lakeType.value for lakeType in allLakeTypes">
                                 </select>
-                                <label for="lake_type_select" class="mdl-selectfield__label">Lake Type</label>
-                
+                             
                             </div>
                             <br>
-
-
-                          
-                            <br>
-
-
-                            <div class="pad-top-form-field">
-                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" id="lat" name="lattitude"
-                                           ng-model="lakeObj.lat" required>
-                                    <label class="mdl-textfield__label" for="sample3">Lattitude...</label>
-                                </div>
-                            </div>
 
 
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <input class="mdl-textfield__input" type="text" id="long" name="longtitude"
+                                <input class="mdl-textfield__input" type="text" id="lat" name="latitude"
+                                        ng-model="lakeObj.lat" required>
+                                <label class="mdl-textfield__label" for="lat">Latitude...</label>
+                            </div>
+                            <br>
+
+
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="text" id="lon" name="longtitude"
                                        ng-model="lakeObj.lon" required>
-                                <label class="mdl-textfield__label" for="sample3">Longtitude...</label>
+                                <label class="mdl-textfield__label" for="lon">Longtitude...</label>
                             </div>
                             <br>
 
@@ -177,7 +174,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             <div class="mdl-textfield mdl-js-textfield">
                                 <textarea class="mdl-textfield__input" type="text" rows="3" id="address" name="address"
                                           ng-model="lakeObj.address" required></textarea>
-                                <label class="mdl-textfield__label" for="text7">Address...</label>
+                                <label class="mdl-textfield__label" for="address">Address...</label>
                             </div>
                             <br>
 
@@ -185,27 +182,39 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" id="area" name="maxArea"
                                        ng-model="lakeObj.maxArea" required>
-                                <label class="mdl-textfield__label" for="sample3">Max Area...</label>
+                                <label class="mdl-textfield__label" for="area">Max Area...</label>
                             </div>
                             <br>
 
 
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <input class="mdl-textfield__input" type="text" id="long" name="maxVolume"
+                                <input class="mdl-textfield__input" type="text" id="volume" name="maxVolume"
                                        ng-model="lakeObj.maxVolume" required>
-                                <label class="mdl-textfield__label" for="sample3">Max Volume...</label>
+                                <label class="mdl-textfield__label" for="volume">Max Volume...</label>
                             </div>
                             <br>
 
 
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <input class="mdl-textfield__input" type="text" id="long" name="rechargeRate"
+                                <input class="mdl-textfield__input" type="text" id="recharge_rate" name="rechargeRate"
                                        ng-model="lakeObj.rechargeRate" required>
-                                <label class="mdl-textfield__label" for="sample3">Rechange Rate...</label>
+                                <label class="mdl-textfield__label" for="recharge_rate">Rechange Rate...</label>
                             </div>
+                            <br>
 
+                            <div> <span> Agency</span> </div>
+                            <div>
+                                <select id="agency_select" name="agency"
+                                        ng-model="selectedAgency"
+                                        ng-change="select_agency(selectedAgency)"
+                                        ng-options="agency.value for agency in allLakeAgencies"
+                                        required>
+                                </select>
+                            </div>
+                            <br>
 
-                            <h5>Usage</h5>
+                            <div> <span> Usage</span> </div>
+                            <br>
                             <div class="mdl-grid mdl-grid--no-spacing">
 
                                 <div class="mdl-cell mdl-cell--3-col" ng-repeat="usage in allLakeUsages">
@@ -223,25 +232,11 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                 </div>
 
                             </div>
+                            <br>
 
+                           
 
-                            <div class="pad-top-form-field">
-                                <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
-                                    <select id="profile_information_form_dob_2i" name="profile_information_form[dob(2i)]"
-                                            class="date required mdl-selectfield__select"
-                                            ng-model="selectedAgency"
-                                            ng-change="select_agency(selectedAgency)"
-                                            ng-options="agency.value for agency in allLakeAgencies"
-                                            required>
-                                    </select>
-                                    <label for="profile_information_form_dob_2i"
-                                           class="mdl-selectfield__label">Management Agency...</label>
-                                    <span class="mdl-selectfield__error">Input is not a empty!</span>
-                                </div>
-                            </div><br><br>
-
-                        </form>
-                <!-- form -->
+                        </form> 
 
             </div>
 
