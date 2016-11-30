@@ -1,0 +1,190 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kml xmlns='http://www.opengis.net/kml/2.2'>
+	<Document>
+		<name>Jakkur Lake Inlet/Outlet</name>
+		<description><![CDATA[map showing inlet/outlet at Jakkur Lake]]></description>
+		<Folder>
+			<name>sensors</name>
+			<Placemark>
+				<name>LL Fisher Sensor</name>
+				<styleUrl>#icon-1899-F9A825-nodesc</styleUrl>
+				<Point>
+					<coordinates>77.61168800999997,13.088102,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>STP Sensor</name>
+				<styleUrl>#icon-1899-F9A825-nodesc</styleUrl>
+				<Point>
+					<coordinates>77.60727602999998,13.09474298,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>SWD Sensor</name>
+				<styleUrl>#icon-1899-F9A825-nodesc</styleUrl>
+				<Point>
+					<coordinates>77.60942195999996,13.08349597,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>zone-STP</name>
+				<styleUrl>#poly-000000-1-77-nodesc</styleUrl>
+				<Polygon>
+					<outerBoundaryIs>
+						<LinearRing>
+							<tessellate>1</tessellate>
+							<coordinates>77.6060486,13.0939413,0.0 77.6060057,13.09298,0.0 77.6074648,13.0903466,0.0 77.6097393,13.0911408,0.0 77.6086664,13.0938577,0.0 77.6089668,13.0928128,0.0 77.607851,13.0943175,0.0 77.6060486,13.0939413,0.0</coordinates>
+						</LinearRing>
+					</outerBoundaryIs>
+				</Polygon>
+			</Placemark>
+			<Placemark>
+				<name>zone-Outlet</name>
+				<styleUrl>#poly-000000-1-77-nodesc</styleUrl>
+				<Polygon>
+					<outerBoundaryIs>
+						<LinearRing>
+							<tessellate>1</tessellate>
+							<coordinates>77.6132154,13.0847871,0.0 77.6117134,13.0850797,0.0 77.6114988,13.0831568,0.0 77.6118422,13.081861,0.0 77.612443,13.0819864,0.0 77.6135588,13.0815266,0.0 77.61459,13.080108,0.0 77.6141167,13.0816938,0.0 77.6134729,13.0831986,0.0 77.6132154,13.0847871,0.0</coordinates>
+						</LinearRing>
+					</outerBoundaryIs>
+				</Polygon>
+			</Placemark>
+		</Folder>
+		<Folder>
+			<name>Inlet/Outlet</name>
+			<Placemark>
+				<name>Minor Outlet</name>
+				<styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+				<Point>
+					<coordinates>77.61019996999994,13.07934701,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Major Outlet</name>
+				<styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+				<Point>
+					<coordinates>77.61458999000001,13.08010801,0.0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Style id='icon-1899-0288D1-nodesc-normal'>
+			<IconStyle>
+				<color>ffD18802</color>
+				<scale>1.0</scale>
+				<Icon>
+					<href>http://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<scale>0.0</scale>
+			</LabelStyle>
+			<BalloonStyle>
+				<text><![CDATA[<h3>$[name]</h3>]]></text>
+			</BalloonStyle>
+		</Style>
+		<Style id='icon-1899-0288D1-nodesc-highlight'>
+			<IconStyle>
+				<color>ffD18802</color>
+				<scale>1.0</scale>
+				<Icon>
+					<href>http://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<scale>1.0</scale>
+			</LabelStyle>
+			<BalloonStyle>
+				<text><![CDATA[<h3>$[name]</h3>]]></text>
+			</BalloonStyle>
+		</Style>
+		<StyleMap id='icon-1899-0288D1-nodesc'>
+			<Pair>
+				<key>normal</key>
+				<styleUrl>#icon-1899-0288D1-nodesc-normal</styleUrl>
+			</Pair>
+			<Pair>
+				<key>highlight</key>
+				<styleUrl>#icon-1899-0288D1-nodesc-highlight</styleUrl>
+			</Pair>
+		</StyleMap>
+		<Style id='icon-1899-F9A825-nodesc-normal'>
+			<IconStyle>
+				<color>ff25A8F9</color>
+				<scale>1.0</scale>
+				<Icon>
+					<href>http://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<scale>0.0</scale>
+			</LabelStyle>
+			<BalloonStyle>
+				<text><![CDATA[<h3>$[name]</h3>]]></text>
+			</BalloonStyle>
+		</Style>
+		<Style id='icon-1899-F9A825-nodesc-highlight'>
+			<IconStyle>
+				<color>ff25A8F9</color>
+				<scale>1.0</scale>
+				<Icon>
+					<href>http://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<scale>1.0</scale>
+			</LabelStyle>
+			<BalloonStyle>
+				<text><![CDATA[<h3>$[name]</h3>]]></text>
+			</BalloonStyle>
+		</Style>
+		<StyleMap id='icon-1899-F9A825-nodesc'>
+			<Pair>
+				<key>normal</key>
+				<styleUrl>#icon-1899-F9A825-nodesc-normal</styleUrl>
+			</Pair>
+			<Pair>
+				<key>highlight</key>
+				<styleUrl>#icon-1899-F9A825-nodesc-highlight</styleUrl>
+			</Pair>
+		</StyleMap>
+		<Style id='poly-000000-1-77-nodesc-normal'>
+			<LineStyle>
+				<color>ff000000</color>
+				<width>1</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>4D000000</color>
+				<fill>1</fill>
+				<outline>1</outline>
+			</PolyStyle>
+			<BalloonStyle>
+				<text><![CDATA[<h3>$[name]</h3>]]></text>
+			</BalloonStyle>
+		</Style>
+		<Style id='poly-000000-1-77-nodesc-highlight'>
+			<LineStyle>
+				<color>ff000000</color>
+				<width>2.0</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>4D000000</color>
+				<fill>1</fill>
+				<outline>1</outline>
+			</PolyStyle>
+			<BalloonStyle>
+				<text><![CDATA[<h3>$[name]</h3>]]></text>
+			</BalloonStyle>
+		</Style>
+		<StyleMap id='poly-000000-1-77-nodesc'>
+			<Pair>
+				<key>normal</key>
+				<styleUrl>#poly-000000-1-77-nodesc-normal</styleUrl>
+			</Pair>
+			<Pair>
+				<key>highlight</key>
+				<styleUrl>#poly-000000-1-77-nodesc-highlight</styleUrl>
+			</Pair>
+		</StyleMap>
+	</Document>
+</kml>
