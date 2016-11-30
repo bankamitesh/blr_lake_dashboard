@@ -21,85 +21,139 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 ?>
 <html  ng-app="YuktixApp">
 <head>
-    <link rel="stylesheet" href="/assets/css/material.min.css">
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="stylesheet" href="/assets/css/mdl-selectfield.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="/assets/css/material.min.css">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
+    <link rel="stylesheet" href="/assets/css/mdl-selectfield.min.css">
+
+   <!--
+    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.pink-deep_purple.min.css" />
+  <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_blue-red.min.css" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
+    <link rel="stylesheet" href="/assets/css/main.css?version=1">
+    -->
+    
     <style>
-        .mdl-layout1 {
-            width: 100%;
-            display: -webkit-flex;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-flex-direction: column;
-            -ms-flex-direction: column;
-            flex-direction: column;
-            overflow-y: auto;
-            overflow-x: hidden;
-            position: relative;
-            -webkit-overflow-scrolling: touch;
+        .lake-edit-links {
+            height: 100% ;
         }
+        .lake-edit-links a {
+            text-decoration: none ;
+            color: black ;
+        }
+
     </style>
+    
 </head>
 <body  ng-controller="yuktix.admin.lake.edit">
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
-            mdl-layout--fixed-header">
+
+<div class="mdl-layout mdl-js-layout container">
+
     <header class="mdl-layout__header">
+        <div class="mdl-layout-icon"></div>
         <div class="mdl-layout__header-row">
+            <span class="mdl-layout__title">Bangalore Lake Dashboard</span>
             <div class="mdl-layout-spacer"></div>
-            <?php include (APP_WEB_DIR.'/inc/title.inc'); ?>
-            <div class="mdl-layout-spacer"></div>
-            <?php include (APP_WEB_DIR.'/inc/logout_menu_bar.inc'); ?>
+            <div>
+                <button id="site-toolbar-account" class="mdl-button mdl-js-button mdl-button--icon">
+                    <i class="material-icons">account_circle</i>
+                </button>
+
+                <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="site-toolbar-account">
+                    <li class="mdl-menu__item">Some Action</li>
+                    <li class="mdl-menu__item">Another Action</li>
+                    <li disabled class="mdl-menu__item">Disabled Action</li>
+                    <li class="mdl-menu__item">Yet Another Action</li>
+                </ul>
+            </div>
+
         </div>
     </header>
-    <?php include(APP_WEB_DIR . '/inc/drawer.inc'); ?>
-    <main class="mdl-layout__content">
-        <div class="page-content">
-            <div class="pad-bottom"></div>
-            <?php include(APP_WEB_DIR . '/inc/page_error.inc'); ?>
+    <div class="mdl-layout__drawer">
+        <span class="mdl-layout__title">&nbsp;</span>
+        <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" href="#">Nav link 1</a>
+            <a class="mdl-navigation__link" href="#">Nav link 2</a>
+            <a class="mdl-navigation__link" href="#">Nav link 3</a>
+        </nav>
+        
+    </div>
 
-            <!-- card -->
-            <div class="mdl-grid">
+    <main class="docs-layout-content mdl-layout__content mdl-color-text--grey-600">
+        <div class="content mdl-grid mdl-grid--no-spacing" id="content">
+            <div class="mdl-components mdl-js-components mdl-cell mdl-components__nav docs-text-styling mdl-shadow--4dp mdl-cell--3-col">
 
-                <div class="mdl-layout-spacer"></div>
+                <ul class="lake-edit-links mdl-list ">
+                    
+                        <li class="mdl-list__item">
+                           <a href="#" class="mdl-components__link mdl-component"> 
+                               <span class="mdl-list__item-primary-content">General information</span> 
+                            </a>
+                        </li>
+                        
+                        <li class="mdl-list__item">
+                           <a href="#" class="mdl-components__link mdl-component"> 
+                               <span class="mdl-list__item-primary-content">Bathymetry</span> 
+                            </a>
+                        </li>
 
-                <div class="mdl-cell mdl-cell--6-col mdl-shadow--4dp">
+                        <li class="mdl-list__item">
+                           <a href="#" class="mdl-components__link mdl-component"> 
+                               <span class="mdl-list__item-primary-content">Stage Volume information</span> 
+                            </a>
+                        </li>
 
-                    <div class="mdl-card__title formcard mdl-color-text--indigo">
-                        <h2 class="mdl-card__title-text formcard">Edit Lake</h2>
-                    </div>
+                        <li class="mdl-list__item">
+                           <a href="#" class="mdl-components__link mdl-component"> 
+                               <span class="mdl-list__item-primary-content">Zones</span> 
+                            </a>
+                        </li>
 
-                    <div class="pad-left-form-field">
+                        <li class="mdl-list__item">
+                           <a href="#" class="mdl-components__link mdl-component"> 
+                               <span class="mdl-list__item-primary-content">Inlet/Outlets</span> 
+                            </a>
+                        </li>
+                </ul>
+            </div> <!-- grid:3 -->
+            <div class="mdl-cell mdl-cell--7-col mdl-cell--1-offset">
 
-                        <form name="createForm">
-                            <div class="pad-top-form-field"></div>
+                <form name="createForm">
+                            <h4>Edit Lake </h4>
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" name="name" id="name"
                                        ng-model="lakeObj.name" required>
-                                <label class="mdl-textfield__label" for="sample3">Lake Name </label>
+                                <label class="mdl-textfield__label" for="name">Lake Name </label>
+                            </div>
+                            <br>
+                            
+                              <div class="mdl-textfield mdl-js-textfield">
+                                <textarea class="mdl-textfield__input" type="text" rows="5" id="about" name="about"
+                                          ng-model="lakeObj.about" required></textarea>
+                                <label class="mdl-textfield__label" for="about">About...</label>
                             </div>
                             <br>
 
+                            <div>
+                                <h4> Lake Type </h4>
+                            </div>
+
                             <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
-                                <select id="profile_information_form_dob_2i" name="profile_information_form[dob(2i)]"
+                                <select id="lake_type_select" name="profile_information_form[dob(2i)]"
                                         class="date required mdl-selectfield__select"
                                         ng-model="selectedLakeType"
                                         ng-change="select_lake_type(selectedLakeType)"
                                         ng-options="lakeType.value for lakeType in allLakeTypes"
-                                        required>
+                                        >
                                 </select>
-                                <label for="profile_information_form_dob_2i"
-                                       class="mdl-selectfield__label">Type...</label>
-                                <span class="mdl-selectfield__error">Input is not a empty!</span>
+                                <label for="lake_type_select" class="mdl-selectfield__label">Lake Type</label>
+                
                             </div>
                             <br>
 
 
-                            <div class="mdl-textfield mdl-js-textfield">
-                                <textarea class="mdl-textfield__input" type="text" rows="3" id="about" name="about"
-                                          ng-model="lakeObj.about" required></textarea>
-                                <label class="mdl-textfield__label" for="text7">About...</label>
-                            </div>
+                          
                             <br>
 
 
@@ -187,21 +241,35 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             </div><br><br>
 
                         </form>
-                    </div>
-                    <div class="mdl-card__actions mdl-card--border">
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-color-text--indigo"
-                                ng-click="create_lake()" type="submit">Save
-                        </button>
-                    </div>
-                </div>
-                <div class="mdl-layout-spacer"></div>
+                <!-- form -->
+
             </div>
-            <!-- end card -->
-            <div class="pad-bottom"></div>
+
+
+
         </div>
-        <?php include(APP_WEB_DIR . '/inc/footer.inc'); ?>
+
+
     </main>
-</div>
+    <footer class="mdl-mega-footer">
+        <div class="mdl-mega-footer__top-section">
+            <div class="mdl-mega-footer__left-section">
+                <button class="mdl-mega-footer__social-btn"></button>
+                <button class="mdl-mega-footer__social-btn"></button>
+                <button class="mdl-mega-footer__social-btn"></button>
+            </div>
+            <div class="mdl-mega-footer__right-section">
+                <a href="">Link 1</a>
+                <a href="">Link 2</a>
+                <a href="">Link 3</a>
+            </div>
+        </div>
+    </footer>
+
+</div> <!-- container div -->
+
+
+
 <script src="/assets/js/material.min.js"></script>
 <script src="/assets/js/mdl-selectfield.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
