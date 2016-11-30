@@ -27,7 +27,7 @@
 		
 		if(!empty($file["error"])){
 			$responseObj = new \stdClass ;
-            $responseObj->code = 200;
+            $responseObj->code = 500;
             $responseObj->error = $file["error"] ;
             echo json_encode($responseObj) ;
             exit(1) ;

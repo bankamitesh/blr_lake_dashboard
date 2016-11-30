@@ -103,23 +103,27 @@ create table atree_sensor_log(
 
 
 
-drop table if exists atree_data_dump;
-create table atree_data_dump (
+drop table if exists atree_file_blob;
+create table atree_file_blob (
     id int NOT NULL auto_increment,
-    data_dump MEDIUMBLOB ,
-    data_dump_code tinyint default 1,
+    file_blob MEDIUMBLOB ,
+    file_code varchar(16) ,
+    file_size int,
+    file_name varchar(64),
     created_by varchar(64),
     created_on timestamp default current_timestamp,
     updated_on timestamp default current_timestamp ,
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
-drop table if exists atree_data_dump_log;
-create table atree_data_dump_log (
+drop table if exists atree_file_blob_log;
+create table atree_file_blob_log (
     id int NOT NULL auto_increment,
-    data_dump_id int not null,
-    data_dump MEDIUMBLOB ,
-    data_dump_code tinyint default 1,
+    file_blob_id int not null,
+    file_blob MEDIUMBLOB ,
+    file_code varchar(16) ,
+    file_size int,
+    file_name varchar(64),
     created_by varchar(64),
     created_on timestamp default current_timestamp,
     updated_on timestamp default current_timestamp ,

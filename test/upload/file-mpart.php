@@ -97,10 +97,12 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             
             var metadata = { 
                 "key1" : "value1", 
-                "key2" : "value2"
+                "key2" : "value2",
+                "code" : "BATHYMETRY",
+                "store" : "database"
             }
 
-            var myurl = $scope.base + "/test/shim/upload/mpart.php" ;
+            var myurl = $scope.base + "/admin/shim/upload/mpart.php" ;
             var payload = new FormData();
             payload.append("myfile", $scope.files[0]);
             payload.append("metadata", angular.toJson(metadata));
