@@ -22,8 +22,6 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/assets/css/mdl-selectfield.min.css">
-    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 <body ng-controller="yuktix.admin.lake.io.create">
 <!-- Always shows a header, even in smaller screens. -->
@@ -94,6 +92,10 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                             <!--need to put upload component-->
                             <h5>Photos </h5>
+                            <label class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
+                                <i class="material-icons">file_upload</i>
+                                <input type="file" filelist-bind class="none"  name="files" multiple="true" />
+                            </label>
                             <br>
 
 
@@ -115,46 +117,6 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                        ng-click="showData('const')">
                                 <span class="mdl-radio__label">Constant Value</span>
                             </label><br>
-
-
-                            <div class="mdl-textfield mdl-js-textfield">
-                                <textarea class="mdl-textfield__input" type="text" rows="3" id="about"></textarea>
-                                <label class="mdl-textfield__label" for="text7">Sensor Details...</label>
-                            </div>
-                            <br>
-
-                            <h5>Select Install Date</h5>
-                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <input class="mdl-textfield__input" type="text" id="custom-date-box">
-                                <label class="mdl-textfield__label" for="sample3">Date...</label>
-                            </div>
-                            <br>
-
-
-                            <h5>Meta Data</h5>
-                            <div class="mdl-grid">
-                                <div class="mdl-cell mdl-cell--5-col">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                        <input class="mdl-textfield__input" type="text" id="name">
-                                        <label class="mdl-textfield__label" for="sample3">Name...</label>
-                                    </div>
-                                </div>
-                                <div class="mdl-cell mdl-cell--5-col">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                        <input class="mdl-textfield__input" type="text" id="name">
-                                        <label class="mdl-textfield__label" for="sample3">Value...</label>
-                                    </div>
-                                </div>
-                                <div class="mdl-cell mdl-cell--2-col mdl-cell--middle">
-                                    <button
-                                        class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored">
-                                        <i class="material-icons">add</i></button>
-                                </div>
-                            </div>
-
-                            
-                           
-
 
                             <div class="pad-top-form-field"></div>
 
@@ -179,9 +141,6 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 <script src="/assets/js/mdl-selectfield.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
 <script src="/assets/js/main.js"></script>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
 <script>
     yuktixApp.controller("yuktix.admin.lake.io.create", function ($scope, io, $window) {
 
@@ -326,11 +285,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
 
     });
-
-    $( function() {
-        $("#custom-date-box").datepicker({ dateFormat: 'dd-mm-yy' });
-    } );
-
+    
 </script>
 </body>
 </html>

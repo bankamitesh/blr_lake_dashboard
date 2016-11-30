@@ -57,7 +57,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             <input id="file_input_text" placeholder="please click on icon to select files" class="file_input_text mdl-textfield__input" type="text" disabled readonly />
                         </div>
 
-                        <label class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
+                         <label class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
                             <i class="material-icons">file_upload</i>
                             <input type="file" filelist-bind class="none"  name="files" multiple="true" />
                         </label> 

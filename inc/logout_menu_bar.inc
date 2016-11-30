@@ -7,5 +7,6 @@ Rajiv
 
 <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
     for="demo-menu-lower-right">
-    <li class="mdl-menu__item " ng-click="logout()">logout</li>
+    <li class="mdl-menu__item " ng-click="Admin()">Admin</li>
+    <li class="mdl-menu__item " ng-click="logout()">Logout</li>
 </ul>

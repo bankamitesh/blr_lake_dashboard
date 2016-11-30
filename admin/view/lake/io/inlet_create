@@ -1,0 +1,55 @@
+<div class="mdl-grid">
+                               <div class="mdl-cell mdl-cell--10-col mdl-card mdl-shadow--2dp">
+                                   <div class="mdl-card__title formcard mdl-color-text--white">
+                                       <h2 class="mdl-card__title-text formcard mdl-color-text--indigo">SensorStage-Flow</h2>
+                                       <div class="mdl-layout-spacer"></div>
+                                       <span class="mdl-color-text--indigo"></span>&nbsp;
+                                       <h2 class="mdl-card__title-text formcard">
+                                           <label class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
+                                               <i class="material-icons">file_upload</i>
+                                               <input type="file" filelist-bind class="none"  name="files" multiple="true" />
+                                           </label>
+                                       </h2>
+                                   </div>
+                                   <div class="mdl-card__supporting-text mdl-color--white">
+                                       files :
+                                       <ul>
+                                           <li ng-repeat="file in files">
+                                               <pre>{{ file.name}}, {{file.size/1000}} KB</pre>
+                                           </li>
+                                       </ul>
+                                   </div>
+                                   <div class="mdl-card__actions mdl-card--border">
+                                       <button ng-click="upload_files()" class="mdl-button mdl-js-button mdl-button--raised mdl-color-text--indigo">Upload</button>
+                                   </div>
+                               </div>
+                           </div>
+                            <br>
+
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--10-col mdl-card mdl-shadow--2dp">
+                                    <div class="mdl-card__title formcard mdl-color-text--white">
+                                        <h2 class="mdl-card__title-text formcard mdl-color-text--indigo">LakeStage-Flow</h2>
+                                        <div class="mdl-layout-spacer"></div>
+                                        <span class="mdl-color-text--indigo"></span>&nbsp;
+                                        <h2 class="mdl-card__title-text formcard">
+                                            <label class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
+                                                <i class="material-icons">file_upload</i>
+                                                <input type="file" filelist-bind class="none"  name="files" multiple="true" />
+                                            </label>
+                                        </h2>
+                                    </div>
+                                    <div class="mdl-card__supporting-text mdl-color--white">
+                                        files :
+                                        <ul>
+                                            <li ng-repeat="file in files">
+                                                <pre>{{ file.name}}, {{file.size/1000}} KB</pre>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="mdl-card__actions mdl-card--border">
+                                        <button ng-click="upload_files()" class="mdl-button mdl-js-button mdl-button--raised mdl-color-text--indigo">Upload</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
