@@ -160,7 +160,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                     </form> 
 
-        </div> <!-- grid: 8-cell -->
+        </div> <!-- grid -->
         
     </main>
     

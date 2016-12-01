@@ -10,6 +10,17 @@
       padding:20px ;
   }
 
+  .wide-mdl-card {
+      width: 512px ;
+  }
+
+  #login-container .mdl-card__title {
+      margin-top:0px ;
+      color: #fff;
+       height: 256px;
+       background: url(/assets/images/welcome_card.jpg) center / cover;
+  }
+
   #usage-container ul, li { 
       list-style: none; 
   }

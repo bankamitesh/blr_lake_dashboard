@@ -21,122 +21,121 @@
 
 		<!DOCTYPE html>
 		<html ng-app="YuktixApp">
+		
 		<head>
-			<link rel="stylesheet" href="/assets/css/material.min.css">
-			<link rel="stylesheet" href="/assets/css/main.css">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 			<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+			<link rel="stylesheet" href="/assets/css/material.min.css">
+			<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
+			<link rel="stylesheet" href="/assets/css/main.css">
+			
 		</head>
+
 		<body ng-controller="yuktix.lake.admin.login">
 
-			<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+			 <div class="mdl-layout mdl-js-layout" id="container">
 
-				<header class="mdl-layout__header">
-					<div class="mdl-layout__header-row">
-						<?php include (APP_WEB_DIR.'/inc/title.inc'); ?>
-					</div>
-				</header>
+    <?php include(APP_WEB_DIR . '/inc/ui/mdl-header.inc'); ?>
+    <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
+   
+    <main class="docs-layout-content mdl-layout__content ">
+        <div class="content mdl-grid mdl-grid--no-spacing" id="content">
+            <div class="mdl-cell mdl-cell--9-col mdl-cell--3-offset">
+               <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
 
-			  <?php /*include (APP_WEB_DIR.'/inc/toolbar.inc'); */?>
-			  <div class="mdl-layout-spacer"></div>
-
-				<main class="mdl-layout__content">
-					<div class="page-content">
-					<div class="pad-bottom"></div>
-							<?php include (APP_WEB_DIR.'/inc/page_error.inc'); ?>
-						<!-- card -->
-						<div class="mdl-grid">
-							<div class="mdl-layout-spacer"></div>
-							<div class="mdl-cell mdl-cell--6-col mdl-shadow--4dp">
-								<div class="mdl-card__title formcard mdl-color-text--white">
-									<h2 class="mdl-card__title-text formcard mdl-color-text--indigo">Login</h2>
-								</div>
-								<div class="mdl-card__supporting-text mdl-color--white">
-									<form name="loginForm">
-										<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-											<input name="login" ng-model="login.name"  class="mdl-textfield__input" type="text" id="login" required>
-											<label class="mdl-textfield__label" for="login">User Name...</label>
-										</div><br>
-										<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-											<input name="password" ng-model="login.password" class="mdl-textfield__input" type="password" id="password" required>
-											<label class="mdl-textfield__label" for="password">Password...</label>
-										</div>
-										<!-- </form> -->
-									</div>
-									<div class="mdl-card__actions mdl-card--border">
-										<button ng-disabled="form1.$invalid" ng-click="do_login()" class="mdl-button mdl-js-button mdl-button--raised mdl-color-text--indigo">Login</button>
-									</div>
-								</form>
-							</div>
-							<div class="mdl-layout-spacer"></div>
+			    <div id = "login-container" class="mdl-card mdl-shadow--2dp wide-mdl-card">
+                 <h3 class="mdl-card__title">Sign In</h3>
+                  
+                  <div class="mdl-card__supporting-text">
+                    <form name="loginForm">
+						<div class="mdl-textfield mdl-js-textfield">
+							<input name="login" ng-model="login.name"  class="mdl-textfield__input" type="text" id="login" required>
+							<label class="mdl-textfield__label" for="login">Login...</label>
+						</div><br>
+						<div class="mdl-textfield mdl-js-textfield">
+							<input name="password" ng-model="login.password" class="mdl-textfield__input" type="password" id="password" required>
+							<label class="mdl-textfield__label" for="password">Password...</label>
 						</div>
-						<!-- end card -->
+					</form> 
+                  </div>
 
+                  <div class="mdl-card__actions mdl-card--border">
+                    <button ng-disabled="form1.$invalid" ng-click="do_login()" class="mdl-button mdl-js-button mdl-button--raised">
+						Login
+					</button>
+                  </div>
 
-					</div>
-					<?php include (APP_WEB_DIR.'/inc/footer.inc'); ?>
-				</main>
-			</div>
-			<script src="/assets/js/material.min.js"></script>
-			<script src="/assets/js/angular.min.js"></script>
-			<script src="/assets/js/main.js"></script>
-			<script type="text/javascript">
+                </div> <!-- login card -->
+          </div> 
+        </div> <!-- grid -->
+    </main>
+    
+    <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
 
-				yuktixApp.controller("yuktix.lake.admin.login",function($scope, user,$window) {
+</div> <!-- container -->
+</body>
 
-					$scope.do_login = function() {
+	<script src="/assets/js/material.min.js"></script>
+	<script src="/assets/js/angular.min.js"></script>
+	<script src="/assets/js/main.js"></script>
+	<script type="text/javascript">
 
-						// 1. validate the form
-						// 2. submit to data file using factory
-						// 3. process response
+		yuktixApp.controller("yuktix.lake.admin.login",function($scope, user,$window) {
 
-						var errorObject = $scope.loginForm.$error;
-						if($scope.validateForm(errorObject)) {
-							return;
-						}
+			$scope.do_login = function() {
 
-						$scope.showProgress("verifying your login details");
-						if ($scope.debug) {
-							console.log("form values");
-							console.log($scope.login);
-						}
+				// 1. validate the form
+				// 2. submit to data file using factory
+				// 3. process response
 
-						// contact user factory
-						user.login($scope.base, $scope.debug,$scope.login)
-						.then( function(response) {
+				var errorObject = $scope.loginForm.$error;
+				if($scope.validateForm(errorObject)) {
+					return;
+				}
 
-							var status = response.status || 500;
-							var data = response.data || {};
+				$scope.showProgress("verifying your login details");
+				if ($scope.debug) {
+					console.log("form values");
+					console.log($scope.login);
+				}
 
-							if ($scope.debug) {
-								console.log("server response :");
-								console.log(data);
-							}
+				// contact user factory
+				user.login($scope.base, $scope.debug,$scope.login)
+				.then( function(response) {
 
-							if (status != 200 || data.code != 200) {
-								console.log(response);
-								var error = data.error || (status + ":error verifying login details");
-								$scope.showError(error);
-								return;
-							}
+					var status = response.status || 500;
+					var data = response.data || {};
 
-							$window.location.href = "/admin/view/lake/list.php";
+					if ($scope.debug) {
+						console.log("server response :");
+						console.log(data);
+					}
 
-						},function(response) {
-							$scope.processResponse(response);
-						});
+					if (status != 200 || data.code != 200) {
+						console.log(response);
+						var error = data.error || (status + ":error verifying login details");
+						$scope.showError(error);
+						return;
+					}
 
-					};
+					$window.location.href = "/admin/view/lake/list.php";
 
-					// data initialization
-					$scope.login = {};
-					$scope.errorMessage = "";
-
-					$scope.gparams = <?php echo json_encode($gparams); ?> ;
-					$scope.debug = $scope.gparams.debug ;
-					$scope.base = $scope.gparams.base ;
-
-
+				},function(response) {
+					$scope.processResponse(response);
 				});
-			</script>
-		</body>
-		</html>
+
+			};
+
+			// data initialization
+			$scope.login = {};
+			$scope.errorMessage = "";
+
+			$scope.gparams = <?php echo json_encode($gparams); ?> ;
+			$scope.debug = $scope.gparams.debug ;
+			$scope.base = $scope.gparams.base ;
+
+
+		});
+	</script>
+
+</html>
