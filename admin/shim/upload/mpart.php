@@ -18,7 +18,11 @@
 		$messages = array(
 			UPLOAD_ERR_INI_SIZE => "file size is greater than limit set in php.ini",
 			UPLOAD_ERR_PARTIAL => "file upload is partial",
-			UPLOAD_ERR_NO_FILE => "no file selected for upload"
+			UPLOAD_ERR_NO_FILE => "no file selected for upload",
+			UPLOAD_ERR_FORM_SIZE => "file exceeds MAX_FILE_SIZE limit on HTML form",
+			UPLOAD_ERR_NO_TMP_DIR => "no temporary directory found",
+			UPLOAD_ERR_CANT_WRITE => "failed to write file to disk",
+			UPLOAD_ERR_EXTENSION => "php extension caused issue with file upload"
 
 		);
 
@@ -146,7 +150,7 @@
 		$fname =  basename($file["name"]);
 		$tmp_file = $file["tmp_name"];
 		
-		if(!empty($file["error"])){
+		if(!empty($file["error"])) {
 			$xmsg = map_php_file_error($file["error"]);
 			quit_with_error(500,$xmsg);
 		}
