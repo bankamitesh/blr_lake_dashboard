@@ -68,6 +68,20 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             padding-top:40px ;
         }
 
+        .mdl-checkbox__input { 
+            position: absolute;
+            width: 0;
+            height: 0;
+            margin: 0;
+            padding: 0;
+            opacity: 0;
+            -ms-appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+            border: none;
+
+        }
 
     </style>
     
