@@ -37,7 +37,24 @@
             <div class="mdl-cell mdl-cell--9-col mdl-cell--3-offset">
                <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
 
-               <div class=" table-container">
+               <div class="mdl-card mdl-shadow--4dp no-table-card" ng-show="display.notable">
+                 <h4 class="mdl-card__title"> No Lakes Found! </h4>
+                  <div class="mdl-card__media">
+                    <img src="/assets/images/dog.png" width="220" height="140" border="0" alt="" style="padding:20px;">
+                  </div>
+                  <div class="mdl-card__supporting-text">
+                    We did not find any lakes in the system. Please click on the 
+                    button below to get started. 
+                  </div>
+                  <div class="mdl-card__actions mdl-card--border">
+                    <button class="mdl-button mdl-js-button mdl-button--raised" ng-click="goto_create()">
+                          Create a lake
+                    </button>
+                  </div>
+
+                </div> <!-- no table mdl card -->
+
+               <div class="table-container" ng-show="display.table">
                  <div class="mdl-grid">
                    <div class="mdl-cell mdl-cell--6-col">
                       <h5> Lakes </h5>
@@ -48,10 +65,7 @@
                         <i class="material-icons">add</i>
                       </button>
                     </div>
-
-                  </div>
-
-                </div>
+                  </div> <!-- top grid -->
 
                  <table class="mdl-data-table mdl-js-data-table">
                   <thead>
@@ -84,17 +98,15 @@
 
                   </tbody>
                 </table>
-                </div>
-
-                
-
-            </div> <!-- grid -->
-        
+              </div> <!-- table container -->
+            
+          </div> 
+        </div> <!-- grid -->
     </main>
     
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
 
-</div> <!-- container div -->
+</div> <!-- container -->
 </body>
 
     <script src="/assets/js/material.min.js"></script>
@@ -133,6 +145,11 @@
 
             // assign to lakes in scope
             $scope.lakes = data.result ;
+            if($scope.lakes.length > 0 ) {
+              $scope.display.notable = false ;
+              $scope.display.table = true ;
+            }
+
             $scope.clearPageMessage();
 
         },function(response) {
@@ -154,13 +171,21 @@
 
       };
 
-
-
-      $scope.lakes = {} ;
+      // set page parameters
       $scope.gparams = <?php echo json_encode($gparams); ?> ;
       $scope.debug = $scope.gparams.debug ;
       $scope.base = $scope.gparams.base ;
+
+      // init data 
+      $scope.lakes = {} ;
+     
       $scope.errorMessage = "";
+
+      // init display: table or no table
+      $scope.display = {} ;
+      $scope.display.notable = true ;
+      $scope.display.table = false ;
+
       $scope.getLakes();
 
     });
