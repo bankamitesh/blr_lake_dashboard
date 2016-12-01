@@ -40,7 +40,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             
             <div class="mdl-cell mdl-cell--1-col"> </div>
             <div class="mdl-grid mdl-cell mdl-cell--8-col form-container">
-                <!-- @todo addd error page -->
+                <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
 
                 <form name="createForm">
                     

@@ -148,6 +148,9 @@
             if($scope.lakes.length > 0 ) {
               $scope.display.notable = false ;
               $scope.display.table = true ;
+            } else {
+              $scope.display.notable = true ;
+              $scope.display.table = false ;
             }
 
             $scope.clearPageMessage();
@@ -183,8 +186,8 @@
 
       // init display: table or no table
       $scope.display = {} ;
-      $scope.display.notable = true ;
-      $scope.display.table = false ;
+      $scope.display.notable = false ;
+      $scope.display.table = true ;
 
       $scope.getLakes();
 

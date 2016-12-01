@@ -39,7 +39,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             
             <div class="mdl-cell mdl-cell--3-col"> </div>
             <div class="mdl-grid mdl-cell mdl-cell--9-col form-container">
-
+                 <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
                 <form name="createForm">
                     
                         <h5>Create a new lake </h5>
