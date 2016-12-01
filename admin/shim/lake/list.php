@@ -13,7 +13,7 @@
 	use \com\yuktix\auth\Login as Login ;
     use \com\indigloo\exception\UIException as UIException;
 
-    // @todo Login check 
+    // @todo add login check 
     function change_row_to_object($row) {
 
         $lake = new \stdClass ;

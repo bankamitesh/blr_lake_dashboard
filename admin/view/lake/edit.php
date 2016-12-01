@@ -184,11 +184,8 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
         $scope.initCodes = function() {
 
-
-            $scope.showProgress("Getting data from Server...");
-
-
-            // contact user factory
+            $scope.showProgress("Getting lake data from Server...");
+            
             lake.getCodes($scope.base,$scope.debug)
                 .then( function(response) {
 
@@ -229,17 +226,12 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
         };
 
-
-        //factory for submitting form data
         $scope.select_agency = function(agency) {
-
             $scope.lakeObj.agencyCode = agency.id ;
             $scope.selectedAgency = agency ;
-
         } ;
 
         $scope.select_lake_type = function(lakeType) {
-
             $scope.lakeObj.typeCode = lakeType.id ;
             $scope.selectedLakeType = lakeType ;
 
@@ -259,12 +251,6 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
         };
 
-        $scope.logout=function () {
-
-            $window.location.href = "/admin/logout.php";
-
-        };
-
         $scope.errorMessage = "";
         $scope.gparams = <?php echo json_encode($gparams); ?> ;
         $scope.debug = $scope.gparams.debug;
@@ -276,7 +262,6 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         $scope.allLakeAgencies = [] ;
         $scope.allLakeTypes = [] ;
         $scope.allLakeUsages = [] ;
-
 
         $scope.lakeCodes= {};
         $scope.initCodes();
