@@ -13,6 +13,7 @@ Login::isCustomerAdmin("/admin/login.php") ;
 $gparams = new \stdClass;
 $gparams->debug = false;
 $gparams->base = Url::base();
+$lakeId = Url::getQueryParam("id");
 
 if (array_key_exists("jsdebug", $_REQUEST)) {
     $gparams->debug = true;
@@ -22,6 +23,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 <html  ng-app="YuktixApp">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/assets/css/material.min.css">
     <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
@@ -41,125 +43,130 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             <div class="mdl-cell mdl-cell--1-col"> </div>
             <div id ="content" class="mdl-grid mdl-cell mdl-cell--8-col" >
                 <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
-
-                <form name="createForm" >
-                    
-                        <h5>Edit Jakkur Lake </h5>
+                <div class="form-container">
+                    <form name="createForm" >
                         
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" name="name" id="name"
-                                    ng-model="lakeObj.name" required>
-                            <label class="mdl-textfield__label" for="name">Lake Name </label>
-                        </div>
-                        <br>
-                        
-                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="lat" name="latitude"
-                                    ng-model="lakeObj.lat" required>
-                            <label class="mdl-textfield__label" for="lat">Latitude...</label>
-                        </div>
-                        <br>
-
-
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="lon" name="longtitude"
-                                    ng-model="lakeObj.lon" required>
-                            <label class="mdl-textfield__label" for="lon">Longtitude...</label>
-                        </div>
-                        <br>
-
-                        <h5> Lake Type </h5>
-
-                        <div>
-                            <select id="lake_type_select"
-                                    ng-model="selectedLakeType"
-                                    ng-change="select_lake_type(selectedLakeType)"
-                                    ng-options="lakeType.value for lakeType in allLakeTypes">
-                            </select>
+                            <h5>Edit Jakkur Lake </h5>
                             
-                        </div>
-                        <br>
-                        
                             <div class="mdl-textfield mdl-js-textfield">
-                            <textarea class="mdl-textfield__input" type="text" rows="5" id="about" name="about"
-                                        ng-model="lakeObj.about" required></textarea>
-                            <label class="mdl-textfield__label" for="about">About / provide a write up for the lake...</label>
-                        </div>
-                        <br>
-
-
-                        <div class="mdl-textfield mdl-js-textfield">
-                            <textarea class="mdl-textfield__input" type="text" rows="3" id="address" name="address"
-                                        ng-model="lakeObj.address" required></textarea>
-                            <label class="mdl-textfield__label" for="address">Address...</label>
-                        </div>
-                        <br>
-
-
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="area" name="maxArea"
-                                    ng-model="lakeObj.maxArea" required>
-                            <label class="mdl-textfield__label" for="area">Max Area...</label>
-                        </div>
-                        <br>
-
-
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="volume" name="maxVolume"
-                                    ng-model="lakeObj.maxVolume" required>
-                            <label class="mdl-textfield__label" for="volume">Max Volume...</label>
-                        </div>
-                        <br>
-
-
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="recharge_rate" name="rechargeRate"
-                                    ng-model="lakeObj.rechargeRate" required>
-                            <label class="mdl-textfield__label" for="recharge_rate">Rechange Rate...</label>
-                        </div>
-                        <br>
-
-                        <h5> Agency</h5> 
-                        <div>
-                            <select id="agency_select" name="agency"
-                                    ng-model="selectedAgency"
-                                    ng-change="select_agency(selectedAgency)"
-                                    ng-options="agency.value for agency in allLakeAgencies"
-                                    required>
-                            </select>
-                        </div>
-                        <br>
-
-                        <div class="usage-container">
-                            <h5> Usage </h5>
-                            
-                            
-                                <div ng-repeat="usage in allLakeUsages">
-                                    <label for="{{usage.id}}" class="mdl-checkbox mdl-js-checkbox" >
-                                        <input
-                                            type="checkbox"
-                                            id="{{usage.id}}" 
-                                            class="mdl-checkbox__input "
-                                            ng-checked="lakeObj.usageCode.indexOf(usage.id) > -1"
-                                            ng-click="toggle_usage_code(usage.id)"
-                                            value="{usage.value}"
-                                            name="usageCode" required />
-                                            <span class="mdl-checkbox__label" ng-bind="usage.value"></span>
-                                    </label>
+                                <h6>Name</h6>
+                                <input class="mdl-textfield__input" type="text" name="name" id="name"
+                                        ng-model="lakeObj.name" required>
                                 
-                            
-                            
-                                </div> 
-                        </div> <!-- usage -->
-                        
-                        <div class="form-button-container">
-                            <button class="mdl-button mdl-js-button mdl-button--raised"ng-click="create_lake()" type="submit">
-                                Save Lake information 
-                            </button>
-                        </div>
+                            </div>
+                            <br>
+                                <h6>Latitude</h6>
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="text" id="lat" name="latitude"
+                                        ng-model="lakeObj.lat" required>
+                               
+                            </div>
+                            <br>
 
-                    </form> 
 
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <h6>Longitude</h6>
+                                <input class="mdl-textfield__input" type="text" id="lon" name="longtitude"
+                                        ng-model="lakeObj.lon" required>
+                                
+                            </div>
+                            <br>
+
+                            <h6> Lake Type </h6>
+
+                            <div>
+                                <select id="lake_type_select"
+                                        ng-model="selectedLakeType"
+                                        ng-change="select_lake_type(selectedLakeType)"
+                                        ng-options="lakeType.value for lakeType in allLakeTypes">
+                                </select>
+                                
+                            </div>
+                            <br>
+                            
+                                <div class="mdl-textfield mdl-js-textfield">
+                                <textarea class="mdl-textfield__input" type="text" rows="5" id="about" name="about"
+                                            ng-model="lakeObj.about" required></textarea>
+                               
+                            </div>
+                            <br>
+
+
+                            <div class="mdl-textfield mdl-js-textfield">
+                                <h6>address</h6>
+                                <textarea class="mdl-textfield__input" type="text" rows="3" id="address" name="address"
+                                            ng-model="lakeObj.address" required></textarea>
+                               
+                            </div>
+                            <br>
+
+
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <h6>max. area</h6>
+                                <input class="mdl-textfield__input" type="text" id="area" name="maxArea"
+                                        ng-model="lakeObj.maxArea" required>
+                                
+                            </div>
+                            <br>
+
+
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <h6>max. volume</h6>
+                                <input class="mdl-textfield__input" type="text" id="volume" name="maxVolume"
+                                        ng-model="lakeObj.maxVolume" required>
+                               
+                            </div>
+                            <br>
+
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <h6>recharge rate</h6>
+                                <input class="mdl-textfield__input" type="text" id="recharge_rate" name="rechargeRate"
+                                        ng-model="lakeObj.rechargeRate" required>
+                               
+                            </div>
+                            <br>
+
+                            <h6> Agency</h6> 
+                            <div>
+                                <select id="agency_select" name="agency"
+                                        ng-model="selectedAgency"
+                                        ng-change="select_agency(selectedAgency)"
+                                        ng-options="agency.value for agency in allLakeAgencies"
+                                        required>
+                                </select>
+                            </div>
+                            <br>
+
+                            <div class="usage-container">
+                                <h6> Usage </h6>
+                                
+                                
+                                    <div ng-repeat="usage in allLakeUsages">
+                                        <label for="{{usage.id}}" class="mdl-checkbox mdl-js-checkbox" >
+                                            <input
+                                                type="checkbox"
+                                                id="{{usage.id}}" 
+                                                class="mdl-checkbox__input "
+                                                ng-checked="lakeObj.usageCode.indexOf(usage.id) > -1"
+                                                ng-click="toggle_usage_code(usage.id)"
+                                                value="{usage.value}"
+                                                name="usageCode" />
+                                                <span class="mdl-checkbox__label" ng-bind="usage.value"></span>
+                                        </label>
+                                    
+                                
+                                
+                                    </div> 
+                            </div> <!-- usage -->
+                            
+                            <div class="form-button-container">
+                                <button class="mdl-button mdl-js-button mdl-button--raised"ng-click="update_lake()" type="submit">
+                                    Save Lake information 
+                                </button>
+                            </div>
+
+                        </form> 
+                    </div> <!-- form container -->
         </div> <!-- grid -->
         
     </main>
@@ -181,17 +188,42 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
     yuktixApp.controller("yuktix.admin.lake.edit", function ($scope, lake, $window) {
 
+         $scope.get_lake_object = function() {
 
-        $scope.initCodes = function() {
+            $scope.showProgress("Getting lake object from server...");
+            lake.getLakeObject($scope.base,$scope.debug, $scope.lakeId).then( function(response) {
+                    var status = response.status || 500;
+                    var data = response.data || {};
+                    if($scope.debug) {
+                        console.log("server response:: lake object:%O", data);
+                    }
 
-            $scope.showProgress("Getting lake data from Server...");
-            
+                    if (status != 200 || data.code != 200) {
+                        console.log(response);
+                        var error = data.error || (status + ":error retrieving  data from Server");
+                        $scope.showError(error);
+                        return;
+                    }
+
+                    $scope.lakeObj = data.result ;
+                    $scope.clearPageMessage();
+                    $scope.init_codes() ;
+
+                },function(response) {
+                    $scope.processResponse(response);
+                });
+
+        };
+
+
+        $scope.init_codes = function() {
+
+            $scope.showProgress("Getting required codes from server...");
             lake.getCodes($scope.base,$scope.debug)
                 .then( function(response) {
 
                     var status = response.status || 500;
                     var data = response.data || {};
-
 
                     if($scope.debug) {
                         console.log("server response:: codes:%O", data);
@@ -251,10 +283,18 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
         };
 
-        $scope.errorMessage = "";
+        $scope.update_lake = function() {
+            console.log($scope.lakeObj);
+        }
+
+
+        $scope.errorMessage = "" ;
+
+        // page params
         $scope.gparams = <?php echo json_encode($gparams); ?> ;
         $scope.debug = $scope.gparams.debug;
         $scope.base = $scope.gparams.base;
+        $scope.lakeId = <?php echo $lakeId ?> ;
 
         //data initialization
         $scope.lakeObj = {};
@@ -264,10 +304,8 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         $scope.allLakeUsages = [] ;
 
         $scope.lakeCodes= {};
-        $scope.initCodes();
-
-
-
+        $scope.get_lake_object() ;
+        
 
 
     });

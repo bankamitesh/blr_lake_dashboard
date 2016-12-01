@@ -187,7 +187,7 @@
       // init display: table or no table
       $scope.display = {} ;
       $scope.display.notable = false ;
-      $scope.display.table = true ;
+      $scope.display.table = false ;
 
       $scope.getLakes();
 

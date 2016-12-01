@@ -5,9 +5,9 @@
     $gMDLMenus = array();
 
     if(!empty($login)) {
-        array_push($gMDLMenus, $["name" => "Upload", "link" => "#" ]) ;
+        array_push($gMDLMenus, ["name" => "Upload", "link" => "#" ]) ;
         if($login->customerAdmin) { 
-            array_push($gMDLMenus, $["name" => "Admin Dashboard", "link" => "/admin/view/lake/list.php"]) ;
+            array_push($gMDLMenus, ["name" => "Admin Dashboard", "link" => "/admin/view/lake/list.php"]) ;
         }
         array_push($gMDLMenus, ["name" => "Logout", "link" => "/admin/logout.php"]) ;
 

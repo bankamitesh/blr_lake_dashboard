@@ -640,10 +640,10 @@
 
          	 lake.list = function(base,debug) {
 				 
-	            	var myurl = base + '/admin/shim/list.php' ;
+	            	var myurl = base + '/admin/shim/lake/list.php' ;
 	            	var postData = {} ;
 	            	if(debug) { 
-						console.log("POST /admin/shim/list.php"); 
+						console.log("POST : " + myurl); 
 						console.log(postData);
 					}
 	            	
@@ -663,7 +663,7 @@
 
 	         lake.create = function(base,debug,lakeObj) {
             	
-            	var myurl = base + '/admin/shim/create.php' ;
+            	var myurl = base + '/admin/shim/lake/create.php' ;
             	  
             	if(debug) {
 					console.log("POST " + myurl); 
@@ -685,14 +685,36 @@
             	
             };
 
-
-             lake.getCodes = function(base,debug) {
+            lake.getCodes = function(base,debug) {
 
                  var myurl = base + '/admin/shim/codes.php' ;
                  var postData = {} ;
 
                  if(debug) {
-                     console.log("POST /admin/shim/codes.php");
+                     console.log("POST " + myurl);
+                     console.log(myurl);
+                 }
+
+                 var promise = $http({
+                     method : 'POST',
+                     url : myurl,
+                     data : postData,
+                     headers: {'Content-Type': 'application/json'}
+                 }).then(
+                     function (response) { return response ; },
+                     function(response) { return response ; }
+                 );
+
+                 return promise;
+             };
+
+			lake.getLakeObject = function(base,debug, lakeId) {
+
+                 var myurl = base + '/admin/shim/lake/get-object.php' ;
+                 var postData = {"lakeId" : lakeId} ;
+
+                 if(debug) {
+                     console.log("POST " + myurl);
                      console.log(myurl);
                  }
 
@@ -713,62 +735,7 @@
         });
 
 
-		yuktixApp.factory('io', function($http) {
-
-			var io = {} ;
-
-			io.getCodes = function(base,debug) {
-
-				var myurl = base + '/admin/shim/codes.php' ;
-				var postData = {} ;
-
-				if(debug) {
-					console.log("POST /admin/shim/codes.php");
-					console.log(myurl);
-				}
-
-				var promise = $http({
-					method : 'POST',
-					url : myurl,
-					data : postData,
-					headers: {'Content-Type': 'application/json'}
-				}).then(
-					function (response) { return response ; },
-					function(response) { return response ; }
-				);
-
-				return promise;
-			};
-
-
-			io.inletCreate = function(base,debug,createObj) {
-
-				var myurl = base + '/admin/shim/iocreate.php' ;
-
-				if(debug) {
-					console.log("POST " + myurl);
-					console.log(createObj);
-				}
-
-				var promise = $http({
-					method : 'POST',
-					url : myurl,
-					data : createObj,
-					headers: {'Content-Type': 'application/json'}
-
-				}).then(
-					function (response) { return response ; },
-					function(response) { return response ; }
-				);
-
-				return promise;
-
-			};
-
-			return io ;
-		});
-             
-        
+	
         // controller using text service for reverse func
         // inside the controller we use the promise from service
         // service().then(successCallback, errorCallback)

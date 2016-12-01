@@ -22,21 +22,30 @@
     $rawPostData = file_get_contents("php://input");
     $postData = json_decode($rawPostData) ;
 
+    // @debug
+    sleep(3) ;
 
-    $mysqli = MySQL\Connection::getInstance()->getHandle();
-    $sql = " select * from atree_lake " ;
-    $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-    $result = array() ;
-
-    foreach ($rows as $row) {
-        $lake = DBRowConverter::convertLakeRow($row) ;
-        array_push($result, $lake);
+    if(!property_exists($postData, "lakeId")) {
+        // API response 
+        $xmsg = "required parameter lakeId is missing" ;
+        $responseObj = new \stdClass ;
+        $responseObj->code = 400;
+        $responseObj->error = $xmsg ;
+        echo json_encode($responseObj) ;
+        exit(0) ;
     }
 
+    $mysqli = MySQL\Connection::getInstance()->getHandle();
+    $lakeId = $mysqli->real_escape_string($postData->lakeId);
+
+    $sql = " select * from atree_lake where id = ".$lakeId ;
+    $row = MySQL\Helper::fetchRow($mysqli, $sql);
+    $lakeObj = DBRowConverter::convertLakeRow($row) ;
+    
     // API response 
     $responseObj = new \stdClass ;
     $responseObj->code = 200;
-    $responseObj->result = $result ;
+    $responseObj->result = $lakeObj ;
 
     echo json_encode($responseObj) ;
     exit(0) ;

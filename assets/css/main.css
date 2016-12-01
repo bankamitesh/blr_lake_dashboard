@@ -7,7 +7,16 @@
       padding-bottom: 120px; 
   }
   #error-container  {
-      padding:20px ;
+      padding-bottom:20px ;
+      width: 90% ;
+  }
+
+  .page_error {
+      font-size: 15px ;
+  }
+
+  .page_message {
+    font-size: 15px ;
   }
 
   .wide-mdl-card {
@@ -24,8 +33,6 @@
   #usage-container ul, li { 
       list-style: none; 
   }
-
-  
 
   a {
     text-decoration: none ;
