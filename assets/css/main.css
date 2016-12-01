@@ -3,9 +3,9 @@
   }
 
   #content {
-      margin-bottom: 100px ;
+      padding-top:40px; 
+      padding-bottom: 120px; 
   }
-
   #error-container  {
       padding:20px ;
   }
@@ -25,9 +25,19 @@
       list-style: none; 
   }
 
+  
+
+  a {
+    text-decoration: none ;
+    color: black ;
+    font-weight: 500;
+   }
+
+
   .lake-edit-links {
       height: 100% ;
   }
+
   .lake-edit-links a {
       text-decoration: none ;
       color: black ;

@@ -34,15 +34,15 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-header.inc'); ?>
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
    
-    <main class="docs-layout-content mdl-layout__content ">
-        <div class="content mdl-grid mdl-grid--no-spacing" id="content">
+    <main class="mdl-components__pages mdl-layout__content ">
+        <div class="mdl-grid mdl-grid--no-spacing">
         <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
             
             <div class="mdl-cell mdl-cell--1-col"> </div>
-            <div class="mdl-grid mdl-cell mdl-cell--8-col form-container">
+            <div id ="content" class="mdl-grid mdl-cell mdl-cell--8-col" >
                 <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
 
-                <form name="createForm">
+                <form name="createForm" >
                     
                         <h5>Edit Jakkur Lake </h5>
                         

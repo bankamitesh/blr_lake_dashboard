@@ -35,10 +35,10 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
    
     <main class="docs-layout-content mdl-layout__content ">
-        <div class="content mdl-grid mdl-grid--no-spacing" id="content">
+        <div class="mdl-grid mdl-grid--no-spacing" id="content">
             
             <div class="mdl-cell mdl-cell--3-col"> </div>
-            <div class="mdl-grid mdl-cell mdl-cell--9-col form-container">
+            <div id="content" class="mdl-grid mdl-cell mdl-cell--9-col">
                  <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
                 <form name="createForm">
                     

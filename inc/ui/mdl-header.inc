@@ -1,6 +1,31 @@
 <?php 
 
 
+
+    use \com\yuktix\lake\auth\Login as Login;
+    $login = Login::tryLoginInSession();
+    $gHeaderMenus = array();
+
+    $uploadLink = ["name" => "Upload", "link" => "#" ] ;
+    $loginLink = ["name" => "Login", "link" => "/admin/login.php" ] ;
+    $logoutLink = ["name" => "Logout", "link" => "/admin/logout.php" ] ;
+    $adminLink = ["name" => "Admin Dashboard", "link" => "/admin/view/lake/list.php" ] ;
+
+    if(!empty($login)) {
+
+        array_push($gHeaderMenus, $uploadLink) ;
+        if($login->customerAdmin) { 
+            array_push($gHeaderMenus, $adminLink) ;
+        }
+
+        array_push($gHeaderMenus, $logoutLink) ;
+
+    } else {
+         array_push($gHeaderMenus, $loginLink) ;
+    } 
+
+
+
 ?>
 
 <header class="mdl-layout__header">
@@ -15,11 +40,10 @@
                 </button>
                
                 <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="site-toolbar-account">
+                    <?php foreach($gHeaderMenus as $gMenu)  { ?>
+                    <li class="mdl-menu__item"><a href="<?php echo $gMenu['link']; ?>"> <?php echo $gMenu['name']; ?></a></li>
                     
-                    <li class="mdl-menu__item">Some Action</li>
-                    <li class="mdl-menu__item">Another Action</li>
-                    <li disabled class="mdl-menu__item">Disabled Action</li>
-                    <li class="mdl-menu__item">Yet Another Action Action Action</li>
+                    <? } ?> 
                 </ul>
             </div>
 
