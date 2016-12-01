@@ -36,6 +36,16 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     -->
     
     <style>
+
+        #container {
+            min-height: 810px;
+           
+        }
+
+        #usage-container ul, li { 
+            list-style: none; 
+        }
+
         .lake-edit-links {
             height: 100% ;
         }
@@ -50,28 +60,39 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             font-size: 16px; 
         }
 
+        .form-container .mdl-textfield {
+            width : 400px; 
+        }
+
+        .form-button-container {
+            padding-top:40px ;
+        }
+
+
     </style>
     
 </head>
 <body  ng-controller="yuktix.admin.lake.edit">
 
-<div class="mdl-layout mdl-js-layout container">
+<div class="mdl-layout mdl-js-layout" id="container">
 
     <header class="mdl-layout__header">
         <div class="mdl-layout-icon"></div>
         <div class="mdl-layout__header-row">
             <span class="mdl-layout__title">Bangalore Lake Dashboard</span>
             <div class="mdl-layout-spacer"></div>
-            <div>
+
+            <div class="avatar-dropdown">
                 <button id="site-toolbar-account" class="mdl-button mdl-js-button mdl-button--icon">
                     <i class="material-icons">account_circle</i>
                 </button>
-
+               
                 <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="site-toolbar-account">
+                    
                     <li class="mdl-menu__item">Some Action</li>
                     <li class="mdl-menu__item">Another Action</li>
                     <li disabled class="mdl-menu__item">Disabled Action</li>
-                    <li class="mdl-menu__item">Yet Another Action</li>
+                    <li class="mdl-menu__item">Yet Another Action Action Action</li>
                 </ul>
             </div>
 
@@ -124,10 +145,14 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         </li>
                 </ul>
             </div> <!-- grid:3 -->
-            <div class="mdl-cell mdl-cell--7-col mdl-cell--1-offset">
+            <div class="mdl-cell mdl-cell--1-col"> </div>
+            <div class="mdl-grid mdl-cell mdl-cell--8-col form-container">
 
                 <form name="createForm">
-                            <h4>Edit Lake </h4>
+                    
+                            <h5>Edit Jakkur Lake </h5>
+                            
+
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" name="name" id="name"
                                        ng-model="lakeObj.name" required>
@@ -135,27 +160,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             </div>
                             <br>
                             
-                              <div class="mdl-textfield mdl-js-textfield">
-                                <textarea class="mdl-textfield__input" type="text" rows="5" id="about" name="about"
-                                          ng-model="lakeObj.about" required></textarea>
-                                <label class="mdl-textfield__label" for="about">About...</label>
-                            </div>
-                            <br>
-
-                            <div> <span> Lake Type </span> </div>
-
-                            <div>
-                                <select id="lake_type_select"
-                                        ng-model="selectedLakeType"
-                                        ng-change="select_lake_type(selectedLakeType)"
-                                        ng-options="lakeType.value for lakeType in allLakeTypes">
-                                </select>
-                             
-                            </div>
-                            <br>
-
-
-                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" id="lat" name="latitude"
                                         ng-model="lakeObj.lat" required>
                                 <label class="mdl-textfield__label" for="lat">Latitude...</label>
@@ -167,6 +172,25 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                 <input class="mdl-textfield__input" type="text" id="lon" name="longtitude"
                                        ng-model="lakeObj.lon" required>
                                 <label class="mdl-textfield__label" for="lon">Longtitude...</label>
+                            </div>
+                            <br>
+
+                            <h5> Lake Type </h5>
+
+                            <div>
+                                <select id="lake_type_select"
+                                        ng-model="selectedLakeType"
+                                        ng-change="select_lake_type(selectedLakeType)"
+                                        ng-options="lakeType.value for lakeType in allLakeTypes">
+                                </select>
+                             
+                            </div>
+                            <br>
+                           
+                              <div class="mdl-textfield mdl-js-textfield">
+                                <textarea class="mdl-textfield__input" type="text" rows="5" id="about" name="about"
+                                          ng-model="lakeObj.about" required></textarea>
+                                <label class="mdl-textfield__label" for="about">About / provide a write up for the lake...</label>
                             </div>
                             <br>
 
@@ -202,7 +226,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             </div>
                             <br>
 
-                            <div> <span> Agency</span> </div>
+                           <h5> Agency</h5> 
                             <div>
                                 <select id="agency_select" name="agency"
                                         ng-model="selectedAgency"
@@ -213,50 +237,53 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             </div>
                             <br>
 
-                            <div> <span> Usage</span> </div>
-                            <br>
-                            <div class="mdl-grid mdl-grid--no-spacing">
-
-                                <div class="mdl-cell mdl-cell--3-col" ng-repeat="usage in allLakeUsages">
-                                    <label class="mdl-checkbox mdl-js-checkbox" for="{{usage.id}}">
-                                        <input
-                                            type="checkbox"
-                                            id="{{usage.id}}" class="mdl-checkbox__input"
-                                            ng-checked="lakeObj.usageCode.indexOf(usage.id) > -1"
-                                            ng-click="toggle_usage_code(usage.id)"
-                                            value="{usage.value}"
-                                            name="usageCode" required>
-
-                                        <span class="mdl-checkbox__label" ng-bind="usage.value"></span>
-                                    </label>
-                                </div>
-
+                            <div class="usage-container">
+                                <h5> Usage </h5>
+                               
+                                <ul>
+                                    <li ng-repeat="usage in allLakeUsages">
+                                        <label for="{{usage.id}}" class="mdl-checkbox mdl-js-checkbox" >
+                                            <input
+                                                type="checkbox"
+                                                id="{{usage.id}}" 
+                                                class="mdl-checkbox__input "
+                                                ng-checked="lakeObj.usageCode.indexOf(usage.id) > -1"
+                                                ng-click="toggle_usage_code(usage.id)"
+                                                value="{usage.value}"
+                                                name="usageCode" required />
+                                                <span class="mdl-checkbox__label" ng-bind="usage.value"></span>
+                                        </label>
+                                    </li>
+                                </ul>
+                                
+                            </div> <!-- usage box -->
+                            
+                         
+                            <div class="form-button-container">
+                                <button class="mdl-button mdl-js-button mdl-button--raised"ng-click="create_lake()" type="submit">
+                                    Save Lake information 
+                                </button>
                             </div>
-                            <br>
-
-                           
 
                         </form> 
 
-            </div>
-
-
-
-        </div>
-
-
+            </div> <!-- grid: 8-cell -->
+        
     </main>
+    
     <footer class="mdl-mega-footer">
-        <div class="mdl-mega-footer__top-section">
-            <div class="mdl-mega-footer__left-section">
-                <button class="mdl-mega-footer__social-btn"></button>
-                <button class="mdl-mega-footer__social-btn"></button>
-                <button class="mdl-mega-footer__social-btn"></button>
-            </div>
-            <div class="mdl-mega-footer__right-section">
-                <a href="">Link 1</a>
-                <a href="">Link 2</a>
-                <a href="">Link 3</a>
+        <div id="footer">
+            <div class="mdl-mega-footer__top-section">
+                <div class="mdl-mega-footer__left-section">
+                    <button class="mdl-mega-footer__social-btn"></button>
+                    <button class="mdl-mega-footer__social-btn"></button>
+                    <button class="mdl-mega-footer__social-btn"></button>
+                </div>
+                <div class="mdl-mega-footer__right-section">
+                    <a href="">Link 1</a>
+                    <a href="">Link 2</a>
+                    <a href="">Link 3</a>
+                </div>
             </div>
         </div>
     </footer>
