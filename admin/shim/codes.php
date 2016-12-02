@@ -48,7 +48,7 @@
     ] ;
 
 
-    $featureMonitoring = [
+    $featureMonitorings = [
         ["id" => 1, "value" => "Sensors Installed"],
         ["id" => 2, "value" => "Related to Lake Level"],
         ["id" => 3, "value" => "Constant Value"]
@@ -59,7 +59,7 @@
         "lakeAgencies" => $lakeAgencies,
         "lakeTypes" => $lakeTypes ,
         "featureTypes" => $featureTypes,
-        "featureMonitoring" => $featureMonitoring,
+        "featureMonitorings" => $featureMonitorings,
         "lakeUsages" => $lakeUsages];
 
 

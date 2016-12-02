@@ -59,9 +59,9 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         <h5> Feature Type </h5>
                          <div>
                             <select id="feature_type_select"
-                                    ng-model="selectedFeatureType"
-                                    ng-change="select_feature_type(selectedFeatureType)"
-                                    ng-options="featureType.value for featureType in allFeatureTypes">
+                                    ng-model="featureType"
+                                    ng-change="select_feature_type(featureType)"
+                                    ng-options="featureType.value for featureType in featureTypes">
                             </select>
                         </div>
                         <br>
@@ -80,12 +80,12 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                         <h5> Monitoring status </h5>
                        
-                        <div ng-repeat="monitoring in allFeatureMonitoring">
+                        <div ng-repeat="monitoring in featureMonitorings">
                             <label for="option_{{monitoring.id}}" class="mdl-radio mdl-js-radio">
                                 <input 
                                     type="radio" 
                                     id="option_{{monitoring.id}}" 
-                                    ng-model ="color.name"
+                                    ng-model ="selectedRadio1.id"
                                     name= "monitoring"
                                     class="mdl-radio__button" 
                                     value="{{monitoring.id}}">
@@ -137,17 +137,19 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         return;
                     }
 
-                    // @todo : check for property names
-                    // before doing data binding
-                    $scope.allFeatureTypes = data.result.featureTypes ;
-                    $scope.allFeatureMonitoring = data.result.featureMonitoring ;
-                    
-                    // @todo check array length before data binding
-                    $scope.selectedMonitoring = $scope.allFeatureMonitoring[0] ;
-                    $scope.selectedFeatureType = $scope.allFeatureTypes[0] ;
-                    $scope.color = {
-                        "name" : "1"  
-                    };
+                    // @todo : error checks
+                    // 1. check for property names in result
+                    // 2. check for array length before data binding 
+                    // 
+                    $scope.featureTypes = data.result.featureTypes ;
+                    $scope.featureMonitorings = data.result.featureMonitorings ;
+
+                    // selected feature type
+                    $scope.featureType = $scope.featureTypes[0] ;
+                    // selected Radio button
+                    $scope.selectedRadio1 = {
+                        "id" : $scope.featureMonitorings[0].id  
+                    }; 
 
                     $scope.clearPageMessage();
 
@@ -165,12 +167,14 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                 return;
             }
 
+            // Assign radio and select box 
+            $scope.featureObj.featureTypeCode = $scope.featureType.id ;
+            $scope.featureObj.monitoringCode = $scope.selectedRadio1.id ;
+
             $scope.showProgress("submitting data to server");
             if ($scope.debug) {
                 console.log("form values");
                 console.log($scope.featureObj);
-                console.log($scope.selectedFeatureType);
-                console.log($scope.color);
             }
 
             /*
