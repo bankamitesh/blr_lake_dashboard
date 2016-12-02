@@ -13,7 +13,12 @@ Login::isCustomerAdmin("/admin/login.php") ;
 $gparams = new \stdClass;
 $gparams->debug = false;
 $gparams->base = Url::base();
-$lakeId = Url::getQueryParam("id");
+
+$lakeId = Url::tryQueryParam("id");
+if(empty($lakeId)) {
+    echo "<h1> required parameter id is missing </h1>" ;
+    exit(1);
+}
 
 if (array_key_exists("jsdebug", $_REQUEST)) {
     $gparams->debug = true;
@@ -76,21 +81,20 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                             <div>
                                 <select id="lake_type_select"
-                                        ng-model="selectedLakeType"
-                                        ng-change="select_lake_type(selectedLakeType)"
-                                        ng-options="lakeType.value for lakeType in allLakeTypes">
+                                        ng-model="lakeType"
+                                        ng-change="select_lake_type(lakeType)"
+                                        ng-options="lakeType.value for lakeType in lakeTypes">
                                 </select>
                                 
                             </div>
                             <br>
                             
-                                <div class="mdl-textfield mdl-js-textfield">
+                            <div class="mdl-textfield mdl-js-textfield">
                                 <textarea class="mdl-textfield__input" type="text" rows="5" id="about" name="about"
                                             ng-model="lakeObj.about" required></textarea>
                                
                             </div>
                             <br>
-
 
                             <div class="mdl-textfield mdl-js-textfield">
                                 <h6>address</h6>
@@ -129,9 +133,9 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             <h6> Agency</h6> 
                             <div>
                                 <select id="agency_select" name="agency"
-                                        ng-model="selectedAgency"
-                                        ng-change="select_agency(selectedAgency)"
-                                        ng-options="agency.value for agency in allLakeAgencies"
+                                        ng-model="lakeAgency"
+                                        ng-change="select_agency(lakeAgency)"
+                                        ng-options="agency.value for agency in lakeAgencies"
                                         required>
                                 </select>
                             </div>
@@ -239,17 +243,13 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                     // @todo : check for property names
                     // before doing data binding
-                    $scope.allLakeAgencies = data.result.lakeAgencies ;
-                    $scope.allLakeTypes = data.result.lakeTypes ;
-                    $scope.allLakeUsages = data.result.lakeUsages ;
-
                     // @todo check array length before data binding
-                    $scope.selectedAgency = $scope.allLakeAgencies[0] ;
-                    $scope.lakeObj.agencyCode = $scope.selectedAgency.id ;
-
-                    $scope.selectedLakeType = $scope.allLakeTypes[0] ;
-                    $scope.lakeObj.typeCode = $scope.selectedLakeType.id ;
-
+                    $scope.lakeAgencies = data.result.lakeAgencies ;
+                    $scope.lakeTypes = data.result.lakeTypes ;
+                    $scope.lakeUsages = data.result.lakeUsages ;
+                    
+                    $scope.lakeAgency = $scope.lakeAgencies[0] ;
+                    $scope.lakeType = $scope.lakeTypes[0] ;
                     $scope.clearPageMessage();
 
                 },function(response) {
@@ -259,14 +259,11 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         };
 
         $scope.select_agency = function(agency) {
-            $scope.lakeObj.agencyCode = agency.id ;
-            $scope.selectedAgency = agency ;
+            $scope.lakeAgency = agency ;
         } ;
 
         $scope.select_lake_type = function(lakeType) {
-            $scope.lakeObj.typeCode = lakeType.id ;
-            $scope.selectedLakeType = lakeType ;
-
+            $scope.lakeType = lakeType ;
         } ;
 
         $scope.toggle_usage_code = function(code) {
@@ -290,11 +287,18 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                 return;
             }
 
+            // bind select and radio fields
+            $scope.lakeObj.agencyCode = $scope.lakeAgency.id ;
+            $scope.lakeObj.typeCode = $scope.lakeType.id ;
+
             $scope.showProgress("submitting lake data to server");
             if ($scope.debug) {
                 console.log("form values");
                 console.log($scope.lakeObj);
             }
+
+            // @debug
+            return ;
 
             lake.update($scope.base, $scope.debug, $scope.lakeObj).then(function (response) {
 
@@ -320,13 +324,9 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                 }, function (response) {
                     $scope.processResponse(response);
                 });
-
-
         };
 
-
         $scope.errorMessage = "" ;
-
         // page params
         $scope.gparams = <?php echo json_encode($gparams); ?> ;
         $scope.debug = $scope.gparams.debug;

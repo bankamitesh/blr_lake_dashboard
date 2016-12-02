@@ -21,7 +21,6 @@
     // so we have to get the raw data when content-type is application/json 
     $rawPostData = file_get_contents("php://input");
     $postData = json_decode($rawPostData) ;
-
     
     $dbh = NULL ;
 
@@ -72,7 +71,7 @@
 
     $responseObj = new \stdClass ;
     $responseObj->code = 200;
-    $responseObj->response = "lake lakeObj is success!" ;
+    $responseObj->response = "lake create is success!" ;
     echo json_encode($responseObj) ;
     exit(0) ;
 

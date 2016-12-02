@@ -42,10 +42,10 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
    
         <main class="docs-layout-content mdl-layout__content ">
-            <div class="mdl-grid mdl-grid--no-spacing" id="content">
-                
-                <div class="mdl-cell mdl-cell--3-col"> </div>
-                <div id="content" class="mdl-grid mdl-cell mdl-cell--9-col">
+            <div class="mdl-grid mdl-grid--no-spacing">
+                <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
+                <div class="mdl-cell mdl-cell--1-col"> </div>
+                <div id="content" class="mdl-grid mdl-cell mdl-cell--8-col">
                     <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
                     <form name="createForm">
                          <h5>Create inlet/outlet </h5>
@@ -118,7 +118,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
 <script>
 
-    yuktixApp.controller("yuktix.admin.lake.feature.create", function ($scope, lake, $window) {
+    yuktixApp.controller("yuktix.admin.lake.feature.create", function ($scope, lake, feature,$window) {
 
         $scope.init_codes = function() {
             $scope.showProgress("Getting codes from Server...");
@@ -131,7 +131,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                     }
 
                     if (status != 200 || data.code != 200) {
-                        console.log(response);
+                        console.error(response);
                         var error = data.error || (status + ":error retrieving  data from Server");
                         $scope.showError(error);
                         return;
@@ -177,7 +177,6 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                 console.log($scope.featureObj);
             }
 
-            /*
             feature.create($scope.base, $scope.debug, $scope.featureObj).then(function (response) {
 
                     var status = response.status || 500;
@@ -190,17 +189,16 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                     if (status != 200 || data.code != 200) {
                         console.log("browser response object: %o" ,response);
-                        var error = data.error || (status + ":error submitting lake create form");
+                        var error = data.error || (status + ":error submitting feature create form");
                         $scope.showError(error);
                         return;
                     }
 
-                    $window.location.href = "/admin/view/lake/list.php";
+                    $window.location.href = "/admin/view/lake/feature/list.php";
 
                 }, function (response) {
                     $scope.processResponse(response);
-                }); */
-
+                }); 
 
         };
 

@@ -83,7 +83,7 @@
 
     $responseObj = new \stdClass ;
     $responseObj->code = 200;
-    $responseObj->response = "lake lakeObj update is success!" ;
+    $responseObj->response = "lake update is success!" ;
     echo json_encode($responseObj) ;
     exit(0) ;
 

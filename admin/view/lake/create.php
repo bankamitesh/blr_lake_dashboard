@@ -34,7 +34,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-header.inc'); ?>
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
    
-    <main class="docs-layout-content mdl-layout__content ">
+    <main class="mdl-components__pages mdl-layout__content">
         <div class="mdl-grid mdl-grid--no-spacing" id="content">
             
             <div class="mdl-cell mdl-cell--3-col"> </div>
@@ -70,9 +70,9 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                         <div>
                             <select id="lake_type_select"
-                                    ng-model="selectedLakeType"
-                                    ng-change="select_lake_type(selectedLakeType)"
-                                    ng-options="lakeType.value for lakeType in allLakeTypes">
+                                    ng-model="lakeType"
+                                    ng-change="select_lake_type(lakeType)"
+                                    ng-options="lakeType.value for lakeType in lakeTypes">
                             </select>
                             
                         </div>
@@ -120,9 +120,9 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         <h5> Agency</h5> 
                         <div>
                             <select id="agency_select" name="agency"
-                                    ng-model="selectedAgency"
-                                    ng-change="select_agency(selectedAgency)"
-                                    ng-options="agency.value for agency in allLakeAgencies"
+                                    ng-model="lakeAgency"
+                                    ng-change="select_agency(lakeAgency)"
+                                    ng-options="agency.value for agency in lakeAgencies"
                                     required>
                             </select>
                         </div>
@@ -132,7 +132,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             <h5> Usage </h5>
                             
                             
-                                <div ng-repeat="usage in allLakeUsages">
+                                <div ng-repeat="usage in lakeUsages">
                                     <label for="{{usage.id}}" class="mdl-checkbox mdl-js-checkbox" >
                                         <input
                                             type="checkbox"
@@ -176,9 +176,9 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     yuktixApp.controller("yuktix.admin.lake.create", function ($scope, lake, $window) {
 
         $scope.init_codes = function() {
+
             $scope.showProgress("Getting codes from Server...");
             lake.getCodes($scope.base,$scope.debug).then( function(response) {
-
                     var status = response.status || 500;
                     var data = response.data || {};
                     if($scope.debug) {
@@ -195,16 +195,14 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                     // @todo : check for property names
                     // before doing data binding
-                    $scope.allLakeAgencies = data.result.lakeAgencies ;
-                    $scope.allLakeTypes = data.result.lakeTypes ;
-                    $scope.allLakeUsages = data.result.lakeUsages ;
-
                     // @todo check array length before data binding
-                    $scope.selectedAgency = $scope.allLakeAgencies[0] ;
-                    $scope.lakeObj.agencyCode = $scope.selectedAgency.id ;
 
-                    $scope.selectedLakeType = $scope.allLakeTypes[0] ;
-                    $scope.lakeObj.typeCode = $scope.selectedLakeType.id ;
+                    $scope.lakeAgencies = data.result.lakeAgencies ;
+                    $scope.lakeTypes = data.result.lakeTypes ;
+                    $scope.lakeUsages = data.result.lakeUsages ;
+
+                    $scope.lakeAgency = $scope.lakeAgencies[0] ;
+                    $scope.lakeType = $scope.lakeTypes[0] ;
                     $scope.clearPageMessage();
 
                 },function(response) {
@@ -213,19 +211,13 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
         };
 
-        $scope.select_agency = function(agency) {
-
-            $scope.lakeObj.agencyCode = agency.id ;
-            $scope.selectedAgency = agency ;
-
-        } ;
-
         $scope.select_lake_type = function(lakeType) {
-
-            $scope.lakeObj.typeCode = lakeType.id ;
-            $scope.selectedLakeType = lakeType ;
-
+            $scope.lakeType = lakeType ;
         } ;
+
+        $scope.select_agency = function(agency) {
+            $scope.lakeAgency = agency ;
+        }
 
         $scope.toggle_usage_code = function(code) {
 
@@ -249,10 +241,18 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             }
 
             $scope.showProgress("submitting data to server");
+
+            // bind select and radio fields
+            $scope.lakeObj.agencyCode = $scope.lakeAgency.id ;
+            $scope.lakeObj.typeCode = $scope.lakeType.id ;
+
             if ($scope.debug) {
                 console.log("form values");
                 console.log($scope.lakeObj);
             }
+
+            // @debug
+            return ;
 
             lake.create($scope.base, $scope.debug, $scope.lakeObj).then(function (response) {
 
@@ -285,20 +285,15 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         $scope.debug = $scope.gparams.debug;
         $scope.base = $scope.gparams.base;
 
-        //data initialization
+        // data initialization
         $scope.lakeObj = {};
         $scope.lakeObj.usageCode = [] ;
-        $scope.allLakeAgencies = [] ;
-        $scope.allLakeTypes = [] ;
-        $scope.allLakeUsages = [] ;
-
+        $scope.lakeAgencies = [] ;
+        $scope.lakeTypes = [] ;
+        $scope.lakeUsages = [] ;
 
         $scope.lakeCodes= {};
         $scope.init_codes();
-
-
-
-
 
     });
 </script>

@@ -268,7 +268,6 @@
             		// call clearPageMessage 
             		$rootScope.clearPageMessage() ;
             		return ;
-            		
             	}
             	
 				$rootScope.showProgressIcon = false ;
@@ -758,7 +757,35 @@
             return lake ;
         });
 
+		yuktixApp.factory('feature', function($http) {
 
+            var feature1 = {} ;
+
+			feature1.create = function(base,debug,featureObj) {
+
+				var myurl = "/admin/shim/lake/feature/create.php";
+				if(debug) { 
+					console.log("POST: %s, data : %O", myurl, featureObj);
+				}
+
+                var promise = $http({
+                    method : 'POST',
+                    url : myurl,
+                    headers : { 'Content-Type' : 'application/json' },
+					data: featureObj
+					
+                }).then(
+                    function (response) { return response ; }, 
+                    function(response) { return response ; }
+                );
+
+                return promise;
+
+            };
+
+            return feature1 ;
+
+        });
 	
         // controller using text service for reverse func
         // inside the controller we use the promise from service
