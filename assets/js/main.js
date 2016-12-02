@@ -685,6 +685,30 @@
             	
             };
 
+			lake.update = function(base,debug,lakeObj) {
+            	
+            	var myurl = base + '/admin/shim/lake/update.php' ;
+            	  
+            	if(debug) {
+					console.log("POST " + myurl); 
+					console.log(lakeObj);
+				}
+            	
+            	var promise = $http({
+					method : 'POST',
+					url : myurl,
+					data : lakeObj,
+					headers: {'Content-Type': 'application/json'}
+				
+				}).then(
+                    function (response) { return response ; }, 
+                    function(response) { return response ; }
+                );
+
+                return promise;
+            	
+            };
+
             lake.getCodes = function(base,debug) {
 
                  var myurl = base + '/admin/shim/codes.php' ;

@@ -10,27 +10,41 @@
                 
                 <li class="mdl-list__item">
                     <a href="#" class="mdl-components__link mdl-component"> 
+                        <span class="mdl-list__item-primary-content">Zones/Boundaries</span> 
+                    </a>
+                </li>
+
+                 <li class="mdl-list__item">
+                    <a href="#" class="mdl-components__link mdl-component"> 
+                        <span class="mdl-list__item-primary-content">Inlet/Outlets</span> 
+                    </a>
+                </li>
+
+                <li class="mdl-list__item">
+                    <a href="#" class="mdl-components__link mdl-component"> 
                         <span class="mdl-list__item-primary-content">Bathymetry</span> 
                     </a>
                 </li>
 
                 <li class="mdl-list__item">
                     <a href="#" class="mdl-components__link mdl-component"> 
-                        <span class="mdl-list__item-primary-content">Stage Volume information</span> 
+                        <span class="mdl-list__item-primary-content">Stage volume</span> 
+                    </a>
+                </li>
+
+                 <li class="mdl-list__item">
+                    <a href="#" class="mdl-components__link mdl-component"> 
+                        <span class="mdl-list__item-primary-content">Stage area</span> 
                     </a>
                 </li>
 
                 <li class="mdl-list__item">
                     <a href="#" class="mdl-components__link mdl-component"> 
-                        <span class="mdl-list__item-primary-content">Zones</span> 
+                        <span class="mdl-list__item-primary-content">Evaporation data</span> 
                     </a>
                 </li>
 
-                <li class="mdl-list__item">
-                    <a href="#" class="mdl-components__link mdl-component"> 
-                        <span class="mdl-list__item-primary-content">Inlet/Outlets</span> 
-                    </a>
-                </li>
+
         </ul>
     </div> <!-- edit:sidebar -->
 

@@ -42,6 +42,7 @@
         $cname = StringUtil::convertNameToKey($postData->name) ;
         $usageCode = json_encode($postData->usageCode);
 
+        // @todo error check for required params
         $stmt->bindParam(":name",$postData->name, \PDO::PARAM_STR);
         $stmt->bindParam(":cname",$cname, \PDO::PARAM_STR);
         $stmt->bindParam(":about",$postData->about, \PDO::PARAM_STR);

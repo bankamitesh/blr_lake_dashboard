@@ -181,7 +181,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 <script src="/assets/js/material.min.js"></script>
 <script src="/assets/js/mdl-selectfield.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js"></script>
+<script src="/assets/js/main.js?v=1"></script>
 
 
 <script>
@@ -283,9 +283,46 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
         };
 
-        $scope.update_lake = function() {
-            console.log($scope.lakeObj);
-        }
+        $scope.update_lake = function () {
+
+            var errorObject = $scope.createForm.$error;
+            if ($scope.validateForm(errorObject)) {
+                return;
+            }
+
+            $scope.showProgress("submitting lake data to server");
+            if ($scope.debug) {
+                console.log("form values");
+                console.log($scope.lakeObj);
+            }
+
+            lake.update($scope.base, $scope.debug, $scope.lakeObj).then(function (response) {
+
+                    var status = response.status || 500;
+                    var data = response.data || {};
+
+                    if ($scope.debug) {
+                        console.log("API response :");
+                        console.log(data);
+                    }
+
+                    if (status != 200 || data.code != 200) {
+                        console.log("browser response object: %o" ,response);
+                        var error = data.error || (status + ":error submitting lake create form");
+                        $scope.showError(error);
+                        return;
+                    }
+
+                    $scope.showMessage("Lake details updated successfully!");
+                    // bring focus to message 
+                    $window.scrollTo(0,0) ;
+                    
+                }, function (response) {
+                    $scope.processResponse(response);
+                });
+
+
+        };
 
 
         $scope.errorMessage = "" ;

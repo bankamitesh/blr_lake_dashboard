@@ -20,20 +20,25 @@
     // PHP $_REQUEST only works for x-www-form-urlencoded content type
     // so we have to get the raw data when content-type is application/json 
     $rawPostData = file_get_contents("php://input");
-    $postData = json_decode($rawPostData) ;
 
-    
+    if(Config::getInstance()->is_debug()){ 
+        Logger::getInstance()->debug("raw POST data for shim /admin/shim/lake/update.php");
+        Logger::getInstance()->debug($rawPostData);
+    }
+
+    $postData = json_decode($rawPostData) ;
     $dbh = NULL ;
 
     try {
 
         $dbh = PDOWrapper::getHandle();
-        $sql = "insert INTO atree_lake(name, cname,about,lat,lon,address, max_area, " 
-                . " max_volume, recharge_rate, agency_code, type_code, usage_code, "
-                . " created_on) VALUES (:name, :cname, :about, :lat, :lon, :address, "
-                . ":max_area, :max_volume, :recharge_rate, :agency_code, :type_code, :usage_code, "
-                . " now())" ; 
-
+        $sql = " update atree_lake set name = :name, cname = :cname, about = :about, "
+                ." lat = :lat, lon =:lon ,address = :address, max_area = :max_area, " 
+                ." max_volume = :max_volume, recharge_rate = :recharge_rate, "
+                ." agency_code= :agency_code, type_code = :type_code, usage_code = :usage_code, "
+                ." updated_on = now() where id = :id ";
+                
+        
         // Tx start
         $dbh->beginTransaction();
         $stmt = $dbh->prepare($sql);
@@ -41,7 +46,12 @@
         // bind params 
         $cname = StringUtil::convertNameToKey($postData->name) ;
         $usageCode = json_encode($postData->usageCode);
+       
+        if(Config::getInstance()->is_debug()){ 
+            Logger::getInstance()->debug($usageCode);
+        }
 
+        // @todo error check for required params
         $stmt->bindParam(":name",$postData->name, \PDO::PARAM_STR);
         $stmt->bindParam(":cname",$cname, \PDO::PARAM_STR);
         $stmt->bindParam(":about",$postData->about, \PDO::PARAM_STR);
@@ -54,6 +64,7 @@
         $stmt->bindParam(":agency_code",$postData->agencyCode, \PDO::PARAM_INT);
         $stmt->bindParam(":type_code",$postData->typeCode, \PDO::PARAM_INT);
         $stmt->bindParam(":usage_code",$usageCode, \PDO::PARAM_STR);
+        $stmt->bindParam(":id",$postData->id, \PDO::PARAM_STR);
 
         $stmt->execute();
         $stmt = NULL;
@@ -64,6 +75,7 @@
 
     } catch (\Exception $ex) {
 
+        Logger::getInstance()->error($ex->message);
         $dbh->rollBack();
         $dbh = null;
         throw $ex ;
@@ -71,7 +83,7 @@
 
     $responseObj = new \stdClass ;
     $responseObj->code = 200;
-    $responseObj->response = "lake lakeObj is success!" ;
+    $responseObj->response = "lake lakeObj update is success!" ;
     echo json_encode($responseObj) ;
     exit(0) ;
 

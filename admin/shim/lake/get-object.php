@@ -22,9 +22,6 @@
     $rawPostData = file_get_contents("php://input");
     $postData = json_decode($rawPostData) ;
 
-    // @debug
-    sleep(3) ;
-
     if(!property_exists($postData, "lakeId")) {
         // API response 
         $xmsg = "required parameter lakeId is missing" ;

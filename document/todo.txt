@@ -1,0 +1,13 @@
+
+- Lake edit : update page
+- IO create /List/Edit page
+- Lake Bathymetry page 
+- Lake zone page 
+- Admin quick links 
+- Add photo to Lake form
+
+- app/view
+- index.html
+- lakes details 
+    - 
+
