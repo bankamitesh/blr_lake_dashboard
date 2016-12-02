@@ -40,10 +40,11 @@
     ] ;
 
 
-    $inletTypes = [
-        ["id" => 1, "value" => "Storm water fed"],
-        ["id" => 2, "value" => "Sewage fed"],
-        ["id" => 3, "value" => "Mixed inflow"]
+    $featureTypes = [
+        ["id" => 1, "value" => "Storm water inlet"],
+        ["id" => 2, "value" => "Sewage inlet"],
+        ["id" => 3, "value" => "Mixed inlet"],
+        ["id" => 4, "value" => "Outlet"]
     ] ;
 
 
@@ -57,6 +58,7 @@
     $codes = [
         "lakeAgencies" => $lakeAgencies,
         "lakeTypes" => $lakeTypes ,
+        "featureTypes" => $featureTypes,
         "featureMonitoring" => $featureMonitoring,
         "lakeUsages" => $lakeUsages];
 

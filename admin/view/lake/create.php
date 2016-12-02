@@ -29,8 +29,8 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 </head>
 
 <body ng-controller="yuktix.admin.lake.create">
-    <div class="mdl-layout mdl-js-layout" id="container">
 
+    <div class="mdl-layout mdl-js-layout" id="container">
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-header.inc'); ?>
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
    
@@ -144,10 +144,8 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                             name="usageCode" />
                                             <span class="mdl-checkbox__label" ng-bind="usage.value"></span>
                                     </label>
-                                
-                            
-                            
                                 </div> 
+
                         </div> <!-- usage -->
                         
                         <div class="form-button-container">
@@ -158,7 +156,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                     </form> 
 
-        </div> <!-- grid: 8-cell -->
+        </div> <!-- grid -->
         
     </main>
     
@@ -177,9 +175,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
     yuktixApp.controller("yuktix.admin.lake.create", function ($scope, lake, $window) {
 
-
         $scope.init_codes = function() {
-
             $scope.showProgress("Getting codes from Server...");
             lake.getCodes($scope.base,$scope.debug).then( function(response) {
 
