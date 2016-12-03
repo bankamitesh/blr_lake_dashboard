@@ -87,7 +87,6 @@
                                     {{lake.maxArea}},{{lake.maxVolume}}
                                   </span>
                                   <span class="mdl-list__item-sub-title">Area/Volume</span>
-
                               </li>
                              
                               <li class="mdl-list__item"> 

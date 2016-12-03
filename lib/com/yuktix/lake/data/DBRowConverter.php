@@ -38,6 +38,27 @@ namespace com\yuktix\lake\data {
 
         }
 
+        static function convertFeatureRow($row) {
+
+            $dbObj = new \stdClass ;
+            if(empty($row)) {
+                return $dbObj ;
+            }
+
+            $dbObj->name = $row["name"];
+            $dbObj->lat = $row["lat"] ;
+            $dbObj->lon = $row["lon"] ;
+            $dbObj->maxHeight = $row["max_height"] ;
+            $dbObj->width = $row["width"] ;
+
+            $dbObj->iocode = $row["io_code"];
+            $dbObj->featureTypeCode = $row["feature_type_code"];
+            $dbObj->monitoringCode = $row["monitoring_code"];
+            $dbObj->id = $row["id"];
+
+            return $dbObj ;
+
+        }
     }
 
 }

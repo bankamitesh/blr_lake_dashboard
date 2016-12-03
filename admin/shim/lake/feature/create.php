@@ -36,6 +36,7 @@
     $postData = json_decode($rawPostData) ;
 
     $dbh = NULL ;
+    $featureId = NULL ;
 
     try {
 
@@ -56,6 +57,8 @@
         
         // bind params 
         // @todo input check for required params
+        // @todo unique constraint checks
+        // @todo - placeholders for missing data 
         $iocode = convert_feature_to_io_code($postData->featureTypeCode);
         $maxHeight = intval($postData->height) ;
         $width = intval($postData->width) ;
@@ -72,10 +75,12 @@
         $stmt->bindParam(":lake_id",$postData->lakeId, \PDO::PARAM_STR);
 
         $stmt->execute();
-        $stmt = NULL;
-
-        //Tx end
+        // remember lastInsertId is a function!
+        $featureId = $dbh->lastInsertId() ;
+        
+        // Tx end
         $dbh->commit();
+        $stmt = NULL;
         $dbh = null;
 
     } catch (\Exception $ex) {
@@ -88,6 +93,7 @@
     $responseObj = new \stdClass ;
     $responseObj->code = 200;
     $responseObj->response = "lake feature creation is success!" ;
+    $responseObj->featureId = $featureId ;
     echo json_encode($responseObj) ;
     exit(0) ;
 

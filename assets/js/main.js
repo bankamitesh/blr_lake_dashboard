@@ -783,6 +783,33 @@
 
             };
 
+			feature1.getFeatureObject = function(base,debug,lakeId,featureId) {
+
+				var myurl = "/admin/shim/lake/feature/get-object.php";
+				var postData = {
+					"lakeId" :lakeId,
+					"featureId" : featureId
+				};
+
+				if(debug) { 
+					console.log("POST: %s, data : %O", myurl, postData);
+				}
+
+                var promise = $http({
+                    method : 'POST',
+                    url : myurl,
+                    headers : { 'Content-Type' : 'application/json' },
+					data: postData
+					
+                }).then(
+                    function (response) { return response ; }, 
+                    function(response) { return response ; }
+                );
+
+                return promise;
+
+            };
+
             return feature1 ;
 
         });
