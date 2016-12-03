@@ -57,7 +57,7 @@
                <div class="table-container" ng-show="display.table">
                  <div class="mdl-grid">
                    <div class="mdl-cell mdl-cell--6-col">
-                      <h5> Lakes </h5>
+                      &nbsp;
                     </div>
                     <div class="mdl-cell mdl-cell--3-col">
                       <!-- FAB button with ripple -->
@@ -67,38 +67,53 @@
                     </div>
                   </div> <!-- top grid -->
 
-                 <table class="mdl-data-table mdl-js-data-table">
-                  <thead>
-                    <tr>
-                      <th class="mdl-data-table__cell--non-numeric">Name</th>
-                      <th class="mdl-data-table__cell--non-numeric">Location</th>
-                      <th class="mdl-data-table__cell--non-numeric">&nbsp;</th>
-                      <th class="mdl-data-table__cell--non-numeric">Area</th>
-                      <th class="mdl-data-table__cell--non-numeric">Volume</th>
-                      <th class="mdl-data-table__cell--non-numeric">&nbsp;</th>
-                      <th class="mdl-data-table__cell--non-numeric">&nbsp;</th>
+                <div class="mdl-grid">
+                  <div ng-repeat="lake in lakes" class="lake-card-container"> 
+                      <div   class="mdl-card mdl-shadow--4dp wide-mdl-card">
+                        <h3 class="mdl-card__title" ng-bind="lake.name"></h3>
+                      <div class="mdl-card__supporting-text">
+                          <div> 
+                            <ul class="mdl-list">
+                              <li class="mdl-list__item"> 
+                                <span class="mdl-list__item-primary-content">
+                                  <i class="material-icons mdl-list__item-icon">place</i>
+                                    {{lake.lat}},{{lake.lon}}
+                                  </span>
+                                  <span class="mdl-list__item-sub-title">Location</span>
+                              </li>
+                              <li class="mdl-list__item"> 
+                                <span class="mdl-list__item-primary-content">
+                                  <i class="material-icons mdl-list__item-icon">border_outer</i>
+                                    {{lake.maxArea}},{{lake.maxVolume}}
+                                  </span>
+                                  <span class="mdl-list__item-sub-title">Area/Volume</span>
 
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr ng-repeat="lake in lakes">
-                        <td class="mdl-data-table__cell--non-numeric" ng-bind="lake.name"></td>
-                        <td class="mdl-data-table__cell--non-numeric" ng-bind="lake.lat"></td>
-                        <td class="mdl-data-table__cell--non-numeric" ng-bind="lake.lon"></td>    
-                        <td class="mdl-data-table__cell--non-numeric" ng-bind="lake.maxArea"></td>
-                        <td class="mdl-data-table__cell--non-numeric" ng-bind="lake.maxVolume"></td>
-                        
-                        <td>
-                          <button class="mdl-button mdl-js-button" ng-click="goto_edit(lake.id)"><i class="material-icons">edit</i></button>
-                        </td>
-                        <td>
+                              </li>
+                             
+                              <li class="mdl-list__item"> 
+                                <span class="mdl-list__item-primary-content">
+                                  <i class="material-icons mdl-list__item-icon">airport_shuttle</i>
+                                    {{lake.address}} 
+                                  </span>
+                                  <span class="mdl-list__item-sub-title">Address</span>
+
+                              </li>
+
+                            </ul>
+                          </div>
+                          <p ng-bind="lake.about"> </p>
+                      </div>
+
+                      <div class="mdl-card__actions mdl-card--border">
+                        <button class="mdl-button mdl-js-button" ng-click="goto_edit(lake.id)"><i class="material-icons">edit</i></button>
+                          &nbsp;
                           <button class="mdl-button mdl-js-button"><i class="material-icons">delete</i></button>
-                          </td>
-                    </tr>
+                          
+                      </div>
 
-                  </tbody>
-                </table>
-              </div> <!-- table container -->
+                    </div> <!-- lake card -->
+                  </div>
+              </div> <!-- lake grid -->
             
           </div> 
         </div> <!-- grid -->
