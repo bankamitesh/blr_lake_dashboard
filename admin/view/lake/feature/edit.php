@@ -86,20 +86,72 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         </div>
                         <br>
 
-                        <h6> Monitoring status </h6>
-                       
-                        <div ng-repeat="monitoring in featureMonitorings">
-                            <label for="option_{{monitoring.id}}" class="mdl-radio mdl-js-radio">
-                                <input 
-                                    type="radio" 
-                                    id="option_{{monitoring.id}}" 
-                                    ng-model ="selectedRadio1.id"
-                                    name= "monitoring"
-                                    class="mdl-radio__button" 
-                                    value="{{monitoring.id}}">
-                                <span class="mdl-radio__label" ng-bind="monitoring.value"></span>
-                            </label>
-                        </div>
+                        <h5> Monitoring status </h5>
+                        
+                        <div id="monitoring-container" class="mdl-tabs mdl-js-tabs">
+                            <div class="mdl-tabs__tab-bar">
+                                <a class="mdl-tabs__tab is-active" href="#sensor-panel">Sensor</a>
+                                <a class="mdl-tabs__tab" href="#lake-panel">Lake Level</a>
+                                <a class="mdl-tabs__tab" href="#rate-panel">Constant</a>
+
+                            </div>
+
+                            <div class="mdl-tabs__panel is-active" id="sensor-panel">
+                                <h6>Serial Number</h6>
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" name="serialNumber"  ng-model="sensorObj.serialNumber">
+                                </div>
+                                <br>
+
+                                <h6>Part Number</h6>
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" name="partNumber"  ng-model="sensorObj.partNumber">
+                                </div>
+                                <br>
+
+                                <h6>Installed by</h6>
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" name="serialNumber"  ng-model="sensorObj.installerName">
+                                </div>
+                                <br>
+
+                                <h6>Install date</h6>
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" name="serialNumber"  ng-model="sensorObj.installDate">
+                                </div>
+                                <br>
+
+                                <h6> Sensor stage flow relationship</h6>
+                                <div>
+                                      <label class="mdl-button mdl-button--colored mdl-js-button">
+                                        <span> <i class="material-icons">attachment</i> </span>
+                                        Upload CSV <input type="file" filelist-bind class="none"  name="files" multiple="true" style="display: none;">
+                                    </label>
+                                </div>
+                                <br>
+                                <div>
+                                    <ul class="mdl-list">
+                                        <li "mdl-list__item" ng-repeat="file in files">
+                                            <span class="mdl-list__item-primary-content">
+                                                <i class="material-icons mdl-list__item-icon">insert_drive_file</i>
+                                                {{ file.name}}, {{file.size/1000}} kb
+                                            </span>
+                                        
+                                        </li>
+                                    </ul>
+                                </div>
+                        
+                            </div> <!-- tab:sensor -->
+
+                            <div class="mdl-tabs__panel" id="lake-panel">
+                                <p>Second tab's content.</p>
+                            </div> <!-- tab:lake -->
+
+                            <div class="mdl-tabs__panel" id="rate-panel">
+                                <p>Third tab's content.</p>
+                            </div> <!-- tab: constant -->
+
+                        </div> <!-- monitoring -->
 
                         <div class="form-button-container">
                             <button class="mdl-button mdl-js-button mdl-button--raised"ng-click="update_feature()" type="submit">
@@ -126,7 +178,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
 <script>
 
-    yuktixApp.controller("yuktix.admin.lake.feature.edit", function ($scope, lake, feature,$window) {
+    yuktixApp.controller("yuktix.admin.lake.feature.edit", function ($scope, lake, feature,fupload,$window) {
 
           $scope.get_feature_object = function() {
 
@@ -211,7 +263,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                     if($scope.debug) {
                         console.log("selected feature type=%O", $scope.featureType);
                     }
-                    
+
                     // selected Radio button
                     $scope.selectedRadio1 = {
                         "id" : $scope.featureObj.monitoringCode  
