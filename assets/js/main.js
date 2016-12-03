@@ -783,12 +783,11 @@
 
             };
 
-			feature1.getFeatureObject = function(base,debug,lakeId,featureId) {
+			feature1.getFeatureObject = function(base,debug,featureId) {
 
 				var myurl = "/admin/shim/lake/feature/get-object.php";
 				var postData = {
-					"lakeId" :lakeId,
-					"featureId" : featureId
+					"id" :featureId
 				};
 
 				if(debug) { 

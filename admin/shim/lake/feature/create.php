@@ -60,7 +60,7 @@
         // @todo unique constraint checks
         // @todo - placeholders for missing data 
         $iocode = convert_feature_to_io_code($postData->featureTypeCode);
-        $maxHeight = intval($postData->height) ;
+        $maxHeight = intval($postData->maxHeight) ;
         $width = intval($postData->width) ;
 
         $stmt->bindParam(":name",$postData->name, \PDO::PARAM_STR);

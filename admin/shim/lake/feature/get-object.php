@@ -32,17 +32,12 @@
     $rawPostData = file_get_contents("php://input");
     $postData = json_decode($rawPostData) ;
 
-    if(!property_exists($postData, "lakeId")) {
-        send_error_400("lakeId");
-    }
-
-    if(!property_exists($postData, "featureId")) {
-        send_error_400("featureId");
+    if(!property_exists($postData, "id")) {
+        send_error_400("id");
     }
 
     $mysqli = MySQL\Connection::getInstance()->getHandle();
-    $lakeId = $mysqli->real_escape_string($postData->lakeId);
-    $featureId = $mysqli->real_escape_string($postData->featureId);
+    $featureId = $mysqli->real_escape_string($postData->id);
 
     $sql = " select * from atree_lake_feature where id = ".$featureId ;
     $row = MySQL\Helper::fetchRow($mysqli, $sql);

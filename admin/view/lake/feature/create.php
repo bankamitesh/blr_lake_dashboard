@@ -73,8 +73,8 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         <br>
 
                           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" name="height" id="height" ng-model="featureObj.height" >
-                            <label class="mdl-textfield__label" for="height">Height</label>
+                            <input class="mdl-textfield__input" type="text" name="height" id="height" ng-model="featureObj.maxHeight" >
+                            <label class="mdl-textfield__label" for="height">Max. Height</label>
                         </div>
                         <br>
 
@@ -212,8 +212,9 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         // data initialization
         $scope.featureObj = {};
         $scope.featureObj.lakeId = $scope.lakeId ;
-        $scope.allFeatureMonitoring = [] ;
-        $scope.allFeatureTypes = [] ;
+        $scope.featureMonitorings = [] ;
+        $scope.featureTypes = [] ;
+        
         
         $scope.init_codes();
 

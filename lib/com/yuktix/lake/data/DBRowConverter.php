@@ -24,8 +24,8 @@ namespace com\yuktix\lake\data {
             $lake->maxVolume = $row["max_volume"] ;
             $lake->rechargeRate = $row["recharge_rate"] ;
 
-            $lake->typeCode = $row["type_code"];
-            $lake->agencyCode = $row["agency_code"];
+            $lake->typeCode = intval($row["type_code"]);
+            $lake->agencyCode = intval($row["agency_code"]);
             $lake->usageCode = [] ;
             $dbUsageCodes = json_decode($row["usage_code"]);
             foreach ($dbUsageCodes as $dbUsageCode) {
@@ -51,10 +51,11 @@ namespace com\yuktix\lake\data {
             $dbObj->maxHeight = $row["max_height"] ;
             $dbObj->width = $row["width"] ;
 
-            $dbObj->iocode = $row["io_code"];
-            $dbObj->featureTypeCode = $row["feature_type_code"];
-            $dbObj->monitoringCode = $row["monitoring_code"];
+            $dbObj->iocode = intval($row["io_code"]);
+            $dbObj->featureTypeCode = intval($row["feature_type_code"]);
+            $dbObj->monitoringCode = intval($row["monitoring_code"]);
             $dbObj->id = $row["id"];
+            $dbObj->lakeId = $row["lake_id"];
 
             return $dbObj ;
 
