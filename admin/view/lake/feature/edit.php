@@ -86,17 +86,18 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         </div>
                         <br>
 
-                        <h5> Monitoring status </h5>
                         
+                        <p> This feature is using {{featureMonitoring.value}} </p>
+                        <h5> Monitoring status </h5>
                         <div id="monitoring-container" class="mdl-tabs mdl-js-tabs">
                             <div class="mdl-tabs__tab-bar">
-                                <a class="mdl-tabs__tab is-active" href="#sensor-panel">Sensor</a>
-                                <a class="mdl-tabs__tab" href="#lake-panel">Lake Level</a>
-                                <a class="mdl-tabs__tab" href="#rate-panel">Constant</a>
+                                <a class="mdl-tabs__tab" ng-class="{'is-active':display.tabs.sensor}" href="#sensor-panel">Sensor</a>
+                                <a class="mdl-tabs__tab" ng-class="{'is-active':display.tabs.lake}"href="#lake-panel">Lake Level</a>
+                                <a class="mdl-tabs__tab" ng-class="{'is-active':display.tabs.constant}" href="#rate-panel">Constant</a>
 
                             </div>
 
-                            <div class="mdl-tabs__panel is-active" id="sensor-panel">
+                            <div class="mdl-tabs__panel" ng-class="{'is-active':display.tabs.sensor}" id="sensor-panel">
                                 <h6>Serial Number</h6>
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                     <input class="mdl-textfield__input" type="text" name="serialNumber"  ng-model="sensorObj.serialNumber">
@@ -121,17 +122,17 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                 </div>
                                 <br>
 
-                                <h6> Sensor stage flow relationship</h6>
+                                <h6> Sensor stage flow</h6>
                                 <div>
                                       <label class="mdl-button mdl-button--colored mdl-js-button">
                                         <span> <i class="material-icons">attachment</i> </span>
-                                        Upload CSV <input type="file" filelist-bind class="none"  name="files" multiple="true" style="display: none;">
+                                        Upload CSV <input type="file" filelist-bind class="none"  name="files1" style="display: none;">
                                     </label>
                                 </div>
                                 <br>
                                 <div>
                                     <ul class="mdl-list">
-                                        <li "mdl-list__item" ng-repeat="file in files">
+                                        <li "mdl-list__item" ng-repeat="file in files1">
                                             <span class="mdl-list__item-primary-content">
                                                 <i class="material-icons mdl-list__item-icon">insert_drive_file</i>
                                                 {{ file.name}}, {{file.size/1000}} kb
@@ -143,11 +144,29 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         
                             </div> <!-- tab:sensor -->
 
-                            <div class="mdl-tabs__panel" id="lake-panel">
-                                <p>Second tab's content.</p>
+                            <div class="mdl-tabs__panel" ng-class="{'is-active':display.tabs.lake}" id="lake-panel">
+                                <h6> Lake stage flow</h6>
+                                <div>
+                                      <label class="mdl-button mdl-button--colored mdl-js-button">
+                                        <span> <i class="material-icons">attachment</i> </span>
+                                        Upload CSV <input type="file" filelist-bind class="none"  name="files2" style="display: none;">
+                                    </label>
+                                </div>
+                                <br>
+                                <div>
+                                    <ul class="mdl-list">
+                                        <li "mdl-list__item" ng-repeat="file in files2">
+                                            <span class="mdl-list__item-primary-content">
+                                                <i class="material-icons mdl-list__item-icon">insert_drive_file</i>
+                                                {{ file.name}}, {{file.size/1000}} kb
+                                            </span>
+                                        
+                                        </li>
+                                    </ul>
+                                </div>
                             </div> <!-- tab:lake -->
 
-                            <div class="mdl-tabs__panel" id="rate-panel">
+                            <div class="mdl-tabs__panel" ng-class="{'is-active':display.tabs.constant}" id="rate-panel">
                                 <p>Third tab's content.</p>
                             </div> <!-- tab: constant -->
 
@@ -238,37 +257,34 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         return ;
                     }
 
-                    if($scope.featureMonitorings.length == 0) {
-                        console.error("server did not return  feature type codes");
-                        return ;
-                    }
-
-                    //  feature type SELECT Box
                     $scope.featureType = {} ;
-                    for (var i = 0 ; i < $scope.featureTypes.length; i++) {
-                        if($scope.debug) {
-                            console.log("feature type code: comparing %O with %d",$scope.featureTypes[i],$scope.featureObj.featureTypeCode);
-                        }
-
-                        if($scope.featureTypes[i].id == $scope.featureObj.featureTypeCode) {
-                            $scope.featureType = $scope.featureTypes[i];
-                        }
-                    }
+                    $scope.find_feature_type_code($scope.featureObj.featureTypeCode);
 
                     if(angular.equals($scope.featureType, {})) {
                         console.error("select feature type code not assigned: revert to default");
                         $scope.featureType = $scope.featureTypes[0];
                     }
 
-                    if($scope.debug) {
-                        console.log("selected feature type=%O", $scope.featureType);
+                    if($scope.featureMonitorings.length == 0) {
+                        console.error("server did not return  monitoring codes");
+                        return ;
                     }
 
-                    // selected Radio button
-                    $scope.selectedRadio1 = {
-                        "id" : $scope.featureObj.monitoringCode  
-                    }; 
+                    //  monitoring SELECT
+                    $scope.featureMonitoring = {} ;
+                    $scope.find_monitoring_code($scope.featureObj.monitoringCode);
 
+                    if(angular.equals($scope.featureMonitoring, {})) {
+                        console.error("monitoring  code not assigned: revert to default");
+                        $scope.featureMonitoring = $scope.featureMonitorings[0];
+                    }
+                    
+                    if($scope.debug) {
+                        console.log("selected feature type=%O", $scope.featureType);
+                        console.log("selected monitoring =%O", $scope.featureMonitoring);
+                    }
+
+                    $scope.select_monitoring_tab($scope.featureMonitoring.id) ;
                     $scope.clearPageMessage();
 
                 },function(response) {
@@ -277,7 +293,61 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
         };
 
-        
+        $scope.select_monitoring_tab = function(code) {
+             // turn on/off display tabs
+            switch(code) {
+                case 1 :
+                    $scope.display.tabs.sensor = true ;
+                    $scope.display.tabs.lake = false ;
+                    $scope.display.tabs.constant = false ;
+                    break ;
+
+                case 2 :
+                    $scope.display.tabs.sensor = false ;
+                    $scope.display.tabs.lake = true ;
+                    $scope.display.tabs.constant = false ;
+                    break ;
+
+                case 3 :
+                    $scope.display.tabs.sensor = false ;
+                    $scope.display.tabs.lake = false ;
+                    $scope.display.tabs.constant = true ;
+                    break ;
+
+                default :
+                    console.error("unknown feature monitoring code...");
+                    break ;
+            }
+
+            return ;      
+        } ;
+
+        /* @todo add select_feature_type() function */
+        $scope.find_feature_type_code = function(code) {
+
+            for (var i = 0 ; i < $scope.featureTypes.length; i++) {
+                if($scope.debug) {
+                    console.log("feature type code: comparing %O with %d",$scope.featureTypes[i], code);
+                }
+
+                if($scope.featureTypes[i].id == code) {
+                    $scope.featureType = $scope.featureTypes[i];
+                }
+            }
+        };
+
+        $scope.find_monitoring_code = function(code) {
+            for (var i = 0 ; i < $scope.featureMonitorings.length; i++) {
+                if($scope.debug) {
+                    console.log("feature monitoring code: comparing %O with %d",$scope.featureMonitorings[i],code);
+                }
+
+                if($scope.featureMonitorings[i].id == code) {
+                    $scope.featureMonitoring = $scope.featureMonitorings[i];
+                }
+            }
+        };
+
         $scope.update_feature = function () {
 
             var errorObject = $scope.createForm.$error;
@@ -287,8 +357,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
             // Assign radio and select box 
             $scope.featureObj.featureTypeCode = $scope.featureType.id ;
-            $scope.featureObj.monitoringCode = $scope.selectedRadio1.id ;
-
+            
             $scope.showProgress("submitting data to server");
             if ($scope.debug) {
                 console.log("form values");
@@ -334,6 +403,14 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         $scope.featureObj.lakeId = $scope.lakeId ;
         $scope.featureObj.id = $scope.featureId ;
 
+        // display data 
+        $scope.display = {} ;
+        $scope.display.tabs = {
+            "sensor" : false ,
+            "lake" : false, 
+            "constant" : true 
+        } ;
+        
         $scope.featureMonitorings = [] ;
         $scope.featureTypes = [] ;
         $scope.get_feature_object() ;
