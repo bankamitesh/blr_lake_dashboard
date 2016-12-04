@@ -32,7 +32,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
 <head>
 
-    <title> Lake Feature create page </title>
+    <title> Lake Feature edit page </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -58,7 +58,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                          <h5>Edit inlet/outlet </h5>
                         
                         <h6>Feature Name </h6>
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <div class="mdl-textfield mdl-js-textfield">
                             <input class="mdl-textfield__input" type="text" name="name" id="name" ng-model="featureObj.name" required>
                            
                         </div>
@@ -74,14 +74,27 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         </div>
                         <br>
                         
+                        <h6>Latitude</h6>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" name="lat" id="lat" ng-model="featureObj.lat">
+                        </div>
+                        <br>
+
+                        <h6>Longitude</h6>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" name="lon" id="lon" ng-model="featureObj.lon" >
+                            
+                        </div>
+                        <br>
+
                         <h6>Width </h6>
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <div class="mdl-textfield mdl-js-textfield">
                             <input class="mdl-textfield__input" type="text" name="width" id="width" ng-model="featureObj.width">
                         </div>
                         <br>
 
                         <h6>Max. Height</h6>
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <div class="mdl-textfield mdl-js-textfield">
                             <input class="mdl-textfield__input" type="text" name="height" id="height" ng-model="featureObj.maxHeight" >
                         </div>
                         <br>
@@ -91,34 +104,34 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         <h5> Monitoring status </h5>
                         <div id="monitoring-container" class="mdl-tabs mdl-js-tabs">
                             <div class="mdl-tabs__tab-bar">
-                                <a class="mdl-tabs__tab" ng-class="{'is-active':display.tabs.sensor}" href="#sensor-panel">Sensor</a>
-                                <a class="mdl-tabs__tab" ng-class="{'is-active':display.tabs.lake}"href="#lake-panel">Lake Level</a>
-                                <a class="mdl-tabs__tab" ng-class="{'is-active':display.tabs.constant}" href="#rate-panel">Constant</a>
+                                <a class="mdl-tabs__tab" ng-class="{'is-active':display.tabs.sensor}" ng-click="select_monitoring_tab(1)" href="#sensor-panel">Sensor</a>
+                                <a class="mdl-tabs__tab" ng-class="{'is-active':display.tabs.lake}" ng-click="select_monitoring_tab(2)" href="#lake-panel">Lake Level</a>
+                                <a class="mdl-tabs__tab" ng-class="{'is-active':display.tabs.constant}" ng-click="select_monitoring_tab(3)" href="#rate-panel">Constant</a>
 
                             </div>
 
                             <div class="mdl-tabs__panel" ng-class="{'is-active':display.tabs.sensor}" id="sensor-panel">
                                 <h6>Serial Number</h6>
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" name="serialNumber"  ng-model="sensorObj.serialNumber">
+                                    <input class="mdl-textfield__input" type="text" name="serialNumber"  ng-model="featureObj.sensor.serialNumber">
                                 </div>
                                 <br>
 
                                 <h6>Part Number</h6>
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" name="partNumber"  ng-model="sensorObj.partNumber">
+                                    <input class="mdl-textfield__input" type="text" name="partNumber"  ng-model="featureObj.sensor.partNumber">
                                 </div>
                                 <br>
 
                                 <h6>Installed by</h6>
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" name="serialNumber"  ng-model="sensorObj.installerName">
+                                    <input class="mdl-textfield__input" type="text" name="serialNumber"  ng-model="featureObj.sensor.installerName">
                                 </div>
                                 <br>
 
                                 <h6>Install date</h6>
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" name="serialNumber"  ng-model="sensorObj.installDate">
+                                    <input class="mdl-textfield__input" type="text" name="serialNumber"  ng-model="featureObj.sensor.installDate">
                                 </div>
                                 <br>
 
@@ -149,13 +162,13 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                 <div>
                                       <label class="mdl-button mdl-button--colored mdl-js-button">
                                         <span> <i class="material-icons">attachment</i> </span>
-                                        Upload CSV <input type="file" filelist-bind class="none"  name="files2" style="display: none;">
+                                        Upload CSV <input type="file" filelist-bind class="none"  name="files1" style="display: none;">
                                     </label>
                                 </div>
                                 <br>
                                 <div>
                                     <ul class="mdl-list">
-                                        <li "mdl-list__item" ng-repeat="file in files2">
+                                        <li "mdl-list__item" ng-repeat="file in files1">
                                             <span class="mdl-list__item-primary-content">
                                                 <i class="material-icons mdl-list__item-icon">insert_drive_file</i>
                                                 {{ file.name}}, {{file.size/1000}} kb
@@ -197,6 +210,15 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
 <script>
 
+    // UI expectations:
+    // 1. select the monitoring panel tab automatically 
+    // $scope.display.tabs.sensor | lake | constant 
+    // 2. select the lake feature type 
+    // $scope.featureType
+    // 3. on tab selection - change the feature monitoring state 
+    // $scope.featureMonitor
+    // 
+    // 
     yuktixApp.controller("yuktix.admin.lake.feature.edit", function ($scope, lake, feature,fupload,$window) {
 
           $scope.get_feature_object = function() {
@@ -217,8 +239,6 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                     }
 
                     $scope.featureObj = data.result ;
-                    // bind radio box
-
                     $scope.clearPageMessage();
                     $scope.init_codes() ;
 
@@ -257,8 +277,11 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         return ;
                     }
 
+                    // we receive feature_type_code from the API
+                    // we need to lookup and assign corresponding object 
+                    // in list of all feature type code objects
                     $scope.featureType = {} ;
-                    $scope.find_feature_type_code($scope.featureObj.featureTypeCode);
+                    $scope.lookup_feature_type($scope.featureObj.featureTypeCode);
 
                     if(angular.equals($scope.featureType, {})) {
                         console.error("select feature type code not assigned: revert to default");
@@ -270,9 +293,11 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         return ;
                     }
 
-                    //  monitoring SELECT
+                    //  we receive monitoring_code from the API
+                    //  we need to lookup and assign corresponding object 
+                    // in list of all feature monitoring state objects
                     $scope.featureMonitoring = {} ;
-                    $scope.find_monitoring_code($scope.featureObj.monitoringCode);
+                    $scope.lookup_feature_monitoring($scope.featureObj.monitoringCode);
 
                     if(angular.equals($scope.featureMonitoring, {})) {
                         console.error("monitoring  code not assigned: revert to default");
@@ -291,6 +316,35 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                     $scope.processResponse(response);
                 });
 
+        };
+
+        $scope.select_feature_type = function(featureType) {
+            $scope.featureType = featureType ;
+        } ;
+
+         $scope.lookup_feature_type = function(code) {
+
+            for (var i = 0 ; i < $scope.featureTypes.length; i++) {
+                if($scope.debug) {
+                    console.log("feature type code: comparing %O with %d",$scope.featureTypes[i], code);
+                }
+
+                if($scope.featureTypes[i].id == code) {
+                    $scope.featureType = $scope.featureTypes[i];
+                }
+            }
+        };
+
+        $scope.lookup_feature_monitoring = function(code) {
+            for (var i = 0 ; i < $scope.featureMonitorings.length; i++) {
+                if($scope.debug) {
+                    console.log("feature monitoring code: comparing %O with %d",$scope.featureMonitorings[i],code);
+                }
+
+                if($scope.featureMonitorings[i].id == code) {
+                    $scope.featureMonitoring = $scope.featureMonitorings[i];
+                }
+            }
         };
 
         $scope.select_monitoring_tab = function(code) {
@@ -319,34 +373,10 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                     break ;
             }
 
+            $scope.lookup_feature_monitoring(code);
             return ;      
         } ;
 
-        /* @todo add select_feature_type() function */
-        $scope.find_feature_type_code = function(code) {
-
-            for (var i = 0 ; i < $scope.featureTypes.length; i++) {
-                if($scope.debug) {
-                    console.log("feature type code: comparing %O with %d",$scope.featureTypes[i], code);
-                }
-
-                if($scope.featureTypes[i].id == code) {
-                    $scope.featureType = $scope.featureTypes[i];
-                }
-            }
-        };
-
-        $scope.find_monitoring_code = function(code) {
-            for (var i = 0 ; i < $scope.featureMonitorings.length; i++) {
-                if($scope.debug) {
-                    console.log("feature monitoring code: comparing %O with %d",$scope.featureMonitorings[i],code);
-                }
-
-                if($scope.featureMonitorings[i].id == code) {
-                    $scope.featureMonitoring = $scope.featureMonitorings[i];
-                }
-            }
-        };
 
         $scope.update_feature = function () {
 
@@ -355,15 +385,35 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                 return;
             }
 
-            // Assign radio and select box 
+            // assign feature type 
             $scope.featureObj.featureTypeCode = $scope.featureType.id ;
-            
+            // assign monitoring state code 
+            $scope.featureObj.monitoringCode = $scope.featureMonitoring.id ;
+
             $scope.showProgress("submitting data to server");
             if ($scope.debug) {
                 console.log("form values");
                 console.log($scope.featureObj);
             }
 
+            // files?
+            // @tood check if $scope.files1 exists 
+            // otherwise throw error.
+            if(angular.isDefined($scope.files1)) { 
+                for (var i = 0 ; i < $scope.files1.length;  i++) {
+                    var file = $scope.files1[i];
+                    console.log(file.name);
+                    console.log(file.size);
+                    console.log(file.type);
+
+                }
+            } else {
+                console.error("files1 is not defined...");
+            }
+            
+            // upload files depending on monitoring code , get fileId
+            // send featureObj + monitoring code + fileId to API  
+            // 
             /*
             feature.update($scope.base, $scope.debug, $scope.featureObj).then(function (response) {
 
