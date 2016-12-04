@@ -8,9 +8,10 @@
     use \com\indigloo\exception\DBException;
 
 	use \com\indigloo\Logger ;
+	use \com\indigloo\Util as Util ;
 	use \com\indigloo\util\StringUtil as StringUtil ;
 
-	use \com\yuktix\auth\Login as Login ;
+	use \com\yuktix\lake\auth\Login as Login ;
     use \com\indigloo\exception\UIException as UIException;
 
 	function map_php_file_error($error) {
@@ -58,13 +59,16 @@
 
 	}
 
-	function save_to_database($fname, $tmp_file, $code) {
+	function save_to_database($fname, $tmp_file, $loginId, $email) {
 
 		// save to database 
 		// $fname, code, size, blob
 		$fp_tmp_file = fopen($tmp_file, "rb");
 		$size = filesize($tmp_file);
-		$createdBy = "test" ;
+
+		if($size == 0) {
+			trigger_error("file size is zero!", E_USER_ERROR);
+		}
 
 		$dbh = NULL ;
 		$lastInsertId = NULL ;
@@ -73,8 +77,8 @@
 
 			$dbh = PDOWrapper::getHandle();
 			$sql = "insert INTO atree_file_blob(file_name, file_size, file_code, file_blob, "
-					. " created_by, created_on) "
-					. " VALUES (:name, :size, :code, :blob, :created_by, now()) ";
+					. " login_id, email, created_on) "
+					. " VALUES (:name, :size, :code, :blob, :login_id, :email, now()) ";
 					
 
 			// Tx start
@@ -86,13 +90,14 @@
 			$stmt->bindParam(":size",$size, \PDO::PARAM_INT);
 			$stmt->bindParam(":code",$code, \PDO::PARAM_STR);
 			$stmt->bindParam(":blob",$fp_tmp_file, \PDO::PARAM_LOB);
-			$stmt->bindParam(":created_by",$createdBy, \PDO::PARAM_STR);
+			$stmt->bindParam(":login_id",$loginId, \PDO::PARAM_STR);
+			$stmt->bindParam(":email",$email, \PDO::PARAM_STR);
 
 			$stmt->execute();
 			$stmt = NULL;
 			$lastInsertId = $dbh->lastInsertId() ;
 
-			//Tx end
+			// Tx end
 			$dbh->commit();
 			$dbh = null;
 
@@ -109,12 +114,17 @@
 	set_exception_handler('webgloo_ajax_exception_handler');
 	$gWeb = \com\indigloo\core\Web::getInstance ();
 
+	// main script start
+	// login check
+	Login::isCustomerAdmin();
+	$login = Login::getLoginInSession();
+
 	$metadata = NULL ;
 	$metadataObj = new \stdClass ;
+	$fname = NULL ;
 
 	// store is [disk | database ]
 	$store = "disk" ;
-	$code = NULL ;
 	$lastInsertId = NULL ;
 
 	// input check
@@ -124,15 +134,6 @@
 
 	$metadata = $_POST["metadata"];
 	$metadataObj = json_decode($metadata) ;
-
-	if(!property_exists($metadataObj, "code")) {
-		quit_with_error(400, "error: missing file code in POST metadata");
-	}
-
-	$code = $metadataObj->code ;
-	if(empty($code)) {
-		quit_with_error(400, "error: bad file code in POST metadata");
-	}
 
 	if(property_exists($metadataObj, "store")) {
 		$store = $metadataObj->store ;
@@ -146,7 +147,6 @@
 		
 		$xmsg = sprintf("upload/mpart.php: index:%d, file=%s",$index, $file["name"]);
 		Logger::getInstance()->info($xmsg);
-	
 		$fname =  basename($file["name"]);
 		$tmp_file = $file["tmp_name"];
 		
@@ -156,20 +156,20 @@
 		}
 
 		if(strcmp($store,"disk") == 0 ) {
-			// special case
+			// special case: only for testing
 			// save to disk for debugging
 			save_to_disk($fname, $tmp_file) ;
 		} else { 
-			$lastInsertId = save_to_database($fname, $tmp_file, $code) ;
+			$lastInsertId = save_to_database($fname, $tmp_file, $login->id, $login->email) ;
 		}
 
 	}
-
 
 	$responseObj = new \stdClass ;
 	$responseObj->code = 200;
 	$responseObj->response = "file upload is success!" ;
 	$responseObj->fileId = $lastInsertId ;
+	$responseObj->name = $fname ;
 
 	echo json_encode($responseObj) ;
 	exit(0) ;
