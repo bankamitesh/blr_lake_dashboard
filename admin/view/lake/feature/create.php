@@ -67,6 +67,18 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         <br>
                         
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" name="lat" id="lat" ng-model="featureObj.lat">
+                            <label class="mdl-textfield__label" for="width">Latitude </label>
+                        </div>
+                        <br>
+
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" name="lon" id="lon" ng-model="featureObj.lon" >
+                            <label class="mdl-textfield__label" for="height">Longitude</label>
+                        </div>
+                        <br>
+
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                             <input class="mdl-textfield__input" type="text" name="width" id="width" ng-model="featureObj.width">
                             <label class="mdl-textfield__label" for="width">Width </label>
                         </div>
@@ -201,6 +213,10 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                 }); 
 
         };
+
+        $scope.select_feature_type = function(featureType) {
+            $scope.featureType = featureType ;
+        } ;
 
         // page params
         $scope.errorMessage = "";
