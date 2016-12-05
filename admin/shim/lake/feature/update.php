@@ -19,41 +19,33 @@
 	
     $postData = NULL ;
     $rawPostData = file_get_contents("php://input");
+    Logger::getInstance()->info($rawPostData);
+
     $postData = json_decode($rawPostData) ;
-    
-    // check for file item.
+
+    $fileItems = $postData->fileUploadData->items ;
     $fileItem = NULL ;
 
-    if(!empty($postData)) {
-
-        if(property_exists($postData, "fileUploadData") 
-            && property_exists($fileUploadData, "items")) {
-
-            $fileUploadData = $postData->fileUploadData  ;
-            $fileItems = $fileUploadData->items ;
-            if(sizeof($fileItems) > 0 ) {
-                $fileItem = $fileItems[0] ;
-            } 
-
-            // upload error
-            if(!$fileItem->upload) {
-                $xmsg = sprintf("feature/update: file upload error: %s", $fileItem->error);
-                Logger::getInstance()->error($xmsg);
-                $fileItem = NULL ;
-            }
-
+    if( sizeof($fileItems) > 0 ) {
+        $fileItem = $fileItems[0] ;
+         if(!$fileItem->upload) {
+            $xmsg = sprintf("feature/update: file upload error: %s", $fileItem->error);
+            Logger::getInstance()->error($xmsg);
+            $fileItem = NULL ;
         }
-    }
 
+    } 
+    
     $dbh = NULL ;
-   
+    $serialNumber = NULL ;
+    $featureId = NULL ;
+
     try {
 
         $dbh = PDOWrapper::getHandle();
-        $featureId = $postData->featureId ;
-        $serialNumber = $postData->sensor->serialNumber ;
+       
         $featureObj = $postData->featureObj ;
-        $sensorId = NULL ;
+        $featureId = $featureObj->id  ;
 
         // monitoring - sensor
         // see if sensor already exists 
@@ -67,19 +59,20 @@
 
         if($featureObj->monitoringCode == 1 ) {
 
+            $serialNumber = $featureObj->sensor->serialNumber ; 
             $row = Sensor::getOnSerialNumber($serialNumber);
             if(empty($row)) {
                 // new sensor 
                 $sensorId = Sensor::insert($dbh,$featureObj->sensor) ;
-                Feature:addSensor($dbh,$featureId, $sensorId);
+                Feature::addSensor($dbh,$featureId, $sensorId);
             } else {
                 Sensor::updateOnSerialNumber($dbh, $featureObj->sensor) ;
             }
              
         }
 
-
-        Feature::update($dbh,$featureObj,$fileItem.fileId);
+        $fileId = empty($fileItem) ?  NULL : $fileItem->fileId ;
+        Feature::update($dbh,$featureObj,$fileId);
         // Tx: end 
         $dbh->commit();
         $dbh = null;

@@ -10,7 +10,6 @@ namespace com\yuktix\lake\mysql {
 
     class Feature {
 
-         
         static function createFeatureObject($row) {
             
             $featureObj = new \stdClass ;
@@ -42,7 +41,7 @@ namespace com\yuktix\lake\mysql {
             }
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $featureId = $mysqli->real_escape_string($postData->id);
+            $featureId = $mysqli->real_escape_string($featureId);
 
             $sql = " select * from atree_lake_feature where id = ".$featureId ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
@@ -134,16 +133,28 @@ namespace com\yuktix\lake\mysql {
 
             $stmt->bindParam(":flow_rate",$featureObj->flowRate, \PDO::PARAM_STR);
             $stmt->bindParam(":lake_flow_file_id",$lakeFlowFileId, \PDO::PARAM_STR);
-            $stmt->bindParam(":sensor_flow_file_id",sensorFlowFileId, \PDO::PARAM_STR);
+            $stmt->bindParam(":sensor_flow_file_id",$sensorFlowFileId, \PDO::PARAM_STR);
+            $stmt->bindParam(":id",$featureObj->id, \PDO::PARAM_STR);
             
+
             $stmt->execute();
             return ;
 
         }
 
         static function addSensor($dbh,$featureId, $sensorId) {
-            // @todo 
+            
+            $sql = "insert INTO atree_feature_sensor(feature_id, sensor_id,created_on) " 
+                    . " VALUES (:feature_id, :sensor_id, now()) " ;
+            
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam(":feature_id",$featureId, \PDO::PARAM_INT);
+            $stmt->bindParam(":sensor_id",$sensorId, \PDO::PARAM_INT);
+            $stmt->execute();
+            return ;
+         
         }
+
     }
 
 }
