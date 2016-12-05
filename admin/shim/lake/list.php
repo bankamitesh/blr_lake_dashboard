@@ -12,7 +12,7 @@
     use \com\indigloo\exception\UIException as UIException;
 
     use \com\yuktix\lake\auth\Login as Login ;
-    use \com\yuktix\lake\data\DBRowConverter as DBRowConverter ;
+    use \com\yuktix\lake\mysql\Lake as Lake;
 
 	set_exception_handler('webgloo_ajax_exception_handler');
 	$gWeb = \com\indigloo\core\Web::getInstance ();
@@ -22,16 +22,7 @@
     $rawPostData = file_get_contents("php://input");
     $postData = json_decode($rawPostData) ;
 
-
-    $mysqli = MySQL\Connection::getInstance()->getHandle();
-    $sql = " select * from atree_lake " ;
-    $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-    $result = array() ;
-
-    foreach ($rows as $row) {
-        $lake = DBRowConverter::convertLakeRow($row) ;
-        array_push($result, $lake);
-    }
+    $result = Lake::getAllLakes();
 
     // API response 
     $responseObj = new \stdClass ;

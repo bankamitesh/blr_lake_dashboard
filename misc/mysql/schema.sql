@@ -45,6 +45,8 @@ create table atree_lake_feature(
     width int ,
     max_height int ,
     flow_rate varchar(16), 
+    lake_flow_file_id int,
+    sensor_flow_file_id int, 
     created_on timestamp default current_timestamp,
     updated_on timestamp default current_timestamp ,
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
@@ -60,6 +62,19 @@ create table atree_feature_sensor(
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
+drop table if exists atree_sensor;
+create table atree_sensor(
+    id int NOT NULL auto_increment,
+    serial_number varchar(36),
+    part_number varchar(36),
+    installer_name varchar(36),
+    installation_date timestamp,
+    created_on timestamp default current_timestamp,
+    updated_on timestamp default current_timestamp ,
+    PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+alter table atree_sensor add constraint UNIQUE(serial_number);
+
 
 
 drop table if exists atree_lake_counter;
@@ -69,34 +84,6 @@ create table atree_lake_counter(
     inlet_count int default 0,
     outlet_count int default 0,
     sensor_count int default 0,
-    created_on timestamp default current_timestamp,
-    updated_on timestamp default current_timestamp ,
-    PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
-
-
-
-drop table if exists atree_sensor;
-create table atree_sensor(
-    id int NOT NULL auto_increment,
-    serial_number varchar(36),
-    sensor_make varchar(36),
-    part_number varchar(36),
-    installer_name varchar(36),
-    installation_date timestamp,
-    created_on timestamp default current_timestamp,
-    updated_on timestamp default current_timestamp ,
-    PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
-
-
-drop table if exists atree_sensor_log;
-create table atree_sensor_log(
-    id int NOT NULL auto_increment,
-    sensor_id int not null,
-    serial_number varchar(36),
-    sensor_make varchar(36),
-    part_number varchar(36),
-    installer_name varchar(36),
-    installation_date timestamp,
     created_on timestamp default current_timestamp,
     updated_on timestamp default current_timestamp ,
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
@@ -118,15 +105,3 @@ create table atree_file_blob (
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
-drop table if exists atree_file_blob_log;
-create table atree_file_blob_log (
-    id int NOT NULL auto_increment,
-    file_blob_id int not null,
-    file_blob MEDIUMBLOB ,
-    file_code varchar(16) ,
-    file_size int,
-    file_name varchar(64),
-    created_by varchar(64),
-    created_on timestamp default current_timestamp,
-    updated_on timestamp default current_timestamp ,
-    PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;

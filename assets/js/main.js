@@ -783,6 +783,31 @@
 
             };
 
+			feature1.update = function(base,debug,featureObj, fileUploadData) {
+
+				var myurl = "/admin/shim/lake/feature/update.php";
+				if(debug) { 
+					console.log("POST: %s, data : %O", myurl, featureObj);
+				}
+
+                var promise = $http({
+                    method : 'POST',
+                    url : myurl,
+                    headers : { 'Content-Type' : 'application/json' },
+					data: { 
+						"featureObj" : featureObj, 
+						"fileUploadData" : fileUploadData 
+					} 
+					
+                }).then(
+                    function (response) { return response ; }, 
+                    function(response) { return response ; }
+                );
+
+                return promise;
+
+            };
+
 			feature1.getFeatureObject = function(base,debug,featureId) {
 
 				var myurl = "/admin/shim/lake/feature/get-object.php";

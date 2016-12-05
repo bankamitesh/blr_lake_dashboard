@@ -5,49 +5,24 @@
 	include (APP_WEB_DIR . '/inc/header.inc');
 	
     use \com\indigloo\Configuration as Config;
-    use \com\indigloo\mysql as MySQL;
-
 	use \com\indigloo\Logger ;
 	use \com\indigloo\util\StringUtil as StringUtil ;
     use \com\indigloo\exception\UIException as UIException;
 
     use \com\yuktix\lake\auth\Login as Login ;
-    use \com\yuktix\lake\data\DBRowConverter as DBRowConverter ;
-
-    function send_error_400($param) {
-        // API response 
-        $xmsg = sprintf("required parameter %s is missing",$param) ;
-        $responseObj = new \stdClass ;
-        $responseObj->code = 400;
-        $responseObj->error = $xmsg ;
-        echo json_encode($responseObj) ;
-        exit(0) ;
-    }
+    use \com\yuktix\lake\mysql\Feature as Feature ;
 
 	set_exception_handler('webgloo_ajax_exception_handler');
 	$gWeb = \com\indigloo\core\Web::getInstance ();
 	
-    // PHP $_REQUEST only works for x-www-form-urlencoded content type
-    // so we have to get the raw data when content-type is application/json 
     $rawPostData = file_get_contents("php://input");
     $postData = json_decode($rawPostData) ;
 
-    if(!property_exists($postData, "id")) {
-        send_error_400("id");
-    }
-
-    $mysqli = MySQL\Connection::getInstance()->getHandle();
-    $featureId = $mysqli->real_escape_string($postData->id);
-
-    $sql = " select * from atree_lake_feature where id = ".$featureId ;
-    $row = MySQL\Helper::fetchRow($mysqli, $sql);
-    $featureObj = DBRowConverter::convertFeatureRow($row) ;
-    
+    $featureObj = Feature::getOnId($postData->id);
     // API response 
     $responseObj = new \stdClass ;
     $responseObj->code = 200;
     $responseObj->result = $featureObj ;
-
     echo json_encode($responseObj) ;
     exit(0) ;
 

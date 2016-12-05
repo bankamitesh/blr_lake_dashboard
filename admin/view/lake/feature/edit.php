@@ -126,13 +126,13 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                                 <h6>Installed by</h6>
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" name="serialNumber"  ng-model="featureObj.sensor.installerName">
+                                    <input class="mdl-textfield__input" type="text" name="installerName"  ng-model="featureObj.sensor.installerName">
                                 </div>
                                 <br>
 
                                 <h6>Install date</h6>
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" name="serialNumber"  ng-model="featureObj.sensor.installDate">
+                                    <input class="mdl-textfield__input" type="text" name="installationDate"  ng-model="featureObj.sensor.installationDate">
                                 </div>
                                 <br>
 
@@ -523,7 +523,6 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                 }
             }
 
-            $scope.showProgress("submitting data to server");
             if ($scope.debug) {
                 console.log("form values");
                 console.log($scope.featureObj);
@@ -531,11 +530,13 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                 
             }
 
+            $scope.showProgress("submitting data to server");
+           
             // upload files depending on monitoring code , get fileId
-            // send featureObj + monitoring code + fileId to API  
+            // send featureObj + file data to API  
             // 
-            /*
-            feature.update($scope.base, $scope.debug, $scope.featureObj).then(function (response) {
+            
+            feature.update($scope.base, $scope.debug, $scope.featureObj, $scope.fileUploadData).then(function (response) {
 
                     var status = response.status || 500;
                     var data = response.data || {};
@@ -552,11 +553,12 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         return;
                     }
 
-                   $window.location.href = "/admin/view/lake/feature/edit.php?lake_id=" + $scope.lakeId + "&feature_id=" + data.featureId;
+                    // @debug
+                   // $window.location.href = "/admin/view/lake/feature/edit.php?lake_id=" + $scope.lakeId + "&feature_id=" + data.featureId;
 
                 }, function (response) {
                     $scope.processResponse(response);
-                }); */
+                }); 
 
         };
 
