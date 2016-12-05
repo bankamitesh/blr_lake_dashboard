@@ -5,16 +5,14 @@
 	
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\mysql\PDOWrapper;
-    use \com\indigloo\exception\DBException;
-
+    
 	use \com\indigloo\Logger ;
-	use \com\indigloo\util\StringUtil as StringUtil ;
+    use \com\indigloo\exception\UIException as UIException;
 
 	use \com\yuktix\lake\auth\Login as Login ;
     use \com\yuktix\lake\mysql\Sensor as Sensor ;
     use \com\yuktix\lake\mysql\Feature as Feature ;
-    use \com\indigloo\exception\UIException as UIException;
-
+   
 	
 	set_exception_handler('webgloo_ajax_exception_handler');
 	$gWeb = \com\indigloo\core\Web::getInstance ();
@@ -55,6 +53,7 @@
         $featureId = $postData->featureId ;
         $serialNumber = $postData->sensor->serialNumber ;
         $featureObj = $postData->featureObj ;
+        $sensorId = NULL ;
 
         // monitoring - sensor
         // see if sensor already exists 
@@ -65,13 +64,23 @@
         // 
         // Tx start
         $dbh->beginTransaction();
+
         if($featureObj->monitoringCode == 1 ) {
+
             $row = Sensor::getOnSerialNumber($serialNumber);
-            $sensorId = (empty($row)) ? Sensor::insert($featureObj->sensor) : Sensor::update($featureObj->sensor) ;
-            Feature:addSensor($featureId, $sensorId);
+            if(empty($row)) {
+                // new sensor 
+                $sensorId = Sensor::insert($dbh,$featureObj->sensor) ;
+                Feature:addSensor($dbh,$featureId, $sensorId);
+            } else {
+                Sensor::updateOnSerialNumber($dbh, $featureObj->sensor) ;
+            }
+             
         }
 
-        Feature::update($featureObj);
+
+        Feature::update($dbh,$featureObj,$fileItem.fileId);
+        // Tx: end 
         $dbh->commit();
         $dbh = null;
 

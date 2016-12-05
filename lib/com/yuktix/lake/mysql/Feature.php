@@ -50,7 +50,7 @@ namespace com\yuktix\lake\mysql {
             return $featureObj ;
         }
 
-        static function covertFeatureToIOCode($featureCode) {
+        static function convertFeatureToIOCode($featureCode) {
             // @todo raise error for unknown feature code
             $mapping = array(
                 1 => 1,
@@ -80,7 +80,7 @@ namespace com\yuktix\lake\mysql {
             // @todo input check for required params
             // @todo unique constraint checks
             // @todo - placeholders for missing data 
-            $iocode = self::covertFeatureToIOCode($featureObj->featureTypeCode);
+            $iocode = self::convertFeatureToIOCode($featureObj->featureTypeCode);
             $maxHeight = intval($featureObj->maxHeight) ;
             $width = intval($featureObj->width) ;
 
@@ -102,10 +102,47 @@ namespace com\yuktix\lake\mysql {
 
         }
 
-        static function update($dbh, $featureObj) {
+        static function update($dbh, $featureObj,$fileId) {
 
-          
+            // @todo : input check
+            $sql = "update  atree_lake_feature set name=:name, lat=:lat," 
+                ." lon = :lon, max_height = :max_height, width = :width, feature_type_code = :feature_type_code," 
+                ." io_code = :io_code, monitoring_code = :monitoring_code, lake_id = :lake_id,"
+                ." flow_rate = :flow_rate, lake_flow_file_id = :lake_flow_file_id, "
+                ." sensor_flow_file_id = :sensor_flow_file_id, updated_on = now() where id=:id "  ; 
+            
+            $stmt = $dbh->prepare($sql);
+            
+            $iocode = self::convertFeatureToIOCode($featureObj->featureTypeCode);
+            $maxHeight = intval($featureObj->maxHeight) ;
+            $width = intval($featureObj->width) ;
 
+            // correct fileId
+            $sensorFlowFileId = ($featureObj->monitoringCode == 1 ) ? $fileId : "" ;
+            $lakeFlowFileId = ($featureObj->monitoringCode == 2 ) ? $fileId : "" ;
+    
+            $stmt->bindParam(":name",$featureObj->name, \PDO::PARAM_STR);
+            $stmt->bindParam(":lat",$featureObj->lat, \PDO::PARAM_STR);
+            $stmt->bindParam(":lon",$featureObj->lon, \PDO::PARAM_STR);
+            $stmt->bindParam(":max_height", $maxHeight, \PDO::PARAM_INT);
+            $stmt->bindParam(":width", $width, \PDO::PARAM_INT);
+        
+            $stmt->bindParam(":feature_type_code",$featureObj->featureTypeCode, \PDO::PARAM_INT);
+            $stmt->bindParam(":io_code",$iocode, \PDO::PARAM_INT);
+            $stmt->bindParam(":monitoring_code",$featureObj->monitoringCode, \PDO::PARAM_INT);
+            $stmt->bindParam(":lake_id",$featureObj->lakeId, \PDO::PARAM_STR);
+
+            $stmt->bindParam(":flow_rate",$featureObj->flowRate, \PDO::PARAM_STR);
+            $stmt->bindParam(":lake_flow_file_id",$lakeFlowFileId, \PDO::PARAM_STR);
+            $stmt->bindParam(":sensor_flow_file_id",sensorFlowFileId, \PDO::PARAM_STR);
+            
+            $stmt->execute();
+            return ;
+
+        }
+
+        static function addSensor($dbh,$featureId, $sensorId) {
+            // @todo 
         }
     }
 

@@ -1,6 +1,5 @@
 <?php 
 
-    // atree_lake lists 
     include ('lake-app.inc');
 	include (APP_WEB_DIR . '/inc/header.inc');
 	

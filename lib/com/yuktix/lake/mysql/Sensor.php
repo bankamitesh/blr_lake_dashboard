@@ -21,26 +21,48 @@ namespace com\yuktix\lake\mysql {
 
         }
 
-        static function create($dbh, $sensorData) {
+        static function insert($dbh, $sensorObj) {
 
-            $sql1 = "insert INTO atree_sensor(serial_number, part_number, installer_name, "
+            $sql = "insert INTO atree_sensor(serial_number, part_number, installer_name, "
                 . " installation_date, created_on) "
                 . " VALUES (:serial_number, :part_number, " 
                 . " :installer_name, :installation_date, now()) "  ;
 
 
-            $stmt1 = $dbh->prepare($sql1);
+            $stmt = $dbh->prepare($sql);
             // bind params 
-            $stmt1->bindParam(":serial_number",$sensorData->serialNumber, \PDO::PARAM_STR);
-            $stmt1->bindParam(":part_number",$sensorData->partNumber, \PDO::PARAM_STR);
-            $stmt1->bindParam(":installer_name",$sensorData->installerName, \PDO::PARAM_STR);
-            $stmt1->bindParam(":installation_date", $sensorData->installationDate, \PDO::PARAM_STR);
+            $stmt->bindParam(":serial_number",$sensorObj->serialNumber, \PDO::PARAM_STR);
+            $stmt->bindParam(":part_number",$sensorObj->partNumber, \PDO::PARAM_STR);
+            $stmt->bindParam(":installer_name",$sensorObj->installerName, \PDO::PARAM_STR);
+            $stmt->bindParam(":installation_date", $sensorObj->installationDate, \PDO::PARAM_STR);
             
-            $stmt1->execute();
+            $stmt->execute();
             $sensorId = $dbh->lastInsertId() ;
             return $sensorId ;
 
         }
+
+         static function updateOnSerialNumber($dbh, $sensorObj) {
+
+            $sql = "update atree_sensor set "
+                . " part_number = :part_number, installer_name = :installer_name, "
+                . " installation_date = :installation_date , updated_on = now()  "
+                . " where serial_number = :serial_number ";
+            
+            $stmt = $dbh->prepare($sql);
+            // bind params 
+            $stmt->bindParam(":serial_number",$sensorObj->serialNumber, \PDO::PARAM_STR);
+            $stmt->bindParam(":part_number",$sensorObj->partNumber, \PDO::PARAM_STR);
+            $stmt->bindParam(":installer_name",$sensorObj->installerName, \PDO::PARAM_STR);
+            $stmt->bindParam(":installation_date", $sensorObj->installationDate, \PDO::PARAM_STR);
+            
+            $stmt->execute();
+            $sensorId = $dbh->lastInsertId() ;
+            return $sensorId ;
+
+        }
+
+
     }
 
 }
