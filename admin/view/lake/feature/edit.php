@@ -52,66 +52,66 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             <div class="mdl-grid mdl-grid--no-spacing">
                 <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
                 <div class="mdl-cell mdl-cell--1-col"> </div>
-                <div id="content" class="mdl-grid mdl-cell mdl-cell--8-col">
+
+
+                <div id="content" class="mdl-grid mdl-cell mdl-cell--4-col">
                     <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
+                    
                     <form name="createForm">
-                         <h5>Edit inlet/outlet </h5>
+                        <h5>Edit inlet/outlet </h5>
                         
                         <h6>Feature Name </h6>
                         <div class="mdl-textfield mdl-js-textfield">
                             <input class="mdl-textfield__input" type="text" name="name" id="name" ng-model="featureObj.name" required>
-                           
+                        
                         </div>
-                        <br>
+                         
                         
                         <h6> Feature Type </h6>
-                         <div>
+                        <div>
                             <select id="feature_type_select"
                                     ng-model="featureType"
                                     ng-change="select_feature_type(featureType)"
                                     ng-options="featureType.value for featureType in featureTypes">
                             </select>
                         </div>
-                        <br>
-                        
+                            
                         <h6>Latitude</h6>
                         <div class="mdl-textfield mdl-js-textfield">
                             <input class="mdl-textfield__input" type="text" name="lat" id="lat" ng-model="featureObj.lat">
                         </div>
-                        <br>
-
+                            
                         <h6>Longitude</h6>
                         <div class="mdl-textfield mdl-js-textfield">
                             <input class="mdl-textfield__input" type="text" name="lon" id="lon" ng-model="featureObj.lon" >
                             
                         </div>
-                        <br>
 
                         <h6>Width </h6>
                         <div class="mdl-textfield mdl-js-textfield">
                             <input class="mdl-textfield__input" type="text" name="width" id="width" ng-model="featureObj.width">
                         </div>
-                        <br>
-
+                            
                         <h6>Max. Height</h6>
                         <div class="mdl-textfield mdl-js-textfield">
-                            <input class="mdl-textfield__input" type="text" name="height" id="height" ng-model="featureObj.maxHeight" >
+                            <input class="mdl-textfield__input" type="text" name="maxHeight" id="height" ng-model="featureObj.maxHeight" >
                         </div>
-                        <br>
-                     
+                    </form>
                         
-                        <p> This feature is using {{featureMonitoring.value}} </p>
-                        <h5> Monitoring status </h5>
-                        <div id="monitoring-container" class="mdl-tabs mdl-js-tabs">
-                            <div class="mdl-tabs__tab-bar">
-                                <a class="mdl-tabs__tab" ng-class="{'is-active':display.tabs.sensor}" ng-click="select_monitoring_tab(1)" href="#sensor-panel">Sensor</a>
-                                <a class="mdl-tabs__tab" ng-class="{'is-active':display.tabs.lake}" ng-click="select_monitoring_tab(2)" href="#lake-panel">Lake Level</a>
-                                <a class="mdl-tabs__tab" ng-class="{'is-active':display.tabs.constant}" ng-click="select_monitoring_tab(3)" href="#rate-panel">Constant</a>
+                      
+                    <p> This feature is using {{featureMonitoring.value}} </p>
+                    <h5> Monitoring status </h5>
+                    <div id="monitoring-container" class="mdl-tabs mdl-js-tabs">
+                        <div class="mdl-tabs__tab-bar">
+                            <a class="mdl-tabs__tab" ng-class="{'is-active':display.tabs.sensor}" ng-click="select_monitoring_tab(1)" href="#sensor-panel">Sensor</a>
+                            <a class="mdl-tabs__tab" ng-class="{'is-active':display.tabs.lake}" ng-click="select_monitoring_tab(2)" href="#lake-panel">Lake Level</a>
+                            <a class="mdl-tabs__tab" ng-class="{'is-active':display.tabs.constant}" ng-click="select_monitoring_tab(3)" href="#rate-panel">Constant</a>
 
-                            </div>
+                        </div>
 
-                            <div class="mdl-tabs__panel" ng-class="{'is-active':display.tabs.sensor}" id="sensor-panel">
+                        <div class="mdl-tabs__panel" ng-class="{'is-active':display.tabs.sensor}" id="sensor-panel">
                             
+                            <form name="sensorForm">
                                 <h6>Serial Number</h6>
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                     <input class="mdl-textfield__input" type="text" name="serialNumber"  ng-model="featureObj.sensor.serialNumber" required>
@@ -155,14 +155,15 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                         </li>
                                     </ul>
                                 </div>
-                                
+                            </form>
 
-                            </div> <!-- tab:sensor -->
+                        </div> <!-- tab:sensor -->
 
-                            <div class="mdl-tabs__panel" ng-class="{'is-active':display.tabs.lake}" id="lake-panel">
+                        <div class="mdl-tabs__panel" ng-class="{'is-active':display.tabs.lake}" id="lake-panel">
+                            <form name="lakeForm">
                                 <h6> Lake stage flow</h6>
                                 <div>
-                                      <label class="mdl-button mdl-button--colored mdl-js-button">
+                                    <label class="mdl-button mdl-button--colored mdl-js-button">
                                         <span> <i class="material-icons">attachment</i> </span>
                                         Upload CSV <input type="file" filelist-bind class="none"  name="files" style="display: none;">
                                     </label>
@@ -179,22 +180,31 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                         </li>
                                     </ul>
                                 </div>
-                            </div> <!-- tab:lake -->
+                            </form>
+                        </div> <!-- tab:lake -->
 
-                            <div class="mdl-tabs__panel" ng-class="{'is-active':display.tabs.constant}" id="rate-panel">
-                                <p>Third tab's content.</p>
-                            </div> <!-- tab: constant -->
+                        <div class="mdl-tabs__panel" ng-class="{'is-active':display.tabs.constant}" id="rate-panel">
+                             <form name="constantForm">
+                                <h6>Flow rate</h6>
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" name="flowRate"  ng-model="featureObj.flowRate">
+                                </div>
+                            </form>
 
-                        </div> <!-- monitoring -->
+                        </div> <!-- tab: constant -->
 
-                        <div class="form-button-container">
-                            <button class="mdl-button mdl-js-button mdl-button--raised"ng-click="update_feature()" type="submit">
-                            Save information
-                            </button>
-                        </div>
-                   
-                    </form>
-                </div> <!-- grid -->
+                    </div> <!-- monitoring -->
+                       
+                    
+                    <div>
+                        <button class="mdl-button mdl-js-button mdl-button--raised"ng-click="update_feature()" type="submit">
+                        Save information
+                        </button>
+                    </div> 
+
+                </div> <!-- form:cell -->
+                    
+            </div> <!-- grid -->
             
         </main>
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
@@ -483,11 +493,35 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
         $scope.send_form_data = function () {
 
+            // main form errors
             var errorObject = $scope.createForm.$error;
             if ($scope.validateForm(errorObject)) {
                 return;
             }
 
+            if($scope.featureMonitoring.id == 1) {
+                // sensor form errors
+                errorObject = $scope.sensorForm.$error;
+                if ($scope.validateForm(errorObject)) {
+                    return;
+                }
+            }
+
+            if($scope.featureMonitoring.id == 2) {
+                // lake form errors
+                errorObject = $scope.lakeForm.$error;
+                if ($scope.validateForm(errorObject)) {
+                    return;
+                }
+            }
+
+            if($scope.featureMonitoring.id == 3) {
+                // constant form errors
+                errorObject = $scope.constantForm.$error;
+                if ($scope.validateForm(errorObject)) {
+                    return;
+                }
+            }
 
             $scope.showProgress("submitting data to server");
             if ($scope.debug) {
