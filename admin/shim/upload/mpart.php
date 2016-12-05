@@ -59,7 +59,7 @@
 
 	}
 
-	function save_to_database($fname, $tmp_file, $loginId, $email) {
+	function save_to_database($fname, $tmp_file, $mime,$loginId, $email) {
 
 		// save to database 
 		// $fname, code, size, blob
@@ -77,8 +77,8 @@
 
 			$dbh = PDOWrapper::getHandle();
 			$sql = "insert INTO atree_file_blob(file_name, file_size, file_code, file_blob, "
-					. " login_id, email, created_on) "
-					. " VALUES (:name, :size, :code, :blob, :login_id, :email, now()) ";
+					. " login_id, email, mime, created_on) "
+					. " VALUES (:name, :size, :code, :blob, :login_id, :email, :mime, now()) ";
 					
 
 			// Tx start
@@ -90,8 +90,9 @@
 			$stmt->bindParam(":size",$size, \PDO::PARAM_INT);
 			$stmt->bindParam(":code",$code, \PDO::PARAM_STR);
 			$stmt->bindParam(":blob",$fp_tmp_file, \PDO::PARAM_LOB);
-			$stmt->bindParam(":login_id",$loginId, \PDO::PARAM_STR);
+			$stmt->bindParam(":login_id",$loginId, \PDO::PARAM_INT);
 			$stmt->bindParam(":email",$email, \PDO::PARAM_STR);
+			$stmt->bindParam(":mime",$mime, \PDO::PARAM_STR);
 
 			$stmt->execute();
 			$stmt = NULL;
@@ -132,6 +133,7 @@
 		quit_with_error(400, "error: missing metadata in POST");
 	}
 
+	// @todo add code back?
 	$metadata = $_POST["metadata"];
 	$metadataObj = json_decode($metadata) ;
 
@@ -150,6 +152,16 @@
 		$fname =  basename($file["name"]);
 		$tmp_file = $file["tmp_name"];
 		
+		/*
+		$finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $tmp_file);
+        $mime = ($mime === FALSE ) ?  "application/octet-stream" : $mime ; 
+
+		Logger::getInstance()->info("upload/mpart.php, mime=".$mime); 
+		
+		*/
+
+		$mime = "application/octet-stream" ; 
 		if(!empty($file["error"])) {
 			$xmsg = map_php_file_error($file["error"]);
 			quit_with_error(500,$xmsg);
@@ -160,7 +172,7 @@
 			// save to disk for debugging
 			save_to_disk($fname, $tmp_file) ;
 		} else { 
-			$lastInsertId = save_to_database($fname, $tmp_file, $login->id, $login->email) ;
+			$lastInsertId = save_to_database($fname, $tmp_file, $mime,$login->id, $login->email) ;
 		}
 
 	}

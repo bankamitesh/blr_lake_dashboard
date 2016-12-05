@@ -98,7 +98,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             <input class="mdl-textfield__input" type="text" name="height" id="height" ng-model="featureObj.maxHeight" >
                         </div>
                         <br>
-
+                     
                         
                         <p> This feature is using {{featureMonitoring.value}} </p>
                         <h5> Monitoring status </h5>
@@ -111,9 +111,10 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             </div>
 
                             <div class="mdl-tabs__panel" ng-class="{'is-active':display.tabs.sensor}" id="sensor-panel">
+                            
                                 <h6>Serial Number</h6>
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" name="serialNumber"  ng-model="featureObj.sensor.serialNumber">
+                                    <input class="mdl-textfield__input" type="text" name="serialNumber"  ng-model="featureObj.sensor.serialNumber" required>
                                 </div>
                                 <br>
 
@@ -137,7 +138,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                                 <h6> Sensor stage flow</h6>
                                 <div>
-                                      <label class="mdl-button mdl-button--colored mdl-js-button">
+                                    <label class="mdl-button mdl-button--colored mdl-js-button">
                                         <span> <i class="material-icons">attachment</i> </span>
                                         Upload CSV <input type="file" filelist-bind class="none"  name="files" style="display: none;">
                                     </label>
@@ -154,7 +155,8 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                         </li>
                                     </ul>
                                 </div>
-                        
+                                
+
                             </div> <!-- tab:sensor -->
 
                             <div class="mdl-tabs__panel" ng-class="{'is-active':display.tabs.lake}" id="lake-panel">
@@ -190,8 +192,8 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             Save information
                             </button>
                         </div>
+                   
                     </form>
-
                 </div> <!-- grid -->
             
         </main>
@@ -380,45 +382,41 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             return ;      
         } ;
 
-        $scope.upload_files = function (uploadUrl, metadata) {
-            
-            $scope.fileUploadResponse = {} ;
-            $scope.fileUploadResponse.errors = 0 ;
-            $scope.fileUploadResponse.uploads = 0 ;
-            $scope.fileUploadResponse.items = [] ; 
-            
+        /*
+        for (var i = 0 ; i < $scope.files.length;  i++) {
+            var xfile = $scope.files[i];
+            if($scope.debug) {
+                console.log("file name=%s, size=%d, type=%s",xfile.name, xfile.size, xfile.type);
+            }
+
+            $scope.upload_file(uploadUrl, metadata, xfile);
+
+        } */
+
+        $scope.upload_file = function (uploadUrl,metadata) {
+
+            $scope.fileUploadData = {} ;
+            $scope.fileUploadData.items = [] ;
+
             if(!angular.isDefined($scope.files)) {
                 // no files on page.
-                $scope.fileUploadResponse.error = 
+                var xmsg = 
                     "no files found on the page! "
                     + " please check the you are using filelist-bind directive"
                     + " with input type = file and  name=files element." ; 
 
-                return  ;
+                console.error(xmsg);
+                $scope.send_form_data() ;
+                return ;
             }
 
-            for (var i = 0 ; i < $scope.files.length;  i++) {
-
-                var xfile = $scope.files[i];
-                if($scope.debug) {
-                    console.log("file name=%s, size=%d, type=%s",xfile.name, xfile.size, xfile.type);
-                }
-
-                $scope.upload_file(uploadUrl, metadata, xfile);
-
-            }
-
-            return ;
-        };
-
-        $scope.upload_file = function (uploadUrl,metadata, xfile) {
-
-            var item = {} ;
             var payload = new FormData();
+            var xfile = $scope.files[0] ;
 
             payload.append("myfile", xfile);
             payload.append("metadata", angular.toJson(metadata));
             
+            $scope.showProgress("uploading file...");
             fupload.send_mpart($scope.debug, uploadUrl, payload).then(function (response) {
 
                 var status = response.status || 500;
@@ -430,20 +428,26 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                 }
 
                 if (status != 200 || data.code != 200) {
+
                     console.error("browser response object: " ,response);
-                    item.error = data.error || (status + ":error while submitting data ");
-                    item.fileId = -1 ;
-                    $scope.fileUploadResponse.items.push(item);
-                    $scope.fileUploadResponse.errors = $scope.fileUploadResponse.errors + 1 ;
+                    var error  = data.error || (status + ":error while submitting data ");
+                    $scope.fileUploadData.items.push({
+                        "error" : error ,
+                        "upload" : false 
+                    });
+
                     return ;
                     
                 }
 
                 // success
-                item.fileId = data.fileId ;
-                item.name = data.name ;
-                $scope.fileUploadResponse.items.push(item);
-                $scope.fileUploadResponse.uploads = $scope.fileUploadResponse.uploads + 1 ;
+                $scope.fileUploadData.items.push({
+                    "upload" : true ,
+                    "fileId" : data.fileId,
+                    "name" : data.name 
+                });
+                
+                $scope.send_form_data() ;
                 return ;
 
             }, function (response) {
@@ -454,36 +458,45 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         
         $scope.update_feature = function () {
 
-            var errorObject = $scope.createForm.$error;
-            if ($scope.validateForm(errorObject)) {
-                return;
-            }
-
+            console.log("inside update_feature() ...");
             // assign feature type 
             $scope.featureObj.featureTypeCode = $scope.featureType.id ;
             // assign monitoring state code 
             $scope.featureObj.monitoringCode = $scope.featureMonitoring.id ;
 
-            $scope.showProgress("submitting data to server");
-            if ($scope.debug) {
-                console.log("form values");
-                console.log($scope.featureObj);
-            }
-
             if(($scope.featureObj.monitoringCode == 1) 
                 || ($scope.featureObj.monitoringCode == 2 )) {
 
-                // monitoring code 1 and 2 can have files.
                 var uploadUrl = $scope.base + "/admin/shim/upload/mpart.php" ;
                 var metadata = { 
                     "store" : "database"
                 } ;
 
-                $scope.upload_files(uploadUrl, metadata);
-                console.log($scope.fileUploadResponse);
-
-
+                // start with file upload
+                $scope.upload_file(uploadUrl, metadata);
+                
+            } else {
+                $scope.send_form_data() ;
             }
+
+        }
+
+        $scope.send_form_data = function () {
+
+            var errorObject = $scope.createForm.$error;
+            if ($scope.validateForm(errorObject)) {
+                return;
+            }
+
+
+            $scope.showProgress("submitting data to server");
+            if ($scope.debug) {
+                console.log("form values");
+                console.log($scope.featureObj);
+                console.log($scope.fileUploadData);
+                
+            }
+
             // upload files depending on monitoring code , get fileId
             // send featureObj + monitoring code + fileId to API  
             // 
@@ -536,7 +549,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         
         $scope.featureMonitorings = [] ;
         $scope.featureTypes = [] ;
-        $scope.fileUploadResponse = {} ;
+        $scope.fileUploadData = {} ;
 
         $scope.get_feature_object() ;
 

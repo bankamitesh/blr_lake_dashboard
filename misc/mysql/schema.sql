@@ -110,7 +110,9 @@ create table atree_file_blob (
     file_code varchar(16) ,
     file_size int,
     file_name varchar(64),
-    created_by varchar(64),
+    mime varchar(128),
+    login_id int,
+    email varchar(64),
     created_on timestamp default current_timestamp,
     updated_on timestamp default current_timestamp ,
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
