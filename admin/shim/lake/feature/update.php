@@ -19,10 +19,12 @@
 	
     $postData = NULL ;
     $rawPostData = file_get_contents("php://input");
-    Logger::getInstance()->info($rawPostData);
+
+    if(Config::getInstance()->is_debug()) {
+        Logger::getInstance()->debug($rawPostData);
+    }
 
     $postData = json_decode($rawPostData) ;
-
     $fileItems = $postData->fileUploadData->items ;
     $fileItem = NULL ;
 

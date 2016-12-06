@@ -12,6 +12,18 @@ namespace com\yuktix\lake\mysql {
 
     class Feature {
 
+        static function convertFeatureToIOCode($featureCode) {
+            // @todo raise error for unknown feature code
+            $mapping = array(
+                1 => 1,
+                2 => 1,
+                3 => 1,
+                4 => 2 
+            );
+
+            return $mapping[$featureCode] ;
+        }
+
         static function createFeatureObject($row) {
             
             $featureObj = new \stdClass ;
@@ -32,7 +44,7 @@ namespace com\yuktix\lake\mysql {
 
             $featureObj->id = $row["id"];
             $featureObj->lakeId = $row["lake_id"];
-            
+
             $flowRate = $row["flow_rate"];
             $flowRate = empty($flowRate) ? "" : $flowRate ;
             $featureObj->flowRate = $flowRate;
@@ -61,18 +73,30 @@ namespace com\yuktix\lake\mysql {
             return $featureObj ;
         }
 
-        static function convertFeatureToIOCode($featureCode) {
-            // @todo raise error for unknown feature code
-            $mapping = array(
-                1 => 1,
-                2 => 1,
-                3 => 1,
-                4 => 2 
-            );
+         static function getAllFeatures($lakeId) {
 
-            return $mapping[$featureCode] ;
+            // input check
+            if(empty($lakeId)) {
+                $xmsg = "required parameter lakeId is missing" ;
+                Response::raiseBadInputError($xmsg);
+            }
+
+            $result = array() ;
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $lakeId = $mysqli->real_escape_string($lakeId);
+
+            $sql = " select * from atree_lake_feature where lake_id = ".$lakeId ;
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+
+             foreach ($rows as $row) {
+                $feature = self::createFeatureObject($row) ;
+                array_push($result, $feature);
+            }
+
+            return $result ;
+
         }
-
+        
         static function insert($dbh, $featureObj) {
 
             // __EXCEPTION__ SQLSTATE[HY093]: 
@@ -80,10 +104,10 @@ namespace com\yuktix\lake\mysql {
             // can be because of spelling mistakes in bind parameter names 
             // try to highlight each bind param.
             $sql = "insert INTO atree_lake_feature(name,lat,lon, max_height, width, " 
-                    . " feature_type_code, io_code, monitoring_code, lake_id, "
+                    . " feature_type_code, io_code, monitoring_code, lake_id, sensor_data,"
                     . " created_on) VALUES (:name, :lat, :lon, :max_height, :width, "
-                    . ":feature_type_code, :io_code, :monitoring_code, :lake_id,"
-                    . " sensor_data = :sensor_data, now())" ; 
+                    . ":feature_type_code, :io_code, :monitoring_code, :lake_id, :sensor_data,"
+                    . " now())" ; 
             
             // @todo input check 
             $stmt = $dbh->prepare($sql); 
