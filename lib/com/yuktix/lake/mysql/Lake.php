@@ -1,6 +1,6 @@
 <?php
 
-namespace com\yuktix\lakeObj\mysql {
+namespace com\yuktix\lake\mysql {
 
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\Logger as Logger ;
@@ -11,7 +11,7 @@ namespace com\yuktix\lakeObj\mysql {
 
     class Lake {
 
-        static function createlakeObjObject($row) {
+        static function createLakeObject($row) {
 
             $lakeObj = new \stdClass ;
             if(empty($row)) {
@@ -120,7 +120,7 @@ namespace com\yuktix\lakeObj\mysql {
             $lakeId = $mysqli->real_escape_string($lakeId);
             $sql = " select * from atree_lake where id = ".$lakeId ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            $lakeObj = self::createlakeObjObject($row) ;
+            $lakeObj = self::createLakeObject($row) ;
             
             return $lakeObj ;
 

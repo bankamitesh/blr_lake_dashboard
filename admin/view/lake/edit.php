@@ -297,9 +297,6 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                 console.log($scope.lakeObj);
             }
 
-            // @debug
-            return ;
-
             lake.update($scope.base, $scope.debug, $scope.lakeObj).then(function (response) {
 
                     var status = response.status || 500;
