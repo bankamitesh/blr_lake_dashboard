@@ -16,6 +16,7 @@
     set_exception_handler('webgloo_ajax_exception_handler');
 	$gWeb = \com\indigloo\core\Web::getInstance ();
 	
+    // @todo move code to their own file
     $lakeUsages = [
         ["id" => 1, "value" => "Walking" ],
         ["id" => 2, "value" => "Birding" ],

@@ -47,6 +47,7 @@ create table atree_lake_feature(
     flow_rate varchar(16), 
     lake_flow_file_id int,
     sensor_flow_file_id int, 
+    sensor_data varchar(1024),
     created_on timestamp default current_timestamp,
     updated_on timestamp default current_timestamp ,
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
@@ -76,7 +77,9 @@ create table atree_sensor(
 alter table atree_sensor add constraint UNIQUE(serial_number);
 
 
-
+-- 
+-- add an insert trigger
+-- 
 drop table if exists atree_lake_counter;
 create table atree_lake_counter(
     id int NOT NULL auto_increment,

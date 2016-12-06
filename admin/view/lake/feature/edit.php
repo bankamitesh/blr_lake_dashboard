@@ -553,6 +553,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         return;
                     }
 
+                    $scope.clearPageMessage();
                     // @debug
                    // $window.location.href = "/admin/view/lake/feature/edit.php?lake_id=" + $scope.lakeId + "&feature_id=" + data.featureId;
 

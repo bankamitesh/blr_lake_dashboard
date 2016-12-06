@@ -37,40 +37,17 @@
     } 
     
     $dbh = NULL ;
-    $serialNumber = NULL ;
-    $featureId = NULL ;
-
+    
     try {
 
-        $dbh = PDOWrapper::getHandle();
-       
+
         $featureObj = $postData->featureObj ;
         $featureId = $featureObj->id  ;
 
-        // monitoring - sensor
-        // see if sensor already exists 
-        // yes - update/ otherwise insert a new one
-        // add to feature <=> sensor mapping table 
-        // add file_id into 
-        // feature.lake_flow_file_id | feature.sensor_flow_file_id 
-        // 
+        $dbh = PDOWrapper::getHandle();
+        
         // Tx start
         $dbh->beginTransaction();
-
-        if($featureObj->monitoringCode == 1 ) {
-
-            $serialNumber = $featureObj->sensor->serialNumber ; 
-            $row = Sensor::getOnSerialNumber($serialNumber);
-            if(empty($row)) {
-                // new sensor 
-                $sensorId = Sensor::insert($dbh,$featureObj->sensor) ;
-                Feature::addSensor($dbh,$featureId, $sensorId);
-            } else {
-                Sensor::updateOnSerialNumber($dbh, $featureObj->sensor) ;
-            }
-             
-        }
-
         $fileId = empty($fileItem) ?  NULL : $fileItem->fileId ;
         Feature::update($dbh,$featureObj,$fileId);
         // Tx: end 

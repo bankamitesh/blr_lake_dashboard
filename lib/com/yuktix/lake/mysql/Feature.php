@@ -5,6 +5,8 @@ namespace com\yuktix\lake\mysql {
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\Logger as Logger ;
     use \com\indigloo\mysql as MySQL;
+
+    use \com\yuktix\lake\mysql\Sensor as Sensor ;
     use \com\yuktix\lake\api\Response as Response ;
     use \com\indigloo\util\StringUtil as StringUtil ;
 
@@ -23,13 +25,23 @@ namespace com\yuktix\lake\mysql {
             $featureObj->maxHeight = $row["max_height"] ;
             $featureObj->width = $row["width"] ;
 
+            // @todo change codes to strings?
             $featureObj->iocode = intval($row["io_code"]);
             $featureObj->featureTypeCode = intval($row["feature_type_code"]);
             $featureObj->monitoringCode = intval($row["monitoring_code"]);
+
             $featureObj->id = $row["id"];
             $featureObj->lakeId = $row["lake_id"];
-
+            
+            $flowRate = $row["flow_rate"];
+            $flowRate = empty($flowRate) ? "" : $flowRate ;
+            $featureObj->flowRate = $flowRate;
+            // @todo turn file_id into full links for download
+            // lake_flow_file_id
+            // sensor_flow_file_id 
+            $featureObj->sensor = json_decode($row["sensor_data"]);
             return $featureObj ;
+
         }
 
         static function getOnId($featureId) {
@@ -71,17 +83,14 @@ namespace com\yuktix\lake\mysql {
                     . " feature_type_code, io_code, monitoring_code, lake_id, "
                     . " created_on) VALUES (:name, :lat, :lon, :max_height, :width, "
                     . ":feature_type_code, :io_code, :monitoring_code, :lake_id,"
-                    . " now())" ; 
+                    . " sensor_data = :sensor_data, now())" ; 
             
-            $stmt = $dbh->prepare($sql);
-        
-            // bind params 
-            // @todo input check for required params
-            // @todo unique constraint checks
-            // @todo - placeholders for missing data 
+            // @todo input check 
+            $stmt = $dbh->prepare($sql); 
             $iocode = self::convertFeatureToIOCode($featureObj->featureTypeCode);
             $maxHeight = intval($featureObj->maxHeight) ;
             $width = intval($featureObj->width) ;
+            $sensorData = "{}" ;
 
             $stmt->bindParam(":name",$featureObj->name, \PDO::PARAM_STR);
             $stmt->bindParam(":lat",$featureObj->lat, \PDO::PARAM_STR);
@@ -93,6 +102,7 @@ namespace com\yuktix\lake\mysql {
             $stmt->bindParam(":io_code",$iocode, \PDO::PARAM_INT);
             $stmt->bindParam(":monitoring_code",$featureObj->monitoringCode, \PDO::PARAM_INT);
             $stmt->bindParam(":lake_id",$featureObj->lakeId, \PDO::PARAM_STR);
+            $stmt->bindParam(":sensor_data",$sensorData, \PDO::PARAM_STR);
 
             $stmt->execute();
             // remember lastInsertId is a function!
@@ -104,11 +114,38 @@ namespace com\yuktix\lake\mysql {
         static function update($dbh, $featureObj,$fileId) {
 
             // @todo : input check
+            // monitoring - sensor
+            // see if sensor already exists 
+            // yes - update/ otherwise insert a new one
+            // add to feature <=> sensor mapping table 
+            // add file_id into 
+            // feature.lake_flow_file_id | feature.sensor_flow_file_id 
+            // 
+            $serialNumber = NULL ;
+            $sensorData = "{}" ;
+            $featureId = $featureObj->id  ;
+
+            if($featureObj->monitoringCode == 1 ) {
+
+                $sensorData = json_encode($featureObj->sensor);
+                $serialNumber = $featureObj->sensor->serialNumber ; 
+                $row = Sensor::getOnSerialNumber($serialNumber);
+                if(empty($row)) {
+                    // new sensor 
+                    $sensorId = Sensor::insert($dbh,$featureObj->sensor) ;
+                    self::addSensor($dbh,$featureId, $sensorId);
+                } else {
+                    Sensor::updateOnSerialNumber($dbh, $featureObj->sensor) ;
+                }
+                
+            }
+            
             $sql = "update  atree_lake_feature set name=:name, lat=:lat," 
                 ." lon = :lon, max_height = :max_height, width = :width, feature_type_code = :feature_type_code," 
                 ." io_code = :io_code, monitoring_code = :monitoring_code, lake_id = :lake_id,"
                 ." flow_rate = :flow_rate, lake_flow_file_id = :lake_flow_file_id, "
-                ." sensor_flow_file_id = :sensor_flow_file_id, updated_on = now() where id=:id "  ; 
+                ." sensor_flow_file_id = :sensor_flow_file_id, sensor_data = :sensor_data, " 
+                . " updated_on = now() where id=:id "  ; 
             
             $stmt = $dbh->prepare($sql);
             
@@ -134,6 +171,7 @@ namespace com\yuktix\lake\mysql {
             $stmt->bindParam(":flow_rate",$featureObj->flowRate, \PDO::PARAM_STR);
             $stmt->bindParam(":lake_flow_file_id",$lakeFlowFileId, \PDO::PARAM_STR);
             $stmt->bindParam(":sensor_flow_file_id",$sensorFlowFileId, \PDO::PARAM_STR);
+            $stmt->bindParam(":sensor_data",$sensorData, \PDO::PARAM_STR);
             $stmt->bindParam(":id",$featureObj->id, \PDO::PARAM_STR);
             
 
@@ -142,7 +180,7 @@ namespace com\yuktix\lake\mysql {
 
         }
 
-        static function addSensor($dbh,$featureId, $sensorId) {
+        static private function addSensor($dbh,$featureId, $sensorId) {
             
             $sql = "insert INTO atree_feature_sensor(feature_id, sensor_id,created_on) " 
                     . " VALUES (:feature_id, :sensor_id, now()) " ;
