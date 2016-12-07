@@ -89,7 +89,8 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                     </div> 
 
                     <div>
-                        old files here.
+                        <h6> stage volume stored in the system </h6>
+                        <a ng-href="{{base}}/admin/download/file.php?id={{lakeFileObj.id}}">download file</a>
                     </div>
                 </div>
 
@@ -112,7 +113,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
 <script>
 
-    yuktixApp.controller("yuktix.admin.lake.stage.volume", function ($scope, lake, $window) {
+    yuktixApp.controller("yuktix.admin.lake.stage.volume", function ($scope, lake, fupload,$window) {
 
          $scope.get_lake_object = function() {
 
@@ -132,8 +133,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                     }
 
                     $scope.lakeObj = data.result ;
-                    $scope.clearPageMessage();
-                    $scope.init_codes() ;
+                    $scope.get_lake_file() ;
 
                 },function(response) {
                     $scope.processResponse(response);
@@ -141,18 +141,14 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
         };
 
+        $scope.get_lake_file = function() {
 
-        $scope.init_codes = function() {
-
-            $scope.showProgress("Getting required codes from server...");
-            lake.getCodes($scope.base,$scope.debug)
-                .then( function(response) {
-
+            $scope.showProgress("getting lake file object from server...");
+            lake.getFileObject($scope.base,$scope.debug, $scope.lakeId,$scope.fileCode).then( function(response) {
                     var status = response.status || 500;
                     var data = response.data || {};
-
                     if($scope.debug) {
-                        console.log("server response:: codes:%O", data);
+                        console.log("server response:: lake file object:%O", data);
                     }
 
                     if (status != 200 || data.code != 200) {
@@ -160,19 +156,11 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         var error = data.error || (status + ":error retrieving  data from Server");
                         $scope.showError(error);
                         return;
-
                     }
 
-                    // @todo : check for property names
-                    // before doing data binding
-                    // @todo check array length before data binding
-                    $scope.lakeAgencies = data.result.lakeAgencies ;
-                    $scope.lakeTypes = data.result.lakeTypes ;
-                    $scope.lakeUsages = data.result.lakeUsages ;
-                    
-                    $scope.lakeAgency = $scope.lakeAgencies[0] ;
-                    $scope.lakeType = $scope.lakeTypes[0] ;
+                    $scope.lakeFileObj = data.result ;
                     $scope.clearPageMessage();
+                    
 
                 },function(response) {
                     $scope.processResponse(response);
@@ -180,46 +168,57 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
         };
 
-        $scope.select_agency = function(agency) {
-            $scope.lakeAgency = agency ;
-        } ;
+        $scope.upload_file = function (uploadUrl,metadata) {
 
-        $scope.select_lake_type = function(lakeType) {
-            $scope.lakeType = lakeType ;
-        } ;
+            if(!angular.isDefined($scope.files)) {
+                // no files on page.
+                var error = "no files found. please select a file first!";
+                var xmsg = "no files found during processing. " 
+                    + " please check the you are using filelist-bind directive"
+                    + " with input type = file and  name=files element." ; 
 
-        $scope.toggle_usage_code = function(code) {
-
-            var idx = $scope.lakeObj.usageCode.indexOf(code);
-
-            if (idx > -1) {
-                // already selected: turn off
-                $scope.lakeObj.usageCode.splice(idx, 1);
-            } else {
-                // new selection
-                $scope.lakeObj.usageCode.push(code);
+                $scope.showError(error);
+                console.error(xmsg);
+                return ;
             }
 
+            var payload = new FormData();
+            var xfile = $scope.files[0] ;
+
+            payload.append("myfile", xfile);
+            payload.append("metadata", angular.toJson(metadata));
+            
+            $scope.showProgress("uploading file...");
+            fupload.send_mpart($scope.debug, uploadUrl, payload).then(function (response) {
+
+                var status = response.status || 500;
+                var data = response.data || {};
+
+                if ($scope.debug) {
+                    console.log("API response :");
+                    console.log(data);
+                }
+
+                if (status != 200 || data.code != 200) {
+                    console.error("browser response object: " ,response);
+                    var error  = data.error || (status + ":error while submitting data ");
+                    // show error 
+                    $scope.showError(error);
+                    return ;
+                }
+                
+                $scope.send_file_data(data.fileId) ;
+                return ;
+
+            }, function (response) {
+                $scope.processResponse(response);
+            });
+            
         };
 
-        $scope.update_lake = function () {
+        $scope.send_file_data = function(fileId) {
 
-            var errorObject = $scope.createForm.$error;
-            if ($scope.validateForm(errorObject)) {
-                return;
-            }
-
-            // bind select and radio fields
-            $scope.lakeObj.agencyCode = $scope.lakeAgency.id ;
-            $scope.lakeObj.typeCode = $scope.lakeType.id ;
-
-            $scope.showProgress("submitting lake data to server");
-            if ($scope.debug) {
-                console.log("form values");
-                console.log($scope.lakeObj);
-            }
-
-            lake.update($scope.base, $scope.debug, $scope.lakeObj).then(function (response) {
+            lake.storeFile($scope.base, $scope.debug,$scope.lakeId, $scope.fileCode, $scope.fileId).then(function (response) {
 
                     var status = response.status || 500;
                     var data = response.data || {};
@@ -231,18 +230,29 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                     if (status != 200 || data.code != 200) {
                         console.log("browser response object: %o" ,response);
-                        var error = data.error || (status + ":error submitting lake create form");
+                        var error = data.error || (status + ":error submitting feature create form");
                         $scope.showError(error);
                         return;
                     }
 
-                    $scope.showMessage("Lake details updated successfully!");
-                    // bring focus to message 
-                    $window.scrollTo(0,0) ;
-                    
+                    $scope.showMessage("lake file data uploaded successfully!");
+                    // @debug
+                    // reload page
+                    $window.location.href = "/admin/view/lake/stage-volume.php?lake_id=" + $scope.lakeId ;
+
                 }, function (response) {
                     $scope.processResponse(response);
-                });
+                }); 
+        }
+
+        $scope.process_upload = function () {
+
+            var uploadUrl = $scope.base + "/admin/shim/upload/mpart.php" ;
+            var metadata = { 
+                "store" : "database"
+            } ;
+
+            $scope.upload_file(uploadUrl, metadata);
         };
 
         $scope.errorMessage = "" ;
@@ -252,17 +262,16 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         $scope.base = $scope.gparams.base;
         $scope.lakeId = <?php echo $lakeId ?> ;
 
-        //data initialization
+        // data initialization
         $scope.lakeObj = {};
-        $scope.lakeObj.usageCode = [] ;
-        $scope.allLakeAgencies = [] ;
-        $scope.allLakeTypes = [] ;
-        $scope.allLakeUsages = [] ;
+        $scope.lakeFileObj = {} ;
+        // file code: 1 stage-volume
+        // file code: 2 stage-area
+        // file code: 3 evaporation
 
-        $scope.lakeCodes= {};
+        $scope.fileCode = 1 ;
         $scope.get_lake_object() ;
-        
-
+    
 
     });
 </script>

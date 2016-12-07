@@ -27,7 +27,7 @@
                 </li>
 
                 <li class="mdl-list__item">
-                    <a href="#" class="mdl-components__link mdl-component"> 
+                    <a href="#" ng-click="goto_stage_volume_page(lakeId)" class="mdl-components__link mdl-component"> 
                         <span class="mdl-list__item-primary-content">Stage volume</span> 
                     </a>
                 </li>

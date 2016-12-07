@@ -54,7 +54,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                 <div class="mdl-cell mdl-cell--1-col"> </div>
 
 
-                <div id="content" class="mdl-grid mdl-cell mdl-cell--4-col">
+                <div id="content" class="mdl-cell mdl-cell--4-col">
                     <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
                     
                     <form name="createForm">
@@ -444,8 +444,10 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                     $scope.fileUploadData.items.push({
                         "error" : error ,
                         "upload" : false 
-                    });
+                    }); 
 
+                    // show error 
+                    $scope.showError(error);
                     return ;
                     
                 }
@@ -553,9 +555,9 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         return;
                     }
 
-                    $scope.clearPageMessage();
+                    $scope.showMessage("lake feature edited successfully!");
                     // @debug
-                   // $window.location.href = "/admin/view/lake/feature/list.php?lake_id=" + $scope.lakeId + "&feature_id=" + data.featureId;
+                    // $window.location.href = "/admin/view/lake/feature/list.php?lake_id=" + $scope.lakeId + "&feature_id=" + data.featureId;
 
                 }, function (response) {
                     $scope.processResponse(response);

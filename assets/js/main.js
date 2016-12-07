@@ -754,6 +754,55 @@
                  return promise;
              };
 
+			lake.getFileObject = function(base,debug, lakeId, fileCode) {
+
+                 var myurl = base + '/admin/shim/lake/file/get-object.php' ;
+                 var postData = {
+					 "lakeId" : lakeId, 
+					 "fileCode" : fileCode
+				 } ;
+
+                 if(debug) {
+                     console.log("POST:%s, data=%O ", myurl, postData);
+                 }
+
+                 var promise = $http({
+                     method : 'POST',
+                     url : myurl,
+                     data : postData,
+                     headers: {'Content-Type': 'application/json'}
+                 }).then(
+                     function (response) { return response ; },
+                     function(response) { return response ; }
+                 );
+
+                 return promise;
+             };
+
+			lake.storeFile = function(base,debug, lakeId, fileCode,fileId) {
+				 var myurl = base + '/admin/shim/lake/file/store.php' ;
+                 var postData = {
+					 "lakeId" : lakeId, 
+					 "fileCode" : fileCode,
+					 "fileId" : fileId
+				 } ;
+
+                 if(debug) {
+                     console.log("POST:%s, data=%O ", myurl, postData);
+                 }
+                 var promise = $http({
+                     method : 'POST',
+                     url : myurl,
+                     data : postData,
+                     headers: {'Content-Type': 'application/json'}
+                 }).then(
+                     function (response) { return response ; },
+                     function(response) { return response ; }
+                 );
+
+                 return promise;
+            };
+
             return lake ;
         });
 
