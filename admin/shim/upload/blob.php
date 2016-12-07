@@ -10,7 +10,7 @@
 	use \com\indigloo\Logger ;
 	use \com\indigloo\util\StringUtil as StringUtil ;
 
-	use \com\yuktix\auth\Login as Login ;
+	use \com\yuktix\lake\auth\Login as Login ;
     use \com\indigloo\exception\UIException as UIException;
 
 	
