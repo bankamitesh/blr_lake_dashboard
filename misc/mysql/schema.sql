@@ -29,6 +29,17 @@ create table atree_lake(
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
+drop table if exists atree_lake_file;
+create table atree_lake_file(
+    id int NOT NULL auto_increment,
+    lake_id int not null ,
+    file_id int not null ,
+    code int not null,
+    created_on timestamp default current_timestamp,
+    updated_on timestamp default current_timestamp ,
+    PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+
 -- inlet/outlet : is feature_class
 -- storm water/Drain etc. is feature_type_code 
 -- 
