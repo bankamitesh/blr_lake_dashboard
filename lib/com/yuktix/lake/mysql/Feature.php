@@ -93,6 +93,7 @@ namespace com\yuktix\lake\mysql {
                 array_push($result, $feature);
             }
 
+            $mysqli->closeHandle();
             return $result ;
 
         }
