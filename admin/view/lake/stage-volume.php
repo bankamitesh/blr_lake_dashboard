@@ -25,6 +25,8 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 }
 
 ?>
+
+
 <html  ng-app="YuktixApp">
 <head>
     <title> Lake stage volume edit page </title>
@@ -36,7 +38,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <link rel="stylesheet" href="/assets/css/main.css">
 </head>
 
-<body  ng-controller="yuktix.admin.lake.stage.volume">
+<body  ng-controller="yuktix.admin.lake.csv.upload">
 
 <div class="mdl-layout mdl-js-layout" id="container">
 
@@ -121,9 +123,10 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 <script src="/assets/js/main.js?v=1"></script>
 
 
+
 <script>
 
-    yuktixApp.controller("yuktix.admin.lake.stage.volume", function ($scope, lake, fupload,$window) {
+    yuktixApp.controller("yuktix.admin.lake.csv.upload", function ($scope, lake, fupload,$window) {
 
          $scope.get_lake_object = function() {
 
@@ -298,5 +301,8 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
     });
 </script>
+
+
+
 
 </html>
