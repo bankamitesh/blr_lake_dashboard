@@ -40,6 +40,21 @@ namespace com\yuktix\lake\mysql {
             return $lakeObj ;
         }
 
+        static function createLakeFileObject($row) {
+            
+            $lakeFileObj = new \stdClass ;
+            if(empty($row)) {
+                return $lakeObj ;
+            }
+
+            $lakeFileObj->id = $row["id"];
+            $lakeFileObj->fileId = $row["file_id"];
+            $lakeFileObj->fileCode = $row["file_code"];
+            $lakeFileObj->lakeId = $row["lake_id"];
+
+            return $lakeFileObj ;
+        }
+
         static function insert($dbh,$lakeObj) {
 
              // @todo error check for required params
@@ -139,6 +154,44 @@ namespace com\yuktix\lake\mysql {
             }
 
             return $result ;
+        }
+
+
+        static function storeFile($dbh,$lakeFileObj) {
+
+            // @todo input check
+            $sql = "insert INTO atree_lake_file(lake_id, file_code, file_id, " 
+                . " created_on) VALUES (:lake_id, :file_code, :file_id, "
+                . " now())" ; 
+
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam(":lake_id",$lakeFileObj->lakeId, \PDO::PARAM_INT);
+            $stmt->bindParam(":file_id",$lakeFileObj->fileId, \PDO::PARAM_INT);
+            $stmt->bindParam(":file_code",$lakeFileObj->fileCode, \PDO::PARAM_INT);
+            $stmt->execute();
+            $stmt = NULL;
+
+        }
+
+        static function getFileOnCode($lakeId, $fileCode) {
+
+            if(empty($lakeId)) {
+                $xmsg = "required parameter lakeId is missing";
+                Response::raiseBadInputError($xmsg) ;
+            }
+
+            if(empty($fileCode)) {
+                $xmsg = "required parameter fileCode is missing";
+                Response::raiseBadInputError($xmsg) ;
+            }
+            
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $lakeId = $mysqli->real_escape_string($lakeId);
+            $sql = sprintf(" select * from atree_lake_file where lake_id = %d and file_code = %d ",$lakeId, $fileCode) ;
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return  self::createLakeFileObject($row) ;
+            
+
         }
 
     }

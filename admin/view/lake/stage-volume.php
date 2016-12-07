@@ -81,7 +81,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             </div>
 
                             <div class="form-button-container">
-                                <button class="mdl-button mdl-js-button mdl-button--raised"ng-click="upload_file()" type="submit">
+                                <button class="mdl-button mdl-js-button mdl-button--raised"ng-click="process_upload()" type="submit">
                                     Upload 
                                 </button>
                             </div>
@@ -89,8 +89,18 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                     </div> 
 
                     <div>
-                        <h6> stage volume stored in the system </h6>
-                        <a ng-href="{{base}}/admin/download/file.php?id={{lakeFileObj.id}}">download file</a>
+                        
+                       
+                        <div ng-show="display.downloadLink">
+                            <h6>Download stored stage volume file </h6>
+                            <a ng-href="{{base}}/admin/shim/download/file.php?id={{lakeFileObj.fileId}}">
+                                <i class="material-icons mdl-list__item-icon">file_download</i>
+                                <span> click to download csv</span>
+                            </a>
+                        </div>
+                        <div ng-show="!display.downloadLink">
+                            <h6>No stage volume file stored in the system </h6>
+                        </div>
                     </div>
                 </div>
 
@@ -147,6 +157,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             lake.getFileObject($scope.base,$scope.debug, $scope.lakeId,$scope.fileCode).then( function(response) {
                     var status = response.status || 500;
                     var data = response.data || {};
+
                     if($scope.debug) {
                         console.log("server response:: lake file object:%O", data);
                     }
@@ -158,7 +169,16 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         return;
                     }
 
-                    $scope.lakeFileObj = data.result ;
+                    $scope.lakeFileObj = data.result || {} ;
+                    if($scope.debug) {
+                        console.log("lake file obj ::", $scope.lakeFileObj);
+                    }
+
+                    // set display.downloadLink
+                    if($scope.lakeFileObj.hasOwnProperty("fileId")) {
+                        $scope.display.downloadLink = true ;
+                    }
+                    
                     $scope.clearPageMessage();
                     
 
@@ -218,7 +238,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
         $scope.send_file_data = function(fileId) {
 
-            lake.storeFile($scope.base, $scope.debug,$scope.lakeId, $scope.fileCode, $scope.fileId).then(function (response) {
+            lake.storeFile($scope.base, $scope.debug,$scope.lakeId, $scope.fileCode, fileId).then(function (response) {
 
                     var status = response.status || 500;
                     var data = response.data || {};
@@ -265,6 +285,9 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         // data initialization
         $scope.lakeObj = {};
         $scope.lakeFileObj = {} ;
+        $scope.display = {} ;
+        $scope.display.downloadLink = false ;
+
         // file code: 1 stage-volume
         // file code: 2 stage-area
         // file code: 3 evaporation
