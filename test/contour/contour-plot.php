@@ -41,7 +41,7 @@ if(array_key_exists("jsdebug", $_REQUEST)) {
 </style>
 <body>
 <script src="/assets/js/d3.v3.js"></script>
-<script src="/assets/js/contour.js"></script>
+<script src="contour.js"></script>
 <script>
 
     var margin = {top: 20, right: 20, bottom: 30, left: 30},
@@ -73,7 +73,7 @@ if(array_key_exists("jsdebug", $_REQUEST)) {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    d3.json("readme-heatmap.json", function(error, heatmap) {
+    d3.json("contour-data.json", function(error, heatmap) {
         if (error) throw error;
 
         var dx = heatmap[0].length,
