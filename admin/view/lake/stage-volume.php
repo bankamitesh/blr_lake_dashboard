@@ -1,29 +1,29 @@
 <?php
 
-include("lake-app.inc");
-include(APP_WEB_DIR . '/inc/header.inc');
+    include("lake-app.inc");
+    include(APP_WEB_DIR . '/inc/header.inc');
 
-use \com\indigloo\Url;
-use \com\yuktix\lake\auth\Login as Login ;
+    use \com\indigloo\Url;
+    use \com\yuktix\lake\auth\Login as Login ;
 
-// role check
-// redirect to login page
-Login::isCustomerAdmin("/admin/login.php") ;
+    // role check
+    // redirect to login page
+    Login::isCustomerAdmin("/admin/login.php") ;
 
-$gparams = new \stdClass;
-$gparams->debug = false;
-$gparams->base = Url::base();
+    $gparams = new \stdClass;
+    $gparams->debug = false;
+    $gparams->base = Url::base();
 
-$lakeId = Url::tryQueryParam("lake_id");
-if(empty($lakeId)) {
-    echo "<h1> required parameter lake_id is missing </h1>" ;
-    exit(1);
-}
+    $lakeId = Url::tryQueryParam("lake_id");
+    if(empty($lakeId)) {
+        echo "<h1> required parameter lake_id is missing </h1>" ;
+        exit(1);
+    }
 
-if (array_key_exists("jsdebug", $_REQUEST)) {
-    $gparams->debug = true;
-}
-
+    if (array_key_exists("jsdebug", $_REQUEST)) {
+        $gparams->debug = true;
+    }
+    
 ?>
 
 
