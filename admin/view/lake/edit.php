@@ -51,7 +51,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                 <div class="form-container">
                     <form name="createForm" >
                         
-                            <h5>Edit Jakkur Lake </h5>
+                            <h5>Edit {{lakeObj.name}} </h5>
                             
                             <div class="mdl-textfield mdl-js-textfield">
                                 <h6>Name</h6>
