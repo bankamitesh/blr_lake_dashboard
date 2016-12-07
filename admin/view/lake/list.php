@@ -184,7 +184,7 @@
         if($scope.debug){
             console.log("lake row clicked: id ::" + lakeId);
         }
-        $window.location.href = "/admin/view/lake/edit.php?id="+lakeId;
+        $window.location.href = "/admin/view/lake/edit.php?lake_id="+lakeId;
 
       };
 

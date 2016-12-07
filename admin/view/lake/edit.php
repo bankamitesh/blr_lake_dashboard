@@ -14,7 +14,7 @@ $gparams = new \stdClass;
 $gparams->debug = false;
 $gparams->base = Url::base();
 
-$lakeId = Url::tryQueryParam("id");
+$lakeId = Url::tryQueryParam("lake_id");
 if(empty($lakeId)) {
     echo "<h1> required parameter id is missing </h1>" ;
     exit(1);
