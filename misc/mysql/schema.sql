@@ -119,3 +119,12 @@ create table atree_file_blob (
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
+drop table if exists atree_lake_zone;
+create table atree_lake_zone(
+    id int NOT NULL auto_increment,
+    lake_id int not null,
+    html text,
+    description varchar(512) ,
+    created_on timestamp default current_timestamp,
+    updated_on timestamp default current_timestamp ,
+    PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;

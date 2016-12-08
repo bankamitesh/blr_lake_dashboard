@@ -803,6 +803,57 @@
                  return promise;
             };
 
+			lake.createZone = function(base,debug,lakeId, zoneObj) {
+            	
+            	var myurl = base + '/admin/shim/lake/create-zone.php' ;
+            	var postData = {
+					"lakeId" : lakeId,
+					"zoneObj" : zoneObj 
+				};
+
+            	if(debug) {
+					console.log("POST :%s, data: %O",  myurl, postData); 
+				}
+            	
+            	var promise = $http({
+					method : 'POST',
+					url : myurl,
+					data : postData,
+					headers: {'Content-Type': 'application/json'}
+				
+				}).then(
+                    function (response) { return response ; }, 
+                    function(response) { return response ; }
+                );
+
+                return promise;
+            	
+            };
+
+			lake.getZones = function(base,debug,lakeId) {
+            	
+            	var myurl = base + '/admin/shim/lake/get-zones.php' ;
+				var postData = {"lakeId" : lakeId} 
+
+            	if(debug) {
+					console.log("POST :%s, data: %O",  myurl, postData); 
+				}
+            	
+            	var promise = $http({
+					method : 'POST',
+					url : myurl,
+					data : postData,
+					headers: {'Content-Type': 'application/json'}
+				
+				}).then(
+                    function (response) { return response ; }, 
+                    function(response) { return response ; }
+                );
+
+                return promise;
+            	
+            };
+
             return lake ;
         });
 

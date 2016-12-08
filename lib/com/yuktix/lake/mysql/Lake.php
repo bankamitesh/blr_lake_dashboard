@@ -55,6 +55,17 @@ namespace com\yuktix\lake\mysql {
             return $lakeFileObj ;
         }
 
+        static function createLakeZoneObject($row) {
+
+            $zoneObj = new \stdClass ;
+            $zoneObj->id = $row["id"] ;
+            $zoneObj->lakeId = $row["lake_id"] ;
+            $zoneObj->html = $row["html"] ;
+            $zoneObj->description = $row["description"];
+
+            return $zoneObj ;
+        }
+
         static function insert($dbh,$lakeObj) {
 
              // @todo error check for required params
@@ -123,6 +134,51 @@ namespace com\yuktix\lake\mysql {
 
         }
 
+        static function createZone($dbh, $lakeId, $zoneObj) {
+
+            // input check
+            // @todo error check for required params
+            
+            if(empty($lakeId)) {
+                $xmsg = "required parameter lakeId is missing";
+                Response::raiseBadInputError($xmsg) ;
+            }
+
+            $sql = "insert INTO atree_lake_zone(lake_id, description, html, " 
+            . " created_on) VALUES (:lake_id, :description, :html, "
+            . " now())" ; 
+
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam(":lake_id",$lakeId, \PDO::PARAM_INT);
+            $stmt->bindParam(":description",$zoneObj->description, \PDO::PARAM_STR);
+            $stmt->bindParam(":html",$zoneObj->html, \PDO::PARAM_STR);
+
+            $stmt->execute();
+            $stmt = NULL;
+
+        }
+
+         static function removeZone($dbh, $lakeId, $zoneId) {
+
+            if(empty($lakeId)) {
+                $xmsg = "required parameter lakeId is missing";
+                Response::raiseBadInputError($xmsg) ;
+            }
+
+            if(empty($zoneId)) {
+                $xmsg = "required parameter zoneId is missing";
+                Response::raiseBadInputError($xmsg) ;
+            }
+
+            $sql = "delete from atree_lake_zone where id = :id " ; 
+
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam(":id",$zoneId, \PDO::PARAM_INT);
+            $stmt->execute();
+            $stmt = NULL;
+
+        }
+
         static function getOnId($lakeId) {
 
             // input check
@@ -155,7 +211,27 @@ namespace com\yuktix\lake\mysql {
 
             return $result ;
         }
+         static function getZones($lakeId) {
 
+            if(empty($lakeId)) {
+                $xmsg = "required parameter lakeId is missing";
+                Response::raiseBadInputError($xmsg) ;
+            }
+
+            $result = array() ;
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $lakeId = $mysqli->real_escape_string($lakeId);
+            $sql = sprintf(" select * from atree_lake_zone where lake_id = %d",$lakeId) ;
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            
+            foreach ($rows as $row) {
+                $lake = self::createLakeZoneObject($row) ;
+                array_push($result, $lake);
+            }
+
+            MySQL\Connection::getInstance()->closeHandle();
+            return $result ;
+        }
 
         static function storeFile($dbh,$lakeFileObj) {
 

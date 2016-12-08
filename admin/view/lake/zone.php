@@ -21,20 +21,12 @@
         exit(1);
     }
 
-    // get zone fileId
-    $lakeFileObj = Lake::getFileOnCode($lakeId,4);
-    $zoneFileId = NULL ;
-    $zoneFileLink = "#" ;
-
-    if(!empty($lakeFileObj) && property_exists($lakeFileObj, "fileId")) {
-        $zoneFileId = $lakeFileObj->fileId ;
-        $zoneFileLink = $gparams->base ."/admin/shim/download/file.php?id=".$zoneFileId ;
-    }
-
     if (array_key_exists("jsdebug", $_REQUEST)) {
         $gparams->debug = true;
     }
     
+    $zones = Lake::getZones($lakeId);
+
 ?>
 
 
@@ -47,19 +39,6 @@
     <link rel="stylesheet" href="/assets/css/material.min.css">
     <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
     <link rel="stylesheet" href="/assets/css/main.css">
-
-    <style>
-     #capture {
-       padding:20px ;
-       height: 440px;
-       width: 120px;
-       overflow: hidden;
-       float: left;
-       background-color: white;
-       border: thin solid #333;
-       border-left: none;
-       }
-    </style>
 
 </head>
 
@@ -75,71 +54,60 @@
             <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
             <div class="mdl-cell mdl-cell--1-col"> </div>
                 <div id ="content" class="mdl-cell mdl-cell--6-col" >
-                <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
-                 <div class="form-container">
-                     <form name="stageVolumeForm" >
+                    <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
+                    <div class="form-container">
+                        <form name="createForm">
                         
-                            <h5>{{lakeObj.name}} / Zones</h5>
-                           
+                            <h5>Add zone/boundary data</h5>
                             <p>
-                            Please upload the lake zones data in kmz or kml format.
-                            first create your zones and add markers in google map.
-                            Then export the map to a kml or kmz file (for custom icons support) 
-                            and upload here.
-                             
-                            </p>
+                            To add zones and inlet/outlet markers on a map, 
+                            create the map and layers in google map. save the 
+                            html embed code together with a description.
 
-                            <div>
-                                <label class="mdl-button mdl-button--colored mdl-js-button">
-                                    <span> <i class="material-icons">attachment</i> </span>
-                                    Select kml/kmz file<input type="file" filelist-bind class="none"  name="files" style="display: none;">
-                                </label>
+                            </p>
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <textarea class="mdl-textfield__input" type="text" name="html" id="html" rows="5"
+                                        ng-model="lakeObj.zone.html" required>
+                                </textarea>
+                                <label class="mdl-textfield__label" for="html">paste html code here ...</label>
+                            </div>
+                            
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="text" name="description" id="description"
+                                        ng-model="lakeObj.zone.description">
+                                
+                                <label class="mdl-textfield__label" for="description">description</label>
                             </div>
                             <br>
-                            <div>
-                                <ul class="mdl-list">
-                                    <li "mdl-list__item" ng-repeat="file in files">
-                                        <span class="mdl-list__item-primary-content">
-                                            <i class="material-icons mdl-list__item-icon">insert_drive_file</i>
-                                            {{ file.name}}, {{file.size/1000}} kb
-                                        </span>
-                                    
-                                    </li>
-                                </ul>
+                            <button class="mdl-button mdl-js-button mdl-button--raised" ng-click="save_zone()" type="submit">
+                                Save zone information 
+                            </button>
+
+                        </form>
+                    </div>
+
+                    
+                    <?php foreach($zones as $zone) { ?>
+                        <div class="zone-container">
+                            <div class="map">
+                                <?php echo $zone->html ; ?>
+                            </div>
+                            <div class="description">
+                                <?php echo $zone->description ; ?>
                             </div>
 
-                            <div class="form-button-container">
-                                <button class="mdl-button mdl-js-button mdl-button--raised"ng-click="process_upload()" type="submit">
-                                    Upload 
+                            <div class="action">
+                                <button class="mdl-button mdl-js-button mdl-button--raised"ng-click="remove_zone(<?php echo $zone->id ?>)" type="submit">
+                                remove this zone 
                                 </button>
                             </div>
-                        </form> 
-                    </div> 
-
-                    <div>
-                        
-                        <div ng-show="display.downloadLink">
-                            <h6>Download stored zone file </h6>
-                            <a ng-href="{{base}}/admin/shim/download/file.php?id={{lakeFileObj.fileId}}">
-                                <i class="material-icons mdl-list__item-icon">file_download</i>
-                                <span> click to download kmz/kml file</span>
-                            </a>
-                        </div>
-
-                        <div ng-show="display.downloadLink">
-                            <h6>Preview </h6>
-                            <div id="map"></div>
-                            <div id="capture"></div>
 
                         </div>
-
-                        <div ng-show="!display.downloadLink">
-                            <h6>No zone file stored in the system.</h6>
-                        </div>
+                         
+                    <?php } ?> 
 
 
-                    </div>
-                </div>
+                </div> <!-- content -->
 
         </div> <!-- grid: -->
        
@@ -159,11 +127,11 @@
 
 <script>
 
-    yuktixApp.controller("yuktix.admin.lake.zone", function ($scope, lake, fupload,$window) {
+    yuktixApp.controller("yuktix.admin.lake.zone", function ($scope, lake,$window) {
 
          $scope.get_lake_object = function() {
 
-            $scope.showProgress("Getting lake object from server...");
+            $scope.showProgress("getting lake data from server...");
             lake.getLakeObject($scope.base,$scope.debug, $scope.lakeId).then( function(response) {
                     var status = response.status || 500;
                     var data = response.data || {};
@@ -179,44 +147,7 @@
                     }
 
                     $scope.lakeObj = data.result ;
-                    $scope.get_lake_file() ;
-
-                },function(response) {
-                    $scope.processResponse(response);
-                });
-
-        };
-
-        $scope.get_lake_file = function() {
-
-            $scope.showProgress("getting lake file object from server...");
-            lake.getFileObject($scope.base,$scope.debug, $scope.lakeId,$scope.fileCode).then( function(response) {
-                    var status = response.status || 500;
-                    var data = response.data || {};
-
-                    if($scope.debug) {
-                        console.log("server response:: lake file object:%O", data);
-                    }
-
-                    if (status != 200 || data.code != 200) {
-                        console.log(response);
-                        var error = data.error || (status + ":error retrieving  data from Server");
-                        $scope.showError(error);
-                        return;
-                    }
-
-                    $scope.lakeFileObj = data.result || {} ;
-                    if($scope.debug) {
-                        console.log("lake file obj ::", $scope.lakeFileObj);
-                    }
-
-                    // set display.downloadLink
-                    if($scope.lakeFileObj.hasOwnProperty("fileId")) {
-                        $scope.display.downloadLink = true ;
-                    }
-                    
                     $scope.clearPageMessage();
-                    
 
                 },function(response) {
                     $scope.processResponse(response);
@@ -224,57 +155,14 @@
 
         };
 
-        $scope.upload_file = function (uploadUrl,metadata) {
+        $scope.save_zone = function() {
 
-            if(!angular.isDefined($scope.files)) {
-                // no files on page.
-                var error = "no files found. please select a file first!";
-                var xmsg = "no files found during processing. " 
-                    + " please check the you are using filelist-bind directive"
-                    + " with input type = file and  name=files element." ; 
-
-                $scope.showError(error);
-                console.error(xmsg);
-                return ;
+            if($scope.debug) {
+                console.log("lake_id for zone is",$scope.lakeObj.id);
+                console.log("zone object is ", $scope.lakeObj.zone);
             }
 
-            var payload = new FormData();
-            var xfile = $scope.files[0] ;
-
-            payload.append("myfile", xfile);
-            payload.append("metadata", angular.toJson(metadata));
-            
-            $scope.showProgress("uploading file...");
-            fupload.send_mpart($scope.debug, uploadUrl, payload).then(function (response) {
-
-                var status = response.status || 500;
-                var data = response.data || {};
-
-                if ($scope.debug) {
-                    console.log("API response :");
-                    console.log(data);
-                }
-
-                if (status != 200 || data.code != 200) {
-                    console.error("browser response object: " ,response);
-                    var error  = data.error || (status + ":error while submitting data ");
-                    // show error 
-                    $scope.showError(error);
-                    return ;
-                }
-                
-                $scope.send_file_data(data.fileId) ;
-                return ;
-
-            }, function (response) {
-                $scope.processResponse(response);
-            });
-            
-        };
-
-        $scope.send_file_data = function(fileId) {
-
-            lake.storeFile($scope.base, $scope.debug,$scope.lakeId, $scope.fileCode, fileId).then(function (response) {
+            lake.createZone($scope.base, $scope.debug, $scope.lakeObj.id, $scope.lakeObj.zone).then(function (response) {
 
                     var status = response.status || 500;
                     var data = response.data || {};
@@ -286,30 +174,16 @@
 
                     if (status != 200 || data.code != 200) {
                         console.log("browser response object: %o" ,response);
-                        var error = data.error || (status + ":error submitting feature create form");
+                        var error = data.error || (status + ":error submitting lake create form");
                         $scope.showError(error);
                         return;
                     }
 
-                    $scope.showMessage("lake file data uploaded successfully!");
-                    // @debug
-                    // reload page
-                    // $window.location.href = "/admin/view/lake/stage-volume.php?lake_id=" + $scope.lakeId ;
-                    $window.location.reload(true) ;
+                    $window.location.href = "/admin/view/lake/zone.php?lake_id=" + $scope.lakeId ;
 
                 }, function (response) {
                     $scope.processResponse(response);
-                }); 
-        }
-
-        $scope.process_upload = function () {
-
-            var uploadUrl = $scope.base + "/admin/shim/upload/mpart.php" ;
-            var metadata = { 
-                "store" : "database"
-            } ;
-
-            $scope.upload_file(uploadUrl, metadata);
+                });
         };
 
         $scope.errorMessage = "" ;
@@ -321,63 +195,19 @@
 
         // data initialization
         $scope.lakeObj = {};
-        $scope.lakeFileObj = {} ;
+        $scope.lakeObj.zone = {} ;
+        $scope.zones = [] ;
+
+        // init display data 
         $scope.display = {} ;
-        $scope.display.downloadLink = false ;
-
-        // file code: 1 stage-volume
-        // file code: 2 stage-area
-        // file code: 3 evaporation
-        // file code: 4 zone
-        // file code: 5 bathymetry
-
-        // zone file code 
-        $scope.fileCode = 4 ;
         $scope.get_lake_object() ;
+
     });
 
 
 </script>
 
- <script>
-    
-    var map;
-    var src = '<?php echo $zoneFileLink; ?>' ;
-
-     // Initializes the map and calls the 
-     // function that loads the KML layer.
-    
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: new google.maps.LatLng(13.08349, 77.60942),
-          zoom: 2,
-          mapTypeId: 'terrain'
-        });
-        loadKmlLayer(src, map);
-      }
-
-       // Adds a KMLLayer based on the URL passed. Clicking on a marker
-       // results in the balloon content being loaded into the right-hand div.
-       // @param {string} src A URL for a KML file.
-       
-      function loadKmlLayer(src, map) {
-        var kmlLayer = new google.maps.KmlLayer(src, {
-          suppressInfoWindows: true,
-          preserveViewport: false,
-          map: map
-        });
-
-        google.maps.event.addListener(kmlLayer, 'click', function(event) {
-          var content = event.featureData.infoWindowHtml;
-          var testimonial = document.getElementById('capture');
-          testimonial.innerHTML = content;
-        });
-        
-      }
-    </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCk31T4cwEApyqlaeZUfCa0WgJdbxGOtCw&callback=initMap">
-    </script>
-
+ 
 </body>
 
 </html>
