@@ -1,19 +1,4 @@
-<?php
 
-include ("lake-app.inc");
-include(APP_WEB_DIR.'/inc/header.inc');
-
-use \com\indigloo\Url ;
-
-$gparams = new \stdClass ;
-$gparams->debug = false ;
-$gparams->base = Url::base() ;
-
-if(array_key_exists("jsdebug", $_REQUEST)) {
-    $gparams->debug = true ;
-}
-
-?>
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
@@ -43,6 +28,13 @@ if(array_key_exists("jsdebug", $_REQUEST)) {
 <script src="/assets/js/d3.v3.js"></script>
 <script src="contour.js"></script>
 <script>
+
+    /* 
+     this example is part of d3-plugins 
+     https://github.com/d3/d3-plugins/tree/master/geom/contour
+     from mike bostock (@mbostock) and uses marching square algorithms
+     
+     */
 
     var margin = {top: 20, right: 20, bottom: 30, left: 30},
         width = 960 - margin.left - margin.right,
