@@ -1,5 +1,6 @@
 <?php
 
+
     $file = "jakkur1.kmz" ;
     header('Content-Description: kmz download');
     header('Content-Type: application/vnd.google-earth.kmz');
@@ -10,7 +11,5 @@
     header('Content-Length: ' . filesize($file));
     readfile($file);
     exit;
-
-
 
 ?>
