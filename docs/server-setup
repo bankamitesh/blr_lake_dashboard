@@ -1,0 +1,24 @@
+
+add server SSH key to bitbucket.org server
+create lakedb database
+create schema
+add nginx entry into sites-enabled/ folder (port 8080) 
+add /var/www/vhosts/test.blrlakes.org/htdocs -> web/ mapping
+
+create /var/ww/log, /var/www/tmp, /var/www/apps folders
+copy our php.ini file to php-fpm.
+php-fpm www.conf set ; listen = 127.0.0.1:9100
+verify: http://www.blrlakes.org:8080/site/echo.php
+
+make changes to lake-app.inc
+make changes to lake_config.ini 
+
+checkout webgloo repo (HTTPS) version
+sudo chown -R www-data:www-data www/
+
+
+
+
+
+
+
