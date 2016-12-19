@@ -287,35 +287,33 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
                     if($scope.featureTypes.length == 0) {
                         console.error("server did not return  feature type codes");
-                        return ;
                     }
 
                     // we receive feature_type_code from the API
                     // we need to lookup and assign corresponding object 
                     // in list of all feature type code objects
-                    $scope.featureType = {} ;
-                    $scope.lookup_feature_type($scope.featureObj.featureTypeCode);
 
-                    if(angular.equals($scope.featureType, {})) {
+                    var index = lake.findObjectOnCode($scope.featureTypes, $scope.featureObj.featureTypeCode, $scope.debug);
+                    if (index == -1) {
                         console.error("select feature type code not assigned: revert to default");
-                        $scope.featureType = $scope.featureTypes[0];
+                        index = 0 ;
                     }
+
+                    // bind feature type 
+                    $scope.featureType = $scope.featureTypes[index];
 
                     if($scope.featureMonitorings.length == 0) {
                         console.error("server did not return  monitoring codes");
-                        return ;
                     }
 
-                    //  we receive monitoring_code from the API
-                    //  we need to lookup and assign corresponding object 
-                    // in list of all feature monitoring state objects
-                    $scope.featureMonitoring = {} ;
-                    $scope.lookup_feature_monitoring($scope.featureObj.monitoringCode);
-
-                    if(angular.equals($scope.featureMonitoring, {})) {
+                    index = lake.findObjectOnCode($scope.featureMonitorings, $scope.featureObj.monitoringCode, $scope.debug);
+                    if (index == -1) {
                         console.error("monitoring  code not assigned: revert to default");
-                        $scope.featureMonitoring = $scope.featureMonitorings[0];
+                        index = 0 ;
                     }
+
+                    // bind feature monitoring code 
+                    $scope.featureMonitoring = $scope.featureMonitorings[index];
                     
                     if($scope.debug) {
                         console.log("selected feature type=%O", $scope.featureType);
@@ -335,30 +333,17 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             $scope.featureType = featureType ;
         } ;
 
-         $scope.lookup_feature_type = function(code) {
-
-            for (var i = 0 ; i < $scope.featureTypes.length; i++) {
-                if($scope.debug) {
-                    console.log("feature type code: comparing %O with %d",$scope.featureTypes[i], code);
-                }
-
-                if($scope.featureTypes[i].id == code) {
-                    $scope.featureType = $scope.featureTypes[i];
-                }
-            }
-        };
-
+        
         $scope.lookup_feature_monitoring = function(code) {
 
-            for (var i = 0 ; i < $scope.featureMonitorings.length; i++) {
-                if($scope.debug) {
-                    console.log("feature monitoring code: comparing %O with %d",$scope.featureMonitorings[i],code);
-                }
-
-                if($scope.featureMonitorings[i].id == code) {
-                    $scope.featureMonitoring = $scope.featureMonitorings[i];
-                }
+            var index = lake.findObjectOnCode($scope.featureMonitorings, code, $scope.debug);
+            if(index == -1) {
+                console.error("No feature monitoring object found for code :%d", code);
+                index = 0 ; 
             }
+
+            $scope.featureMonitoring = $scope.featureMonitorings[index];
+            
         };
 
         $scope.select_monitoring_tab = function(code) {

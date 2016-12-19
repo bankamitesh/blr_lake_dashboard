@@ -145,7 +145,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                 <h6> Usage </h6>
                                 
                                 
-                                    <div ng-repeat="usage in allLakeUsages">
+                                    <div ng-repeat="usage in lakeUsages">
                                         <label for="{{usage.id}}" class="mdl-checkbox mdl-js-checkbox" >
                                             <input
                                                 type="checkbox"
@@ -185,7 +185,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 <script src="/assets/js/material.min.js"></script>
 <script src="/assets/js/mdl-selectfield.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js?v=1"></script>
+<script src="/assets/js/main.js?v=3"></script>
 
 
 <script>
@@ -248,8 +248,22 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                     $scope.lakeTypes = data.result.lakeTypes ;
                     $scope.lakeUsages = data.result.lakeUsages ;
                     
-                    $scope.lakeAgency = $scope.lakeAgencies[0] ;
-                    $scope.lakeType = $scope.lakeTypes[0] ;
+                    // bind code to objects 
+                    var index = lake.findObjectOnCode($scope.lakeAgencies, $scope.lakeObj.agencyCode, $scope.debug);
+                    if(index == -1) {
+                        console.error("error: no lake agency found for code: %d",$scope.lakeObj.agencyCode);
+                        index = 0 ;
+                    }
+
+                    $scope.lakeAgency = $scope.lakeAgencies[index];
+
+                    index = lake.findObjectOnCode($scope.lakeTypes, $scope.lakeObj.typeCode, $scope.debug);
+                    if(index == -1) {
+                        console.error("error: no lake type found for code: %d",$scope.lakeObj.typeCode);
+                        index = 0 ;
+                    }
+
+                    $scope.lakeType = $scope.lakeTypes[index];
                     $scope.clearPageMessage();
 
                 },function(response) {
@@ -317,7 +331,8 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                     $scope.showMessage("Lake details updated successfully!");
                     // bring focus to message 
                     $window.scrollTo(0,0) ;
-                    
+                    // show dialog? 
+
                 }, function (response) {
                     $scope.processResponse(response);
                 });
@@ -330,14 +345,9 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         $scope.base = $scope.gparams.base;
         $scope.lakeId = <?php echo $lakeId ?> ;
 
-        //data initialization
+        // data initialization
         $scope.lakeObj = {};
         $scope.lakeObj.usageCode = [] ;
-        $scope.allLakeAgencies = [] ;
-        $scope.allLakeTypes = [] ;
-        $scope.allLakeUsages = [] ;
-
-        $scope.lakeCodes= {};
         $scope.get_lake_object() ;
         
 

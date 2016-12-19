@@ -489,6 +489,7 @@
             return text ;
         });
         
+
 		yuktixApp.factory('fupload', function($http) {
 
             var fupload = {} ;
@@ -730,6 +731,22 @@
 
                  return promise;
              };
+
+			lake.findObjectOnCode = function(arr, code, debug) {
+
+				var index = -1 ;
+				for (var i = 0 ; i < arr.length; i++) {
+					if(debug) {
+						console.log("lookup object on code: comparing %O with %d",arr[i], code);
+					}
+
+					if(arr[i].id == code) {
+						return  i ;
+					}
+            	}
+
+				return index ;
+            };
 
 			lake.getLakeObject = function(base,debug, lakeId) {
 
