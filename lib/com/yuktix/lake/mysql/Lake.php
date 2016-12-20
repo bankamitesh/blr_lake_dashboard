@@ -44,7 +44,7 @@ namespace com\yuktix\lake\mysql {
             
             $lakeFileObj = new \stdClass ;
             if(empty($row)) {
-                return $lakeObj ;
+                return $lakeFileObj ;
             }
 
             $lakeFileObj->id = $row["id"];

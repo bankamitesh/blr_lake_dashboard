@@ -60,7 +60,7 @@
                     <div class="form-container">
                         <form name="createForm">
                         
-                            <h5>  {{lakeObj.name}} / add zone or boundary maps </h5>
+                            <h5>  {{lakeObj.name}} / zone and boundary maps </h5>
                             <p>
                             To add zones and inlet/outlet markers on a map, 
                             create the map and layers in google map. save the 

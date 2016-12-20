@@ -66,6 +66,8 @@
 
                 </div> <!-- no table mdl card -->
 
+                 <h5>  {{lakeObj.name}} / Features </h5>
+
                <div class="table-container" ng-show="display.table">
 
                     <div class="wide-mdl-card__top__action ">
