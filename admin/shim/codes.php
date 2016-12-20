@@ -55,13 +55,19 @@
         ["id" => 3, "value" => "Constant Value"]
     ] ;
 
+    $featureIOCodes = [
+        ["id" => 1, "value" => "Inlet"],
+        ["id" => 2, "value" => "Outlet"]
+    ] ;
+
 
     $codes = [
         "lakeAgencies" => $lakeAgencies,
         "lakeTypes" => $lakeTypes ,
         "featureTypes" => $featureTypes,
         "featureMonitorings" => $featureMonitorings,
-        "lakeUsages" => $lakeUsages];
+        "lakeUsages" => $lakeUsages,
+        "featureIOCodes" => $featureIOCodes];
 
 
     // API response 
