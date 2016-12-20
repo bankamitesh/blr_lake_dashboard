@@ -54,7 +54,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                 <div class="form-container">
                     <form name="createForm" >
                         
-                            <h5>Edit {{lakeObj.name}} </h5>
+                            <h5> {{lakeObj.name}} / edit </h5>
                             
                             <div class="mdl-textfield mdl-js-textfield">
                                 <h6>Name</h6>
@@ -353,9 +353,13 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         $scope.lakeObj.usageCode = [] ;
         $scope.get_lake_object() ;
         
-
+      
 
     });
+
+
+ 
+
 </script>
 
 </html>

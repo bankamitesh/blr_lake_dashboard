@@ -218,8 +218,7 @@
         };
 
         $scope.goto_edit=function(featureId){
-            $window.location.href = "/admin/view/lake/feature/edit.php?lake_id="+ $scope.lakeId ;
-
+            $window.location.href = "/admin/view/lake/feature/edit.php?lake_id="+ $scope.lakeId + "&feature_id=" + featureId ;
         };
 
         $scope.translate_feature_type_code = function(code) {
