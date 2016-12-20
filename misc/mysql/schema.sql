@@ -40,6 +40,36 @@ create table atree_lake_file(
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
 
 
+-- unique file 
+alter table atree_lake_file add constraint unique alfidx1 (lake_id, file_code);
+
+
+
+
+DELIMITER //
+DROP TRIGGER IF EXISTS trg_file_del1;
+CREATE  TRIGGER trg_file_del1 BEFORE DELETE ON atree_lake_file
+    FOR EACH ROW
+    BEGIN
+        insert into atree_lake_file_log(lake_id,file_id,file_code, created_on)
+        values (OLD.lake_id, OLD.file_id, OLD.file_code, now() ) ;
+
+    END //
+DELIMITER ;
+
+
+drop table if exists atree_lake_file_log;
+create table atree_lake_file_log(
+    id int NOT NULL auto_increment,
+    lake_id int not null ,
+    file_id int not null ,
+    file_code int not null,
+    created_on timestamp default current_timestamp,
+    updated_on timestamp default current_timestamp ,
+    PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+
+
 -- inlet/outlet : is feature_class
 -- storm water/Drain etc. is feature_type_code 
 -- 

@@ -236,16 +236,28 @@ namespace com\yuktix\lake\mysql {
         static function storeFile($dbh,$lakeFileObj) {
 
             // @todo input check
-            $sql = "insert INTO atree_lake_file(lake_id, file_code, file_id, " 
+
+            // delete any existing rows
+            $sql1 = " delete from atree_lake_file where lake_id = :lake_id and file_code = :file_code  ";
+            
+            $stmt1 = $dbh->prepare($sql1);
+            $stmt1->bindParam(":lake_id",$lakeFileObj->lakeId, \PDO::PARAM_INT);
+            $stmt1->bindParam(":file_code",$lakeFileObj->fileCode, \PDO::PARAM_INT);
+            $stmt1->execute();
+            $stmt1 = NULL;
+            
+            // insert new ones
+            $sql2 = "insert INTO atree_lake_file(lake_id, file_code, file_id, " 
                 . " created_on) VALUES (:lake_id, :file_code, :file_id, "
                 . " now())" ; 
 
-            $stmt = $dbh->prepare($sql);
-            $stmt->bindParam(":lake_id",$lakeFileObj->lakeId, \PDO::PARAM_INT);
-            $stmt->bindParam(":file_id",$lakeFileObj->fileId, \PDO::PARAM_INT);
-            $stmt->bindParam(":file_code",$lakeFileObj->fileCode, \PDO::PARAM_INT);
-            $stmt->execute();
-            $stmt = NULL;
+            $stmt2 = $dbh->prepare($sql2);
+            $stmt2->bindParam(":lake_id",$lakeFileObj->lakeId, \PDO::PARAM_INT);
+            $stmt2->bindParam(":file_id",$lakeFileObj->fileId, \PDO::PARAM_INT);
+            $stmt2->bindParam(":file_code",$lakeFileObj->fileCode, \PDO::PARAM_INT);
+            $stmt2->execute();
+            $stmt2 = NULL;
+
 
         }
 
