@@ -39,9 +39,11 @@
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
    
     <main class="docs-layout-content mdl-layout__content ">
+		<?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
+
         <div class="mdl-grid mdl-grid--no-spacing" id="content">
             <div id="content" class="mdl-cell mdl-cell--9-col mdl-cell--3-offset">
-               <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
+               <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
 
 			    <div id = "login-container" class="mdl-card mdl-shadow--2dp wide-mdl-card">
                  <h3 class="mdl-card__title">Sign In</h3>

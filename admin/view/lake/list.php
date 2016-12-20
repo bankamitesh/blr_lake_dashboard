@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/assets/css/material.min.css">
     <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/main.css?v=1">
     
 </head>
 
@@ -33,9 +33,11 @@
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
    
     <main class="docs-layout-content mdl-layout__content ">
+      <?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
+
         <div class="mdl-grid mdl-grid--no-spacing" id="content">
             <div id="content" class="mdl-cell mdl-cell--9-col mdl-cell--3-offset">
-               <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
+               <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
 
                <div class="mdl-card mdl-shadow--4dp no-table-card" ng-show="display.notable">
                  <h4 class="mdl-card__title"> No Lakes Found! </h4>
@@ -55,19 +57,14 @@
                 </div> <!-- no table mdl card -->
 
                <div class="table-container" ng-show="display.table">
-                 <div class="mdl-grid">
-                   <div class="mdl-cell mdl-cell--6-col">
-                      &nbsp;
+                  <div class="wide-mdl-card__top__action ">
+                        <!-- FAB button with ripple -->
+                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored mdl-js-ripple-effect" ng-click="goto_create()">
+                          <i class="material-icons">add</i>
+                        </button>
                     </div>
-                    <div class="mdl-cell mdl-cell--3-col">
-                      <!-- FAB button with ripple -->
-                      <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored mdl-js-ripple-effect" ng-click="goto_create()">
-                        <i class="material-icons">add</i>
-                      </button>
-                    </div>
-                  </div> <!-- top grid -->
 
-                <div class="mdl-grid">
+                 
                   <div ng-repeat="lake in lakes" class="lake-card-container"> 
                       <div   class="mdl-card mdl-shadow--4dp wide-mdl-card">
                         <h3 class="mdl-card__title" ng-bind="lake.name"></h3>
@@ -112,7 +109,7 @@
 
                     </div> <!-- lake card -->
                   </div>
-              </div> <!-- lake grid -->
+              
             
           </div> 
         </div> <!-- grid -->

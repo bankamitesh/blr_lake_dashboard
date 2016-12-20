@@ -50,11 +50,13 @@
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
    
     <main class="mdl-components__pages mdl-layout__content ">
+        <?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
+
         <div class="mdl-grid mdl-grid--no-spacing">
             <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
             <div class="mdl-cell mdl-cell--1-col"> </div>
                 <div id ="content" class="mdl-cell mdl-cell--6-col" >
-                    <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
+                    <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
                     <div class="form-container">
                         <form name="createForm">
                         

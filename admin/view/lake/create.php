@@ -35,11 +35,13 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
    
     <main class="mdl-components__pages mdl-layout__content">
-        <div class="mdl-grid mdl-grid--no-spacing" id="content">
+
+         <?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
+         <div class="mdl-grid mdl-grid--no-spacing" id="content">
             
             <div class="mdl-cell mdl-cell--3-col"> </div>
             <div id="content" class="mdl-grid mdl-cell mdl-cell--9-col">
-                 <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
+                 <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
                 <form name="createForm">
                     
                         <h5>Create a new lake </h5>

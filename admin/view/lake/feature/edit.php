@@ -38,7 +38,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/assets/css/material.min.css">
     <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/main.css?v=1">
 
 </head>
 
@@ -49,13 +49,14 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
    
         <main class="docs-layout-content mdl-layout__content ">
+            <?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
             <div class="mdl-grid mdl-grid--no-spacing">
                 <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
                 <div class="mdl-cell mdl-cell--1-col"> </div>
 
 
                 <div id="content" class="mdl-cell mdl-cell--4-col">
-                    <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
+                    <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
                     
                     <form name="createForm">
                         <h5>Edit inlet/outlet </h5>
@@ -541,8 +542,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                     }
 
                     $scope.showMessage("lake feature edited successfully!");
-                    // @debug
-                    // $window.location.href = "/admin/view/lake/feature/list.php?lake_id=" + $scope.lakeId + "&feature_id=" + data.featureId;
+                    $window.location.href = "/admin/view/lake/feature/list.php?lake_id=" + $scope.lakeId + "&feature_id=" + data.featureId;
 
                 }, function (response) {
                     $scope.processResponse(response);
