@@ -32,8 +32,9 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/assets/css/material.min.css">
     <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/main.css?v=2">
 </head>
+
 <body  ng-controller="yuktix.admin.lake.edit">
 
 <div class="mdl-layout mdl-js-layout" id="container">
@@ -42,12 +43,14 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
    
     <main class="mdl-components__pages mdl-layout__content ">
+    
+       <?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
         <div class="mdl-grid mdl-grid--no-spacing">
         <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
             
             <div class="mdl-cell mdl-cell--1-col"> </div>
             <div id ="content" class="mdl-grid mdl-cell mdl-cell--8-col" >
-                <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
+                <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
                 <div class="form-container">
                     <form name="createForm" >
                         
@@ -185,7 +188,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 <script src="/assets/js/material.min.js"></script>
 <script src="/assets/js/mdl-selectfield.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js?v=3"></script>
+<script src="/assets/js/main.js?v=6"></script>
 
 
 <script>
