@@ -43,8 +43,8 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
    
     <main class="mdl-components__pages mdl-layout__content ">
-    
-       <?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
+
+        <?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
         <div class="mdl-grid mdl-grid--no-spacing">
         <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
             

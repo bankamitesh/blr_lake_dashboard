@@ -180,8 +180,8 @@ namespace com\yuktix\lake\mysql {
             $width = intval($featureObj->width) ;
 
             // correct fileId
-            $sensorFlowFileId = ($featureObj->monitoringCode == 1 ) ? $fileId : "" ;
-            $lakeFlowFileId = ($featureObj->monitoringCode == 2 ) ? $fileId : "" ;
+            $sensorFlowFileId = ($featureObj->monitoringCode == 1 ) ? $fileId : 0 ;
+            $lakeFlowFileId = ($featureObj->monitoringCode == 2 ) ? $fileId : 0 ;
     
             $stmt->bindParam(":name",$featureObj->name, \PDO::PARAM_STR);
             $stmt->bindParam(":lat",$featureObj->lat, \PDO::PARAM_STR);

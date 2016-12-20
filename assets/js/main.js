@@ -878,6 +878,28 @@
 
             var feature1 = {} ;
 
+			feature1.list = function(base,debug, lakeId) {
+
+				var myurl = base + '/admin/shim/lake/feature/list.php' ;
+				var postData = {"lakeId" : lakeId} ;
+
+				if(debug) {
+					console.log("POST: %s, data: %O ", myurl, postData) ;
+				}
+
+				var promise = $http({
+					method : 'POST',
+					url : myurl,
+					data : postData,
+					headers: {'Content-Type': 'application/json'}
+				}).then(
+					function (response) { return response ; },
+					function(response) { return response ; }
+				);
+
+				return promise;
+			};
+
 			feature1.create = function(base,debug,featureObj) {
 
 				var myurl = "/admin/shim/lake/feature/create.php";

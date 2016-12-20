@@ -20,6 +20,11 @@
       width: 512px ;
   }
 
+  .wide-mdl-card__top__action {
+      margin-left: 412px ;
+      padding:10px ;
+  }
+
   .lake-card-container {
       padding:17px ;
 
