@@ -157,13 +157,9 @@
             }
 
             $scope.showProgress("submitting device data to server");
-            //if ($scope.debug) {
-                console.log("form values");
-                console.log($scope.device);
-            //}
-
-            // @debug 
-            return ;
+            if ($scope.debug) {
+                console.log("form values %O ", $scope.device);
+            }
 
             agent.updateDevice($scope.base, $scope.debug, $scope.device).then(function (response) {
 
@@ -182,8 +178,7 @@
                         return;
                     }
 
-                    // $scope.showMessage("device details updated successfully!");
-                    // bring focus to message 
+                    // goto index page 
                     $window.location.href = "/test/agent/index.php" ;
                     
 

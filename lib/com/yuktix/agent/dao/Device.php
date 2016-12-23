@@ -23,25 +23,47 @@ namespace com\yuktix\agent\dao {
             $device->channels = array() ;
             
             $lookup = array() ;
-            $channelRows = DB::getChannelData($dbh,$serialNumber);
+
+            // channels stored in device_channel table!
+            $channelRows = DB::getDeviceChannels($dbh,$serialNumber);
             foreach($channelRows as $channelRow) {
                 $lookup[$channelRow["CHANNEL"]] = $channelRow ;
             }
 
-            $channels = DB::getDeviceChannels($dbh, $serialNumber);
+            // channels coming from actual nodes.
+            $channels = DB::getDeviceSnapshot($dbh, $serialNumber);
 
             foreach ($channels as $channel) {
-                $code = $channel["CHANNEL"]; 
-                $dataRow = $lookup[$code];
 
-                $item = new \stdClass ;
-                $item->code = $code ;
-                $item->name = $dataRow["CHANNEL_NAME"];
-                $item->units = $dataRow["CHANNEL_UNITS"];
-                array_push($device->channels, $item);
+                $code = $channel["CHANNEL"]; 
+                if(array_key_exists($code, $lookup)) {
+
+                    // channel already in database!
+                    $dataRow = $lookup[$code];
+                    $item = new \stdClass ;
+                    $item->db_flag = 1 ;
+                    $item->code = $code ;
+                    $item->name = $dataRow["CHANNEL_NAME"];
+                    $item->units = $dataRow["CHANNEL_UNITS"];
+                    
+                    array_push($device->channels, $item);
+
+                } else { 
+
+                    $item = new \stdClass ;
+                    $item->code = $code ;
+                    $item->db_flag = 0 ;
+                    $item->name = $code;
+                    $item->units = "" ;
+                    array_push($device->channels, $item);
+
+                }
+                
+
+               
 
             }
-            
+
             $dbh = NULL ;
             return $device ;
 
@@ -51,7 +73,19 @@ namespace com\yuktix\agent\dao {
 
             $dsn = sprintf("sqlite:%s", Config::getInstance()->get_value("sqlite.db.path"));
             $dbh = new \PDO($dsn) or die("cannot open database");
+
+            // @todo input check 
             DB::updateDevice($dbh, $device);
+
+            $channels = $device->channels ;
+            foreach($channels as $channel) {
+                if($channel->db_flag == 1) { 
+                    DB::updateDeviceChannel($dbh,$device->serialNumber,$channel);
+                } else {
+                    DB::insertDeviceChannel($dbh,$device->serialNumber,$channel);
+                }
+            }
+
             $dbh = NULL ;
 
         }
@@ -90,11 +124,12 @@ namespace com\yuktix\agent\dao {
 
                 $lookup = array() ;
                 $channelRows = DB::getDeviceChannels($dbh,$device->serialNumber);
+
                 foreach($channelRows as $channelRow) {
                     $lookup[$channelRow["CHANNEL"]] = $channelRow ;
                 }
-
-                // latest device data 
+                
+                // latest device snapshot 
                 $snapshots  = DB::getDeviceSnapshot($dbh,$device->serialNumber);
                 foreach($snapshots as $snapshot) {
                     
@@ -104,8 +139,8 @@ namespace com\yuktix\agent\dao {
                     $channel->value = $snapshot["VALUE"];
 
                     if(array_key_exists($channel->code, $lookup)) {
-                        $channel->name = $lookup[$code]["CHANNEL_NAME"];
-                        $channel->units = $lookup[$code]["CHANNEL_UNITS"];
+                        $channel->name = $lookup[$channel->code]["CHANNEL_NAME"];
+                        $channel->units = $lookup[$channel->code]["CHANNEL_UNITS"];
                     } else {
                         $channel->name = $channel->code ;
                         $channel->units = "" ;
