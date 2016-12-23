@@ -15,7 +15,7 @@ namespace com\yuktix\agent\sqlite {
             $sql = " select * from device_master " ;
             $stmt = $dbh->prepare($sql);
             $stmt->execute() ;
-            $rows = $stmt->fetchAll() ;
+            $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC) ;
             return $rows ;
          
         }
@@ -26,7 +26,7 @@ namespace com\yuktix\agent\sqlite {
             $stmt = $dbh->prepare($sql);
             $stmt->bindParam(":serial_num",$serialNumber, \PDO::PARAM_STR);
             $stmt->execute() ;
-            $rows = $stmt->fetchAll() ;
+            $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC) ;
             return $rows ;
 
         }
@@ -37,7 +37,7 @@ namespace com\yuktix\agent\sqlite {
             $stmt = $dbh->prepare($sql);
             $stmt->bindParam(":serial_num",$serialNumber, \PDO::PARAM_STR);
             $stmt->execute() ;
-            $rows = $stmt->fetchAll() ;
+            $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC) ;
             return $rows ;
 
         }

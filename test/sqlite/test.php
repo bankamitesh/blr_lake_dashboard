@@ -7,7 +7,7 @@
     use \com\yuktix\agent\dao\Device as DeviceDao ;
 
     $devices = DeviceDao::getList();
-    print_r($devices);
+    echo json_encode($devices);
+     
 
-    
 ?>

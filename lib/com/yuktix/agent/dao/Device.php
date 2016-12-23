@@ -23,24 +23,23 @@ namespace com\yuktix\agent\dao {
             $dsn = sprintf("sqlite:%s", Config::getInstance()->get_value("sqlite.db.path"));
             $dbh = new \PDO($dsn) or die("cannot open database");
 
-            $response = new \stdClass ;
-            $response->result = array();
-
+            $result = array();
             $deviceRows = DB::getDevices($dbh);
             $lookup = array() ;
 
             foreach ($deviceRows as $deviceRow) { 
+               
 
-                $device =  new \sdtClass ;
-                $device->serialNumber = $deviceRow["serial_num"];
-                $device->description = $deviceRow["description"];
-                $device->location = $deviceRow["location"];
+                $device =  new \stdClass ;
+                $device->serialNumber = $deviceRow["SERIAL_NUM"];
+                $device->description = $deviceRow["DESCRIPTION"];
+                $device->location = $deviceRow["LOCATION"];
                 $device->channels = array() ;
 
                 $lookup = array() ;
                 $channelRows = DB::getDeviceChannels($dbh,$device->serialNumber);
                 foreach($channelRows as $channelRow) {
-                    $lookup[$channelRow["channel"]] = $channelRow ;
+                    $lookup[$channelRow["CHANNEL"]] = $channelRow ;
                 }
 
                 // latest device data 
@@ -48,13 +47,13 @@ namespace com\yuktix\agent\dao {
                 foreach($snapshots as $snapshot) {
                     
                     $channel = new \stdClass ;
-                    $channel->tsUnix = $snapshot["unix_ts"];
-                    $channel->code = $snapshot["channel"];
-                    $channel->value = $snapshot["value"];
+                    $channel->tsUnix = $snapshot["UNIX_TS"];
+                    $channel->code = $snapshot["CHANNEL"];
+                    $channel->value = $snapshot["VALUE"];
 
                     if(array_key_exists($channel->code, $lookup)) {
-                        $channel->name = $lookup[$code]["channel_name"];
-                        $channel->units = $lookup[$code]["channel_units"];
+                        $channel->name = $lookup[$code]["CHANNEL_NAME"];
+                        $channel->units = $lookup[$code]["CHANNEL_UNITS"];
                     } else {
                         $channel->name = $channel->code ;
                         $channel->units = "__null__" ;
@@ -64,11 +63,11 @@ namespace com\yuktix\agent\dao {
 
                 }
 
-                array_push($response->result, $device);
+                array_push($result, $device);
             }
 
             $dbh = NULL ;
-            return $response ;
+            return $result  ;
 
         }
 
