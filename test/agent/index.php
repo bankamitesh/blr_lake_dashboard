@@ -68,7 +68,6 @@
 
                               <li class="mdl-list__item"> 
                                 <span class="mdl-list__item-primary-content">
-                                  <i class="material-icons mdl-list__item-icon">border_outer</i>
                                     {{device.description}}
                                   </span>
                                   
@@ -76,8 +75,8 @@
                              
                               <li class="mdl-list__item" ng-repeat="channel in device.channels"> 
                                 <span class="mdl-list__item-primary-content">
-                                  <i class="material-icons mdl-list__item-icon">data_usage</i>
-                                    {{channel.value}} / {{channel.units}}
+                                  <i class="material-icons mdl-list__item-icon">{{channel.icon}}</i>
+                                    {{channel.value}}  {{channel.units}}
                                   </span>
                                   <span class="mdl-list__item-sub-title">{{channel.name}}</span>
 
@@ -89,10 +88,8 @@
                       </div>
 
                       <div class="mdl-card__actions mdl-card--border">
-                        <button class="mdl-button mdl-js-button" ng-click="goto_edit(lake.id)"><i class="material-icons">edit</i></button>
-                          &nbsp;
-                          <button class="mdl-button mdl-js-button"><i class="material-icons">delete</i></button>
-                          
+                        <button class="mdl-button mdl-js-button" ng-click="goto_edit(device.serialNumber)"><i class="material-icons">edit</i></button>
+                        
                       </div>
 
                     </div> <!-- lake card -->
@@ -136,10 +133,9 @@
 
             }
 
-            // assign to lakes in scope
+            // bind data to scope 
             $scope.devices = data.result ;
-            console.log("devices: " + $scope.devices);
-
+            
             if($scope.devices.length > 0 ) {
               $scope.display.notable = false ;
               $scope.display.table = true ;
@@ -156,6 +152,9 @@
 
       };
 
+      $scope.goto_edit = function(serialNumber) {
+        $window.location.href = "/test/agent/device/edit.php?serial_number=" + serialNumber;
+      }
 
       // set page parameters
       $scope.gparams = <?php echo json_encode($gparams); ?> ;

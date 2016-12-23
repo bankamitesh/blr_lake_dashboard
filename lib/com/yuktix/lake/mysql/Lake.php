@@ -211,7 +211,8 @@ namespace com\yuktix\lake\mysql {
 
             return $result ;
         }
-         static function getZones($lakeId) {
+        
+        static function getZones($lakeId) {
 
             if(empty($lakeId)) {
                 $xmsg = "required parameter lakeId is missing";

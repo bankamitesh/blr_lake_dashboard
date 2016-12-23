@@ -457,7 +457,7 @@
 
          	 agent.getDevices = function(base,debug) {
 				 
-	            	var myurl = base + '/test/agent/shim/device.php' ;
+	            	var myurl = base + '/test/agent/shim/device/list.php' ;
 	            	var postData = {} ;
 	            	if(debug) { 
 						console.log("POST : " + myurl); 
@@ -477,7 +477,46 @@
 	            	return promise;
 	         };
 
+			 agent.getDevice = function(base,debug, serialNumber) {
+				 
+	            	var myurl = base + '/test/agent/shim/device/get-object.php' ;
+	            	var postData = {"serialNumber" : serialNumber } ;
+	            	if(debug) { 
+						console.log("POST: data %O to URL %s ",postData, myurl); 
+					}
+	            	
+	            	var promise = $http({
+						method : 'POST',
+						url : myurl,
+						data : postData,
+						headers: {'Content-Type': 'application/json'}
+					}).then(
+	                    function (response) { return response ; }, 
+	                    function(response) { return response ; }
+	                );
 
+	            	return promise;
+	         };
+
+			 agent.updateDevice = function(base,debug, device) {
+				 
+	            	var myurl = base + '/test/agent/shim/device/update.php' ;
+	            	if(debug) { 
+						console.log("POST: data %O to URL %s ",device, myurl); 
+					}
+	            	
+	            	var promise = $http({
+						method : 'POST',
+						url : myurl,
+						data : device,
+						headers: {'Content-Type': 'application/json'}
+					}).then(
+	                    function (response) { return response ; }, 
+	                    function(response) { return response ; }
+	                );
+
+	            	return promise;
+	         };
 	       
             return agent ;
 

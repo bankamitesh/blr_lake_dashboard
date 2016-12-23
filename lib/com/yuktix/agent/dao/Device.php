@@ -9,6 +9,33 @@ namespace com\yuktix\agent\dao {
 
     class Device {
 
+        static function getOnSerial($serialNumber) {
+
+            
+            $dsn = sprintf("sqlite:%s", Config::getInstance()->get_value("sqlite.db.path"));
+            $dbh = new \PDO($dsn) or die("cannot open database");
+            $row = DB::getDeviceOnSerial($dbh,$serialNumber) ;
+
+            $device = new \stdClass ;
+            $device->serialNumber = $row["SERIAL_NUM"] ;
+            $device->location = $row["LOCATION"] ;
+            $device->description = $row["DESCRIPTION"] ;
+            
+            $dbh = NULL ;
+
+            return $device ;
+
+        }
+
+        static function update($device) { 
+
+            $dsn = sprintf("sqlite:%s", Config::getInstance()->get_value("sqlite.db.path"));
+            $dbh = new \PDO($dsn) or die("cannot open database");
+            DB::updateDevice($dbh, $device);
+            $dbh = NULL ;
+
+        }
+
         static function getList() {
 
             // open sqlite connx
@@ -26,14 +53,19 @@ namespace com\yuktix\agent\dao {
             $result = array();
             $deviceRows = DB::getDevices($dbh);
             $lookup = array() ;
+            $icons = array(
+                "T" => "wb_sunny",
+                "RH" => "spa" ,
+                "VOLTAGE" => "battery_charging_full"
+            );
 
             foreach ($deviceRows as $deviceRow) { 
                
 
                 $device =  new \stdClass ;
                 $device->serialNumber = $deviceRow["SERIAL_NUM"];
-                $device->description = $deviceRow["DESCRIPTION"];
-                $device->location = $deviceRow["LOCATION"];
+                $device->description = empty($deviceRow["DESCRIPTION"]) ? "" : $deviceRow["DESCRIPTION"];
+                $device->location = empty($deviceRow["LOCATION"])?  "Not set." : $deviceRow["LOCATION"];
                 $device->channels = array() ;
 
                 $lookup = array() ;
@@ -56,9 +88,10 @@ namespace com\yuktix\agent\dao {
                         $channel->units = $lookup[$code]["CHANNEL_UNITS"];
                     } else {
                         $channel->name = $channel->code ;
-                        $channel->units = "__null__" ;
+                        $channel->units = "" ;
                     }
 
+                    $channel->icon = (array_key_exists($channel->code, $icons)) ? $icons[$channel->code] : "fiber_manual_record"; 
                     array_push($device->channels,$channel);
 
                 }
