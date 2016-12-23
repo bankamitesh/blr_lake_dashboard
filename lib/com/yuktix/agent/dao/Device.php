@@ -20,9 +20,29 @@ namespace com\yuktix\agent\dao {
             $device->serialNumber = $row["SERIAL_NUM"] ;
             $device->location = $row["LOCATION"] ;
             $device->description = $row["DESCRIPTION"] ;
+            $device->channels = array() ;
+            
+            $lookup = array() ;
+            $channelRows = DB::getChannelData($dbh,$serialNumber);
+            foreach($channelRows as $channelRow) {
+                $lookup[$channelRow["CHANNEL"]] = $channelRow ;
+            }
+
+            $channels = DB::getDeviceChannels($dbh, $serialNumber);
+
+            foreach ($channels as $channel) {
+                $code = $channel["CHANNEL"]; 
+                $dataRow = $lookup[$code];
+
+                $item = new \stdClass ;
+                $item->code = $code ;
+                $item->name = $dataRow["CHANNEL_NAME"];
+                $item->units = $dataRow["CHANNEL_UNITS"];
+                array_push($device->channels, $item);
+
+            }
             
             $dbh = NULL ;
-
             return $device ;
 
         }

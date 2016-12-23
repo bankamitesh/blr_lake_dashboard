@@ -31,6 +31,16 @@
     <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
     <link rel="stylesheet" href="/assets/css/main.css?v=1">
     
+    <style>
+
+     .channel-box { 
+       width:160px; 
+       border: 1px dashed #ccc;
+        padding: 7px;
+      }
+
+    </style>
+
 </head>
 
 <body ng-controller="yuktix.agent.main">
@@ -44,40 +54,54 @@
       <?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
 
         <div class="mdl-grid mdl-grid--no-spacing">
-            <div id="content" class="mdl-cell mdl-cell--4-col mdl-cell--3-offset">
+
+            <div class="mdl-cell mdl-cell--4-col mdl-cell--3-offset">
                <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
+               <form name="updateForm" >
 
-                <div class="form-container">
-                    <form name="updateForm" >
-                        
-                            <h5> {{device.serialNumber}} / edit </h5>
-                            
-                            <div class="mdl-textfield mdl-js-textfield">
-                                <h6>Location</h6>
-                                <input class="mdl-textfield__input" type="text" name="name" id="name"
-                                        ng-model="device.location">
-                                
-                            </div>
+                  <h5> {{device.serialNumber}} / edit </h5>
+                  
+                  <div class="mdl-textfield mdl-js-textfield">
+                      <h6>Location</h6>
+                      <input class="mdl-textfield__input" type="text" name="name" id="name" ng-model="device.location">   
+                  </div>
 
-                            <div class="mdl-textfield mdl-js-textfield">
-                                <h6>Description</h6>
-                                <input class="mdl-textfield__input" type="text" name="name" id="name"
-                                        ng-model="device.description">
-                                
-                            </div>
+                  <div class="mdl-textfield mdl-js-textfield">
+                      <h6>Description</h6>
+                      <input class="mdl-textfield__input" type="text" name="name" id="name" ng-model="device.description">
+                  </div>
+                  
+                  <h5> Channels </h5> 
+                  <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                      <thead>
+                        <tr>
+                          <th class="mdl-data-table__cell--non-numeric">&nbsp;</th>
+                          <th class="mdl-data-table__cell--non-numeric">Name</th>
+                          <th class="mdl-data-table__cell--non-numeric">Units</th>
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="channel in device.channels track by $index">
+                          <td> <span ng-bind="channel.code"> </span>  </td>
 
-                            <div class="form-button-container">
-                                <button class="mdl-button mdl-js-button mdl-button--raised"ng-click="update_device()" type="submit">
-                                    Save device information 
-                                </button>
-                            </div>
-
-
-                    </form>
-                </div> <!-- form:1 --> 
-
-
-
+                          <td>
+                              <input class=" channel-box" type="text" name="{{channel.name}}" ng-model="channel.name">
+                          </td>
+                          <td>
+                              <input class="channel-box" type="text" name="{{channel.units}}" ng-model="channel.units">
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  
+                  <div class="form-button-container">
+                      <button class="mdl-button mdl-js-button mdl-button--raised"ng-click="update_device()" type="submit">
+                          Save device information 
+                      </button>
+                  </div>
+      
+              </form>
             </div>
                
         </div> <!-- grid -->
@@ -133,10 +157,13 @@
             }
 
             $scope.showProgress("submitting device data to server");
-            if ($scope.debug) {
+            //if ($scope.debug) {
                 console.log("form values");
                 console.log($scope.device);
-            }
+            //}
+
+            // @debug 
+            return ;
 
             agent.updateDevice($scope.base, $scope.debug, $scope.device).then(function (response) {
 
