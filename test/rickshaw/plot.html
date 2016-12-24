@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html ng-app="YuktixApp">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="/assets/css/material.min.css">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
+        <link rel="stylesheet" href="/assets/d3/rickshaw.css">
+        <link rel="stylesheet" href="/assets/css/main.css?v=1">
+        
+        <style>
+
+            /* override rickshaw 3D css */
+
+            .graph-container {
+                margin-top:20px;
+                margin-bottom :20px;
+                padding:20px; 
+                font-size : 12px;
+                float:left ;
+                position: relative ;
+            } 
+
+            .graph {
+                display: inline-block ;
+            }
+
+            .rickshaw_graph {
+                position:relative ;
+                display: inline-block ;
+            }
+
+            .rickshaw_graph .x_tick .title {
+                opacity: 1 !important;
+                position: absolute !important;
+                color: #646464;
+                bottom: 1px;
+                /* margin-top:10px; */
+            }
+                
+            .rickshaw_graph .y_ticks text {
+                opacity: 1 !important;
+                position: relative !important;
+            }
+
+            .rickshaw_graph .detail .x_label { display: none }
+            .rickshaw_graph .detail .item { line-height: 1.4; padding: 0.5em }
+            .detail_swatch { display: inline-block; width: 10px; height: 10px; margin: 0 4px 0 0 }
+            .rickshaw_graph .detail .date { color: #a0a0a0 }
+
+
+
+        </style>
+
+    </head>
+
+
+    <body ng-controller="yuktix.test.rickshaw">
+
+        <div class="mdl-layout mdl-js-layout" id="container">
+            <main class="docs-layout-content mdl-layout__content ">
+                <div class="mdl-grid">
+                    <div  class="mdl-cell mdl-cell--12-col">
+
+                        <h2><span ng-bind="name"> </span> @ <span ng-bind="at_human"></span></h2>
+                        <div class="graph-container">
+                            <div class="graph">
+                                <rickshaw-chart  data="plot" />
+                            </div>
+                        </div> <!-- graph -->
+
+                    </div> <!-- content --> 
+
+                </div>
+            </main>
+
+        </div>
+
+        </body>
+
+        <script src="/assets/js/material.min.js"></script>
+        <script src="/assets/js/angular.min.js"></script>
+        <script src="/assets/d3/d3.v2.js"></script>
+	    <script src="/assets/d3/rickshaw.js"></script>
+        <script src="/assets/js/main.js"></script>
+
+        <script>
+
+            yuktixApp.controller("yuktix.test.rickshaw",function($scope,$window) {
+                
+                $scope.drawLine = function(data) {
+                
+                    // ****************************************************
+                    // plot is what we pass to rickshaw-chart directive
+                    // series is an array, each element being an object 
+                    // with property x and y. 
+                    // x for time axis is unix timestamp in seconds
+                    // y is the y-axis value 
+                    // renderer is [line | bar | scatterplot | area]
+                    // interpolation is d3 line interpolation options
+                    // [basis | step-after | cardinal | linear]
+                    // tick is the distance between x-axis ticks
+                    // possible values are 
+                    // [30 second| 15 minute | 6 hour | 2 day]
+                    // you can provide custom ticks
+                    // width, height  is width,height of chart 
+                    // ****************************************************
+                    // 
+                    var plot = {
+                            "series": data.series, 
+                            "color": "steelblue", 
+                            "renderer": $scope.renderer,
+                            "interpolation" : "step-after",
+                            "tick" : data.tick,
+                            "width" : 600,
+                            "height" : 150
+                        } ;
+                        
+                        $scope.plot = plot ;
+                };
+    	
+                // initialize data 
+                var data = {} ;
+                data.series = [] ;
+                
+                // now is current date converted to unix seconds
+                var x_now = Math.floor(new Date().getTime() / 1000.0); 
+                console.log("now is " + x_now);
+                
+                // data.series x-values should be in ascending order
+                data.series.push({"x": x_now - 14400, "y" : 10});
+                data.series.push({"x": x_now - 10800, "y" : 60});
+                data.series.push({"x": x_now - 7200, "y" : 85});
+                data.series.push({"x": x_now - 3600 , "y" : 90});
+                data.series.push({"x": x_now , "y" : 100});
+                data.tick = "hour" ;
+                
+                $scope.name = "Temperature" ;
+                $scope.at_human = new Date(x_now * 1000).toLocaleString();
+                $scope.current_value = 100 ;
+
+                // renderer is [line | bar | scatterplot | area]
+                $scope.renderer = "line" ;
+
+                $scope.drawLine(data);
+
+            });
+
+
+        </script>
+
+</html>
+
