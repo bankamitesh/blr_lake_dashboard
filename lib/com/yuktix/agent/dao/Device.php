@@ -187,22 +187,39 @@ namespace com\yuktix\agent\dao {
 
         }
         
+        private static function getPlotRenderer($channel) {
+            
+            $renderer = array("VOLTAGE" => "bar");
+            $renderer = array() ;
+            $value = array_key_exists( $channel,$renderer) ? $renderer[$channel] : "scatterplot" ;
+            return $value ;
+
+        }
+
         static function getPlotData($serialNumber) {
 
             $results = array() ;
 
             $channels = self::getChannels($serialNumber);
+            // @todo filter the duplicates 
             foreach ($channels as $channel) {
                 
                 $plot = new \stdClass ;
-                // get series for the code 
-                $plot->series = self::getTimeSeries($serialNumber, $channel->code);
                 $plot->name = $channel->name ;
-                $plot->at_human = 0 ;
-                $plot->current_value = 0 ;
+
+                $plot->series = self::getTimeSeries($serialNumber, $channel->code);
+                $len = sizeof($plot->series);
+                if( $len > 0) {
+                    $latest = $plot->series[$len-1] ;
+                    $plot->current_value =  $latest->y;
+                } else {
+                    $plot->current_value = 0 ;
+                }
+
+                $plot->unix_ts = time() ;
                 $plot->units = $channel->units ;
-                $plot->renderer = "line" ;
-                $plot->tick = "5minute" ;
+                $plot->renderer = self::getPlotRenderer($channel->code) ;
+                $plot->tick = "5 minute" ;
 
                 array_push($results,$plot);
 
@@ -217,19 +234,21 @@ namespace com\yuktix\agent\dao {
             $dsn = sprintf("sqlite:%s", Config::getInstance()->get_value("sqlite.db.path"));
             $dbh = new \PDO($dsn) or die("cannot open database");
             $rows = DB::getTimeSeries($dbh,$serialNumber, $channel);
-            $results = array() ;
+            $series = array() ;
 
             foreach($rows as $row) {
-                $item = new \stdClass ;
-                $item->x = intval($row["UNIX_TS"]);
-                $item->y = intval($row["VALUE"]);
-                array_push($results, $item);
+
+                $point = new \stdClass ;
+                $point->x = intval($row["UNIX_TS"]);
+
+                $value = sprintf("%.2f", $row["VALUE"]);
+                $point->y = floatval ($value);
+                array_push($series, $point);
+
             }
 
             $dbh = NULL ;
-            return $results ;
-
-
+            return $series ;
         }
 
     }

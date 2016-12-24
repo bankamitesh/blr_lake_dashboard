@@ -62,7 +62,7 @@ namespace com\yuktix\agent\sqlite {
            
 
             $sql = " select * from device_timeseries where serial_num= :serial_num " 
-            . " and channel = :channel order by unix_ts ASC LIMIT 10 " ;
+            . " and channel = :channel order by unix_ts ASC LIMIT 1000 " ;
 
             $stmt = $dbh->prepare($sql);
             $stmt->bindParam(":serial_num",$serialNumber, \PDO::PARAM_STR);

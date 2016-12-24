@@ -93,16 +93,16 @@
 
          <div class="mdl-grid" ng-repeat="plot in plots">
             <div  class="mdl-cell mdl-cell--9-col mdl-cell--3-offset">
-
-                <h5> {{plot.name}}  ( {{plot.current_value}} {{plot.units}} )  </h5>
+                
+                
+                <h6> {{plot.name}}  ({{plot.current_value}} {{plot.units}}) <span ng-bind="plot.at_human"></span> </h6>
                 <div class="graph-container">
                     <div class="graph">
+                        
                         <rickshaw-chart  data="plot" />
                     </div>
                 </div> <!-- graph -->
-                <div>
-                    <span ng-bind="plot.at_human"></span>
-                </div>
+                
 
             </div>
         </div> <!-- grid --> 
@@ -134,6 +134,7 @@
                   plot.width = 600 ;
                   plot.height = 150 ;
                   plot.color = "steelblue" ;
+                  plot.at_human = new Date(plot.unix_ts * 1000).toLocaleString() ;
                   $scope.plots.push(plot) ;
                   
               }
