@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html ng-app="YuktixApp">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="/assets/css/material.min.css">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
+        <link rel="stylesheet" href="/assets/d3/rickshaw.css">
+        <link rel="stylesheet" href="/assets/css/main.css?v=1">
+        
+        <style>
+
+            /* override rickshaw 3D css */
+
+            .graph-container {
+                margin-top:20px;
+                margin-bottom :20px;
+                padding:20px; 
+                font-size : 12px;
+                float:left ;
+                position: relative ;
+            } 
+
+            .graph {
+                display: inline-block ;
+            }
+
+            .rickshaw_graph {
+                position:relative ;
+                display: inline-block ;
+            }
+
+            .rickshaw_graph .x_tick .title {
+                opacity: 1 !important;
+                position: absolute !important;
+                color: #646464;
+                bottom: 1px;
+                /* margin-top:10px; */
+            }
+                
+            .rickshaw_graph .y_ticks text {
+                opacity: 1 !important;
+                position: relative !important;
+            }
+
+            .rickshaw_graph .detail .x_label { display: none }
+            .rickshaw_graph .detail .item { line-height: 1.4; padding: 0.5em }
+            .detail_swatch { display: inline-block; width: 10px; height: 10px; margin: 0 4px 0 0 }
+            .rickshaw_graph .detail .date { color: #a0a0a0 }
+
+
+
+        </style>
+
+    </head>
+
+
+    <body ng-controller="yuktix.test.rickshaw">
+
+        <div class="mdl-layout mdl-js-layout" id="container">
+            <main class="docs-layout-content mdl-layout__content ">
+
+                <div class="mdl-grid" ng-repeat="plot in plots">
+                    <div  class="mdl-cell mdl-cell--9-col mdl-cell--3-offset">
+
+                        <h5> {{plot.name}}  ( {{plot.current_value}} {{plot.units}} )  </h5>
+                        
+                        <div class="graph-container">
+                            <div class="graph">
+                                <rickshaw-chart  data="plot" />
+                            </div>
+                        </div> <!-- graph -->
+                        <div>
+                            <span ng-bind="plot.at_human"></span>
+                        </div>
+                        
+                    </div>
+                </div> <!-- grid --> 
+
+               
+            </main>
+
+        </div>
+
+    </body>
+
+        <script src="/assets/js/material.min.js"></script>
+        <script src="/assets/js/angular.min.js"></script>
+        <script src="/assets/d3/d3.v2.js"></script>
+	    <script src="/assets/d3/rickshaw.js"></script>
+        <script src="/assets/js/main.js"></script>
+
+        <script>
+
+            yuktixApp.controller("yuktix.test.rickshaw",function($scope,$window) {
+                
+                $scope.drawCharts = function(data) {
+                
+                    // for details: see plot.html sample
+                    var i = 0 ;
+                    for (i = 0 ; i < data.length ; i++) {
+
+                        plot = data[i] ;
+                        plot.interpolation = "step-after" ;
+                        plot.width = 600 ;
+                        plot.height = 150 ;
+                        plot.color = "steelblue" ;
+                        $scope.plots.push(plot) ;
+
+                        console.log("plot =%O",plot);
+                       
+                         
+
+                    }
+
+                };
+    	
+                // initialize data 
+                var x_now = Math.floor(new Date().getTime() / 1000.0); 
+                console.log("now is " + x_now);
+
+                // we need to grab this from server 
+                var data = [{
+                    "name" : "Temperature",
+                    "at_human": new Date(x_now * 1000).toLocaleString(),
+                    "current_value" : 23 ,
+                    "series" : [ 
+                        {"x" : x_now - 14400, "y" : 7} ,
+                        {"x" : x_now - 10800, "y" : 17} ,
+                        {"x" : x_now - 7200, "y" : 31} ,
+                        {"x" : x_now - 3600, "y" : 19} ,
+                        {"x" : x_now , "y" : 23} 
+                    ],
+                    "tick" : "hour",
+                    "units" : "Celsius",
+                    "renderer" : "line"
+
+                },
+                {
+                    "name" : "Humidity",
+                    "at_human": new Date(x_now * 1000).toLocaleString(),
+                    "current_value" : 85 ,
+                    "series" : [ 
+                        {"x" : x_now - 14400, "y" : 90} ,
+                        {"x" : x_now - 10800, "y" : 71} ,
+                        {"x" : x_now - 7200, "y" : 44} ,
+                        {"x" : x_now - 3600, "y" : 68} ,
+                        {"x" : x_now , "y" : 85} 
+                    ],
+                    "tick" : "hour",
+                    "units" : "%",
+                    "renderer" : "bar"
+
+                }] ;
+
+                $scope.plots = [] ;
+                $scope.drawCharts(data);
+
+            });
+
+
+        </script>
+
+</html>
+
