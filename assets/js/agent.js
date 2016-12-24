@@ -498,6 +498,27 @@
 	            	return promise;
 	         };
 
+			 agent.getPlotData = function(base,debug, serialNumber) {
+				 
+	            	var myurl = base + '/test/agent/shim/device/plot-data.php' ;
+	            	var postData = {"serialNumber" : serialNumber } ;
+	            	if(debug) { 
+						console.log("POST: data %O to URL %s ",postData, myurl); 
+					}
+	            	
+	            	var promise = $http({
+						method : 'POST',
+						url : myurl,
+						data : postData,
+						headers: {'Content-Type': 'application/json'}
+					}).then(
+	                    function (response) { return response ; }, 
+	                    function(response) { return response ; }
+	                );
+
+	            	return promise;
+	         };
+
 			 agent.updateDevice = function(base,debug, device) {
 				 
 	            	var myurl = base + '/test/agent/shim/device/update.php' ;

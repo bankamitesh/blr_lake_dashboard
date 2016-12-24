@@ -156,7 +156,7 @@
       }
 
       $scope.goto_chart = function(serialNumber) {
-        $window.location.href = "/test/agent/device/chart.php?serial_number=" + serialNumber;
+        $window.location.href = "/test/agent/chart.php?serial_number=" + serialNumber;
       }
 
       // set page parameters

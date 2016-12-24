@@ -73,7 +73,7 @@
                         <div>
                             <span ng-bind="plot.at_human"></span>
                         </div>
-                        
+
                     </div>
                 </div> <!-- grid --> 
 
@@ -120,6 +120,8 @@
                 console.log("now is " + x_now);
 
                 // we need to grab this from server 
+                // @imp: series should be sorted on time
+                
                 var data = [{
                     "name" : "Temperature",
                     "at_human": new Date(x_now * 1000).toLocaleString(),

@@ -54,7 +54,25 @@ namespace com\yuktix\agent\sqlite {
 
         }
 
-        
+        static function getTimeSeries($dbh, $serialNumber, $channel) {
+
+            // @debug
+            // Logger::getInstance()->info($serialNumber);
+            // Logger::getInstance()->info($channel);
+           
+
+            $sql = " select * from device_timeseries where serial_num= :serial_num " 
+            . " and channel = :channel order by unix_ts ASC LIMIT 10 " ;
+
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam(":serial_num",$serialNumber, \PDO::PARAM_STR);
+            $stmt->bindParam(":channel",$channel, \PDO::PARAM_STR);
+
+            $stmt->execute() ;
+            $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC) ;
+            return $rows ;
+
+        }
 
         static function getDeviceOnSerial($dbh, $serialNumber) { 
 
