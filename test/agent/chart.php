@@ -29,8 +29,9 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
     <link rel="stylesheet" href="/assets/css/material.min.css">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-blue.min.css" />
     <link rel="stylesheet" href="/assets/d3/rickshaw.css">
     <link rel="stylesheet" href="/assets/css/main.css?v=1">
     
@@ -92,7 +93,7 @@
       <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
 
          <div class="mdl-grid" ng-repeat="plot in plots">
-            <div  class="mdl-cell mdl-cell--9-col mdl-cell--3-offset">
+            <div  class="mdl-cell mdl-cell--9-col">
                 
                 
                 <h6> {{plot.name}}  ({{plot.current_value}} {{plot.units}}) <span ng-bind="plot.at_human"></span> </h6>
@@ -133,7 +134,11 @@
                   plot.interpolation = "step-after" ;
                   plot.width = 600 ;
                   plot.height = 150 ;
-                  plot.color = "steelblue" ;
+
+                  // add UI properties 
+                  plot.renderer = "line" ;
+                  plot.tick = "15minute";
+                  plot.color = "#FF5733" ;
                   plot.at_human = new Date(plot.unix_ts * 1000).toLocaleString() ;
                   $scope.plots.push(plot) ;
                   

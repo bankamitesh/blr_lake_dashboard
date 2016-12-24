@@ -187,15 +187,6 @@ namespace com\yuktix\agent\dao {
 
         }
         
-        private static function getPlotRenderer($channel) {
-            
-            $renderer = array("VOLTAGE" => "bar");
-            $renderer = array() ;
-            $value = array_key_exists( $channel,$renderer) ? $renderer[$channel] : "scatterplot" ;
-            return $value ;
-
-        }
-
         static function getPlotData($serialNumber) {
 
             $results = array() ;
@@ -215,12 +206,9 @@ namespace com\yuktix\agent\dao {
                 } else {
                     $plot->current_value = 0 ;
                 }
-
+                
                 $plot->unix_ts = time() ;
                 $plot->units = $channel->units ;
-                $plot->renderer = self::getPlotRenderer($channel->code) ;
-                $plot->tick = "5 minute" ;
-
                 array_push($results,$plot);
 
             }
