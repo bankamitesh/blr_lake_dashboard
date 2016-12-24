@@ -14,7 +14,6 @@
   }
 
 ?>
-<!DOCTYPE html>
 <html ng-app="YuktixAgentApp">
  
 <head>
