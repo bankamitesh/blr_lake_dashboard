@@ -41,7 +41,8 @@
 				<?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
 
 				<div class="mdl-grid">
-					<div  class="mdl-cell mdl-cell--9-col mdl-cell--3-offset container-810">
+					<div  class="mdl-cell mdl-cell--3-col"> </div>
+					<div  class="mdl-cell mdl-cell--6-col container-810">
 					<?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
 
 						<div id = "login-container" class="mdl-card mdl-shadow--2dp wide-mdl-card">
