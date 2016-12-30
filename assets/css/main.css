@@ -114,16 +114,18 @@ select {
 }
 
 .zone-container {
-    padding-top: 40px ;
+    padding-top: 80px ;
     padding-bottom: 40px ;
 }
 
+
 .zone-container .description {
-    margin-top: 20px ;
+    margin-top: 21px;
+    margin-bottom: 11px;
 }
 
 .zone-container .action {
-    margin-top: 20px ;
+    margin-top: 11px ;
 }
 
 

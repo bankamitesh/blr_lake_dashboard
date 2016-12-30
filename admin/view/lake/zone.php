@@ -36,7 +36,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <link rel="stylesheet" href="/assets/mdl/material.min.css" />
      <link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
-     <link rel="stylesheet" href="/assets/css/main.css" />
+     <link rel="stylesheet" href="/assets/css/main.css?v=1" />
 
 
 </head>
@@ -54,7 +54,7 @@
         <div class="mdl-grid">
             <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
             <div class="mdl-cell mdl-cell--1-col"> </div>
-                <div class="mdl-cell mdl-cell--8-col container-810" >
+                <div class="mdl-cell mdl-cell--6-col container-810" >
                     <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
                      
                     <form name="createForm">
@@ -86,14 +86,18 @@
 
                     </form>
                     
-                    <?php foreach($zones as $zone) { ?>
-                        <div class="zone-container">
-                            <div class="map">
-                                <?php echo $zone->html ; ?>
-                            </div>
+                    <div class="zone-container">
+
+                        <?php foreach($zones as $zone) { ?>
+                            
                             <div class="description">
                                 <?php echo $zone->description ; ?>
                             </div>
+
+                            <div class="map">
+                                <?php echo $zone->html ; ?>
+                            </div>
+                            
 
                             <div class="action">
                                 <button class="mdl-button mdl-js-button mdl-button--raised"ng-click="remove_zone(<?php echo $zone->id ?>)" type="submit">
@@ -101,9 +105,8 @@
                                 </button>
                             </div>
 
-                        </div>
-                         
-                    <?php } ?> 
+                        <?php } ?> 
+                    </div> <!-- zone container -->
 
 
                 </div> 
