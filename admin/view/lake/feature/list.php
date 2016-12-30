@@ -65,13 +65,12 @@
 
                 </div> <!-- no content card -->
 
-                <h5>  {{lakeObj.name}} / Features </h5>
-
+                
                 <div class="table-container" ng-show="display.table">
 
                     <div class="wide-mdl-card__top__action ">
                         <!-- FAB button with ripple -->
-                        <button class="mdl-button mdl-js-button mdl-button--raised" ng-click="goto_create()">
+                        <button class="mdl-button mdl-js-button" ng-click="goto_create()">
                           <i class="material-icons">add</i>
                         </button>
                     </div>
@@ -150,6 +149,32 @@
     <script>
 
     yuktixApp.controller("yuktix.admin.lake.feature.list",function($scope,lake,feature,$window) {
+
+         $scope.get_lake_object = function() {
+
+            $scope.showProgress("Getting lake object from server...");
+            lake.getLakeObject($scope.base,$scope.debug, $scope.lakeId).then( function(response) {
+                    var status = response.status || 500;
+                    var data = response.data || {};
+                    if($scope.debug) {
+                        console.log("server response:: lake object:%O", data);
+                    }
+
+                    if (status != 200 || data.code != 200) {
+                        console.log(response);
+                        var error = data.error || (status + ":error retrieving  data from Server");
+                        $scope.showError(error);
+                        return;
+                    }
+
+                    $scope.lakeObj = data.result ;
+                    $scope.getFeatures() ;
+
+                },function(response) {
+                    $scope.processResponse(response);
+                });
+
+        };
 
         $scope.getFeatures = function() {
 
@@ -283,7 +308,7 @@
                     $scope.featureIOCodes = data.result.featureIOCodes ;
 
                     $scope.clearPageMessage();
-                    $scope.getFeatures() ;
+                    $scope.get_lake_object() ;
 
                 },function(response) {
                     $scope.processResponse(response);
@@ -309,6 +334,10 @@
         $scope.display = {} ;
         $scope.display.notable = false ;
         $scope.display.table = false ;
+        
+        // lake edit menu display 
+        $scope.display.lakeEditMenu = {} ;
+        $scope.display.lakeEditMenu.feature = true ;
 
         $scope.init_codes();
 

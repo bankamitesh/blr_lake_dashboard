@@ -1,0 +1,13 @@
+<div>
+                                <div style="float:right">
+                                    <button class="mdl-button mdl-js-button" ng-click="remove_zone(<?php echo $zone->id ?>)">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <?php echo $zone->description ; ?>
+                                </div>
+
+                            <div> <!-- zone:action -->
+
+                            

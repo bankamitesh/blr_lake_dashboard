@@ -33,7 +33,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/mdl/material.min.css" />
     <link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/main.css?v=1" />
 
 </head>
 
@@ -286,6 +286,10 @@
         $scope.lakeFileObj = {} ;
         $scope.display = {} ;
         $scope.display.downloadLink = false ;
+
+        // lake edit menu display 
+        $scope.display.lakeEditMenu = {} ;
+        $scope.display.lakeEditMenu.bathymetry = true ;
 
         // file code: 1 stage-volume
         // file code: 2 stage-area

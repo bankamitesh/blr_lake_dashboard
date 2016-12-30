@@ -59,7 +59,7 @@
                      
                     <form name="createForm">
                     
-                        <h5>  {{lakeObj.name}} / zone and boundary maps </h5>
+                     
                         <p>
                         To add zones and inlet/outlet markers on a map, 
                         create the map and layers in google map. save the 
@@ -205,6 +205,11 @@
 
         // init display data 
         $scope.display = {} ;
+         // lake edit menu display 
+        $scope.display.lakeEditMenu = {} ;
+        $scope.display.lakeEditMenu.zone = true ;
+
+
         $scope.get_lake_object() ;
 
     });

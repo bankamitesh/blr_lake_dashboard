@@ -573,6 +573,10 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             "constant" : true 
         } ;
         
+        // lake edit menu display 
+        $scope.display.lakeEditMenu = {} ;
+        $scope.display.lakeEditMenu.feature = true ;
+        
         $scope.featureMonitorings = [] ;
         $scope.featureTypes = [] ;
         $scope.fileUploadData = {} ;

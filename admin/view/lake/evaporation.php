@@ -52,9 +52,7 @@
                 <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
                     <form name="csvUploadForm" >
 
-                        <h5> {{lakeObj.name}} / evaporation</h5>
-
-                        <p>
+                       <p>
                             Please upload the lake evaporation data in CSV format.
                             *add a sample here *
                         </p>
@@ -284,6 +282,10 @@
         $scope.lakeFileObj = {} ;
         $scope.display = {} ;
         $scope.display.downloadLink = false ;
+
+         // lake edit menu display 
+        $scope.display.lakeEditMenu = {} ;
+        $scope.display.lakeEditMenu.evaporation = true ;
 
         // file code: 1 stage-volume
         // file code: 2 stage-area

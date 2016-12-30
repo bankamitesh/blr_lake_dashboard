@@ -236,6 +236,12 @@
         $scope.featureMonitorings = [] ;
         $scope.featureTypes = [] ;
         
+        // display data 
+        // lake edit menu display 
+        $scope.display = {} ;
+        $scope.display.lakeEditMenu = {} ;
+        $scope.display.lakeEditMenu.feature = true ;
+        
         
         $scope.init_codes();
 

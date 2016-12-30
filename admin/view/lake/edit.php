@@ -52,8 +52,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                 
                     <form name="createForm" >
                         
-                            <h5> {{lakeObj.name}} / edit </h5>
-                            
+                             
                             <div class="mdl-textfield mdl-js-textfield">
                                 <h6>Name</h6>
                                 <input class="mdl-textfield__input" type="text" name="name" id="name"
@@ -355,6 +354,13 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
         // data initialization
         $scope.lakeObj = {};
         $scope.lakeObj.usageCode = [] ;
+
+        // display data 
+        $scope.display = {} ;
+        // lake edit menu display 
+        $scope.display.lakeEditMenu = {} ;
+        $scope.display.lakeEditMenu.general = true ;
+
         $scope.get_lake_object() ;
         
       

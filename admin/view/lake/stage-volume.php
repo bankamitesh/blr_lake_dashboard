@@ -52,9 +52,7 @@
                     <div  class="mdl-cell mdl-cell--6-col container-810" >
                         <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
                         <form name="csvUploadForm" >
-                        
-                            <h5>{{lakeObj.name}} /  stage volume</h5>
-                           
+                          
                             <p>
                             Please upload the lake stage volume data in CSV format.
                             *add a sample here *
@@ -287,6 +285,11 @@
         $scope.lakeFileObj = {} ;
         $scope.display = {} ;
         $scope.display.downloadLink = false ;
+
+         // lake edit menu display 
+        $scope.display.lakeEditMenu = {} ;
+        $scope.display.lakeEditMenu.stageVolume = true ;
+
 
         // file code: 1 stage-volume
         // file code: 2 stage-area

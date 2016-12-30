@@ -20,7 +20,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/mdl/material.min.css">
     <link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/main.css?v=1">
   
 </head>
 
@@ -60,7 +60,7 @@
 
                     <div class="wide-mdl-card__top__action ">
                         
-                        <button class="mdl-button mdl-js-button mdl-button--raised" ng-click="goto_create()">
+                        <button class="mdl-button mdl-js-button" ng-click="goto_create()">
                           <i class="material-icons">add</i>
                         </button>
                     </div> <!-- top:action -->
