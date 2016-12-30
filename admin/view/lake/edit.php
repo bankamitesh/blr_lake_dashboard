@@ -329,13 +329,16 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         console.log("browser response object: %o" ,response);
                         var error = data.error || (status + ":error submitting lake create form");
                         $scope.showError(error);
+                        $window.alert(error);
+
                         return;
                     }
-
-                    $scope.showMessage("Lake details updated successfully!");
-                    // bring focus to message 
+                    
+                    
+                    var message = "Lake details updated successfully!" ;
                     $window.scrollTo(0,0) ;
-                    // show dialog? 
+                    $scope.showMessage(message);
+                    $window.alert(message);
 
                 }, function (response) {
                     $scope.processResponse(response);
