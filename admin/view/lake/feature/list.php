@@ -25,16 +25,16 @@
 <head>
     <title> Lake Features list </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="/assets/css/material.min.css">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=2">
+    <link rel="stylesheet" href="/assets/mdl/material.min.css" />
+    <link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
+    <link rel="stylesheet" href="/assets/css/main.css" />
+
     
 </head>
 
 <body ng-controller="yuktix.admin.lake.feature.list">
 
-     <div class="mdl-layout mdl-js-layout" id="container">
+ <div class="mdl-layout mdl-js-layout" id="container">
 
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-header.inc'); ?>
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
@@ -42,14 +42,13 @@
     <main class="docs-layout-content mdl-layout__content ">
       <?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
 
-        <div class="mdl-grid mdl-grid--no-spacing">
+        <div class="mdl-grid">
+
            <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
-
             <div class="mdl-cell mdl-cell--1-col"> </div>
-            <div id="content" class="mdl-cell mdl-cell--6-col">
-               <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
-
-               <div class="mdl-card mdl-shadow--4dp no-table-card" ng-show="display.notable">
+            <div id="content" class="mdl-cell mdl-cell--6-col container-810">
+                <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
+                <div class="mdl-card mdl-shadow--4dp no-table-card" ng-show="display.notable">
                  <h4 class="mdl-card__title"> No Lake Features Found! </h4>
                   <div class="mdl-card__media">
                     <img src="/assets/images/dog.png" width="220" height="140" border="0" alt="" style="padding:20px;">
@@ -64,89 +63,87 @@
                     </button>
                   </div>
 
-                </div> <!-- no table mdl card -->
+                </div> <!-- no content card -->
 
-                 <h5>  {{lakeObj.name}} / Features </h5>
+                <h5>  {{lakeObj.name}} / Features </h5>
 
-               <div class="table-container" ng-show="display.table">
+                <div class="table-container" ng-show="display.table">
 
                     <div class="wide-mdl-card__top__action ">
                         <!-- FAB button with ripple -->
-                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored mdl-js-ripple-effect" ng-click="goto_create()">
+                        <button class="mdl-button mdl-js-button mdl-button--raised" ng-click="goto_create()">
                           <i class="material-icons">add</i>
                         </button>
                     </div>
+                    
+                     <div class="mdl-card mdl-shadow--4dp wide-mdl-card" ng-repeat="feature in features">
+                        <h3 class="mdl-card__title" ng-bind="feature.name"></h3>
+                        <div class="mdl-card__supporting-text">
+                            <ul class="mdl-list">
+                                <li class="mdl-list__item">
+                                    <span class="mdl-list__item-primary-content">
+                                        <i class="material-icons mdl-list__item-icon">all_out</i>
+                                        {{feature.iocodeValue}} / {{feature.featureTypeValue}}
+                                    </span>
+                                    
 
-                    <div ng-repeat="feature in features" class="lake-card-container">
-                            <div   class="mdl-card mdl-shadow--4dp wide-mdl-card">
-                                <h3 class="mdl-card__title" ng-bind="feature.name"></h3>
-                                <div class="mdl-card__supporting-text">
-                                    <div>
-                                        <ul class="mdl-list">
-                                            <li class="mdl-list__item">
-                                                <span class="mdl-list__item-primary-content">
-                                                  <i class="material-icons mdl-list__item-icon">all_out</i>
-                                                    {{feature.iocodeValue}} / {{feature.featureTypeValue}}
-                                                </span>
-                                               
+                                </li>
 
-                                            </li>
+                                <li class="mdl-list__item">
+                                    <span class="mdl-list__item-primary-content">
+                                        <i class="material-icons mdl-list__item-icon">place</i>
+                                        {{feature.lat}},{{feature.lon}}
+                                    </span>
+                                    <span class="mdl-list__item-sub-title">Location</span>
+                                </li>
 
-                                            <li class="mdl-list__item">
-                                                <span class="mdl-list__item-primary-content">
-                                                  <i class="material-icons mdl-list__item-icon">place</i>
-                                                    {{feature.lat}},{{feature.lon}}
-                                                </span>
-                                                <span class="mdl-list__item-sub-title">Location</span>
-                                            </li>
+                                <li class="mdl-list__item">
+                                    <span class="mdl-list__item-primary-content">
+                                        <i class="material-icons mdl-list__item-icon">border_outer</i>
+                                        {{feature.width}},{{feature.maxHeight}}
+                                    </span>
+                                    <span class="mdl-list__item-sub-title">width/Height</span>
+                                </li>
 
-                                            <li class="mdl-list__item">
-                                                <span class="mdl-list__item-primary-content">
-                                                  <i class="material-icons mdl-list__item-icon">border_outer</i>
-                                                    {{feature.width}},{{feature.maxHeight}}
-                                                </span>
-                                                <span class="mdl-list__item-sub-title">width/Height</span>
-                                            </li>
+                
+                                <li class="mdl-list__item">
+                                    <span class="mdl-list__item-primary-content"> 
+                                        <i class="material-icons mdl-list__item-icon">visibility</i>
+                                    {{feature.monitoringValue}}
+                                    
+                                    </span>
+                                    <span class="mdl-list__item-sub-title">
+                                        Monitoring
+                                    </span>
+                                    
+                                </li>
+                            </ul>
+                        </div>
+                         <div class="mdl-card__actions mdl-card--border">
+                            <button class="mdl-button mdl-js-button" ng-click="goto_edit(feature.id)"><i class="material-icons">edit</i></button>
+                            &nbsp;
+                            <button class="mdl-button mdl-js-button"><i class="material-icons">delete</i></button>
+                         </div>
+                     </div> <!-- card -->
 
-                            
-                                            <li class="mdl-list__item">
-                                                <span class="mdl-list__item-primary-content"> 
-                                                 <i class="material-icons mdl-list__item-icon">visibility</i>
-                                                {{feature.monitoringValue}}
-                                                
-                                                </span>
-                                                <span class="mdl-list__item-sub-title">
-                                                  Monitoring
-                                                </span>
-                                                
-                                            </li>
 
-                                            
-                                        </ul>
-                                    </div>
-                                </div>
+                </div> <!-- display table container -->
 
-                                <div class="mdl-card__actions mdl-card--border">
-                                    <button class="mdl-button mdl-js-button" ng-click="goto_edit(feature.id)"><i class="material-icons">edit</i></button>
-                                    &nbsp;
-                                    <button class="mdl-button mdl-js-button"><i class="material-icons">delete</i></button>
+            </div> 
+        </div> <!-- grid:content -->
 
-                                </div>
+         <div class="mdl-grid mdl-grid--no-spacing">
+            <div class="mdl-cell mdl-cell--12-col">
+                <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
+            </div>
 
-                            </div> <!-- lake feature card -->
+        </div> <!-- footer -->
 
-                </div> <!-- table container -->
-            
-          </div> 
-        </div> <!-- grid -->
     </main>
-    
-    <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
-
-</div> <!-- container -->
+  </div> 
 </body>
 
-    <script src="/assets/js/material.min.js"></script>
+    <script src="/assets/mdl/material.min.js"></script>
     <script src="/assets/js/angular.min.js"></script>
     <script src="/assets/js/main.js?v=1"></script>
 

@@ -1,0 +1,82 @@
+
+
+
+Algorithm
+
+(1)  Look at Lake level data  for the day
+
+        + API input: dd/mm/YYYY (today;s date) 
+
+        + internally the lake level data on upload should be stored as 
+            convert each date;time to a unix timestamp 
+            get date from the GUI (dd/mm/YYYY) => That date at 3 AM 
+
+                * [dd/mm/YYYY] 
+                * [unix_ts for dd/mm/YYYY @3AM] 
+                * data rows (raw data) 
+                * lake_id 
+                * file_code 
+                * feature_id (lake_level/ actual feature_id) 
+                    - lake_level is just one of the features!
+
+        + API returns 
+            
+            => for a given lake_id + feature_id + dd/mm/YYYY
+                -  return feature <=> level  file. 
+                if nothing for the date then use the last calculations.
+
+(2) Volume/Area calculations
+Assuming we get a feature level file for unix_ts = dd/mm/YYYY @3am 
+API to get  date;time vs. Y data for lake_id + feature_id
+get date;time vs. level data 
+convert to date;time => unix_ts vs. level data
+
+2(a) fetch  stage-volume data for lake_id 
+load into interpolation equation
+feed level data into interpolation equation => get corresponding volume
+result of calculations are 
+unix_ts | date;time | volume | level 
+store calculations as [unix_ts@3am for dd/mm/YYYY vs. data rows ]
+
+2(b) fetch stage-area data for lake_id 
+use stage_area + lake level data to calculate Lake Area 
+store for dd/mm/YYYY unix_ts@3am
+
+(3)Using Lake Area - find  evaporation data 
+fetch Evaporation for dd/mm/YYYY 
+from dd/mm/YYYY - find month 
+load evaporation data from DB, find corresponding month data 
+Multiply for the day => Get Volume. 
+
+(4) Lake Area + Groundwater recharge rate 
+(5) Lake Area + Rain (mm for the day) 
+
+      
+Finally,
+        opening + [Rain - evaporation - groundwater recharge -outflows
++ inflows]  = closing +/- error
+
+
+
+        
+(2) Feature level data 
+
+Feature level data 
+date;time vs. level data
+
++ find the latest uploaded data (using sort_column) 
++ if no data for today: just repeat last calculation 
++ parse CSV for level data 
+        unix_ts vs. level 
+        convert to 
+        Level <=> interval (seconds)
++ for each level, interpolate to get stage velocity using 
+stage-flow relationship
+
+Now we have:
+        velocity <=> interval (seconds) 
+        SUM(entries) 
+
+
+
+

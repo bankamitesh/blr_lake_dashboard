@@ -31,11 +31,10 @@
 <head>
     <title> Lake stage volume edit page </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="/assets/css/material.min.css">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/mdl/material.min.css" />
+    <link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
+    <link rel="stylesheet" href="/assets/css/main.css" />
+
 </head>
 
 <body  ng-controller="yuktix.admin.lake.csv.upload">
@@ -46,15 +45,13 @@
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
    
     <main class="mdl-components__pages mdl-layout__content ">
-        <div class="mdl-grid mdl-grid--no-spacing">
-        <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
-            
+        <div class="mdl-grid">
+            <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
             <div class="mdl-cell mdl-cell--1-col"> </div>
-            <div id ="content" class="mdl-cell mdl-cell--4-col" >
-                <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
+            <div  class="mdl-cell mdl-cell--6-col container-810" >
+                <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
                 
-                <div class="form-container">
-                    <form name="stageVolumeForm" >
+                   <form name="stageVolumeForm" >
                         
                             <h5>Upload stage volume data </h5>
                            
@@ -88,37 +85,36 @@
                                 </button>
                             </div>
                         </form> 
-                    </div> 
-
-                    <div>
                         
-                       
-                        <div ng-show="display.downloadLink">
-                            <h6>Download stored stage volume file </h6>
-                            <a ng-href="{{base}}/admin/shim/download/file.php?id={{lakeFileObj.fileId}}">
-                                <i class="material-icons mdl-list__item-icon">file_download</i>
-                                <span> click to download csv</span>
-                            </a>
-                        </div>
-                        <div ng-show="!display.downloadLink">
-                            <h6>No stage volume file stored in the system </h6>
-                        </div>
+                    <div ng-show="display.downloadLink">
+                        <h6>Download stored stage volume file </h6>
+                        <a ng-href="{{base}}/admin/shim/download/file.php?id={{lakeFileObj.fileId}}">
+                            <i class="material-icons mdl-list__item-icon">file_download</i>
+                            <span> click to download csv</span>
+                        </a>
                     </div>
-                </div>
+                    <div ng-show="!display.downloadLink">
+                        <h6>No stage volume file stored in the system </h6>
+                    </div>
+                    
 
-        </div> <!-- grid:1 -->
-       
+                </div>
+        </div> <!-- grid:content -->
+        
+        <div class="mdl-grid mdl-grid--no-spacing">
+            <div class="mdl-cell mdl-cell--12-col">
+                <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
+            </div>
+
+        </div> <!-- footer -->
+
     </main>
     
-    <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
-
-</div> <!-- container div -->
-
+    </div> 
 </body>
 
 
-<script src="/assets/js/material.min.js"></script>
-<script src="/assets/js/mdl-selectfield.min.js"></script>
+<script src="/assets/mdl/material.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
 <script src="/assets/js/main.js?v=1"></script>
 

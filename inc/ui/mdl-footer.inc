@@ -1,4 +1,4 @@
- <div id="footer">
+ 
   <footer class="mdl-mega-footer">
         
             <div class="mdl-mega-footer__top-section">
@@ -15,4 +15,4 @@
             </div>
        
     </footer>
- </div>
+

@@ -1,75 +1,117 @@
-  #container {
-    min-height: 810px; 
-  }
-
-  #content {
-      padding-top:40px; 
-      padding-bottom: 120px; 
-  }
-
-  #page-message-container  {
-      padding-bottom:20px ;
-      width: 100% ;
-  }
-
-  .page_error {
-       color: red ;
-  }
-
-  .wide-mdl-card {
-      width: 512px ;
-  }
-
-  .wide-mdl-card__top__action {
-      margin-left: 412px ;
-      padding:10px ;
-  }
-
-  .lake-card-container {
-      padding:17px ;
-
-  }
   
-  #login-container .mdl-card__title {
-      margin-top:0px ;
-      color: #fff;
-       height: 256px;
-       background: url(/assets/images/welcome_card.jpg) center / cover;
-  }
 
-  #usage-container ul, li { 
-      list-style: none; 
-  }
+/* support for self hosting mdl */
 
-  a {
+@font-face {
+
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/assets/mdl/MaterialIcons-Regular.eot); /* For IE6-8 */
+    src: local('Material Icons'),
+        local('MaterialIcons-Regular'),
+        url(/assets/mdl/MaterialIcons-Regular.woff2) format('woff2'),
+        url(/assets/mdl/MaterialIcons-Regular.woff) format('woff'),
+        url(/assets/mdl/MaterialIcons-Regular.ttf) format('truetype');
+        
+ }
+
+ .material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;  /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+}
+
+
+.container-810 {
+    min-height: 810px; 
+}
+
+.container-space {
+    padding-top:40px; 
+    padding-bottom: 120px; 
+}
+
+#page-message-container  {
+    padding-bottom:20px ;
+    width: 100% ;
+}
+
+.page_error {
+    color: red ;
+}
+
+.wide-mdl-card {
+    width: 512px ;
+}
+
+.wide-mdl-card__top__action {
+    margin-left: 412px ;
+    padding:10px ;
+}
+
+.lake-card-container {
+    padding:17px ;
+
+}
+
+#login-container .mdl-card__title {
+    margin-top:0px ;
+    color: #fff;
+    height: 187px;
+    /* background: url(/assets/images/welcome_card.jpg) center / cover; */
+    background: url(/assets/images/lake_top_3.jpg) center / cover; 
+}
+
+#usage-container ul, li { 
+    list-style: none; 
+}
+
+a {
     text-decoration: none ;
     color: black ;
     font-weight: 500;
-   }
+}
 
 
-  .lake-edit-links {
-      height: 100% ;
-  }
 
-  .lake-edit-links a {
-      text-decoration: none ;
-      color: black ;
-  }
+.lake-edit-links a {
+    text-decoration: none ;
+    color: black ;
+}
 
-  select {
-      width:310px;
-      height:28px; 
-      font-size: 16px; 
-  }
+select {
+    width:310px;
+    height:28px; 
+    font-size: 16px; 
+}
 
-  .form-container .mdl-textfield {
-      width : 400px; 
-  }
+.form-container .mdl-textfield {
+    width : 400px; 
+}
 
-  .form-button-container {
-      padding-top:40px ;
-  }
+.form-button-container {
+    padding-top:40px ;
+}
 
 .zone-container {
     padding-top: 40px ;

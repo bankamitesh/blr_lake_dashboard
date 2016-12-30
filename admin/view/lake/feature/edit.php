@@ -34,11 +34,9 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
     <title> Lake Feature edit page </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="/assets/css/material.min.css">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=1">
+    <link rel="stylesheet" href="/assets/mdl/material.min.css" />
+    <link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
+    <link rel="stylesheet" href="/assets/css/main.css" />
 
 </head>
 
@@ -50,12 +48,10 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
    
         <main class="docs-layout-content mdl-layout__content ">
             <?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
-            <div class="mdl-grid mdl-grid--no-spacing">
+            <div class="mdl-grid">
                 <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
                 <div class="mdl-cell mdl-cell--1-col"> </div>
-
-
-                <div id="content" class="mdl-cell mdl-cell--4-col">
+                <div class="mdl-cell mdl-cell--6-col container-810">
                     <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
                     
                     <form name="createForm">
@@ -203,23 +199,29 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         </button>
                     </div> 
 
-                </div> <!-- form:cell -->
+                </div> 
                     
-            </div> <!-- grid -->
+            </div> <!-- grid:content -->
             
-        </main>
-    <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
+            <div class="mdl-grid mdl-grid--no-spacing">
+                <div class="mdl-cell mdl-cell--12-col">
+                    <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
+                </div>
 
+        </div> <!-- footer -->
+
+
+        </main>
+        
 </div> <!-- container div -->
 
 </body>
 
 
 
-<script src="/assets/js/material.min.js"></script>
-<script src="/assets/js/mdl-selectfield.min.js"></script>
+<script src="/assets/mdl/material.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js?v=1"></script>
+<script src="/assets/js/main.js"></script>
 
 <script>
 

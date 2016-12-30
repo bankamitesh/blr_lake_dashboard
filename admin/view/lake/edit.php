@@ -28,11 +28,10 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 <html  ng-app="YuktixApp">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="/assets/css/material.min.css">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=2">
+     <link rel="stylesheet" href="/assets/mdl/material.min.css">
+     <link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
+     <link rel="stylesheet" href="/assets/css/main.css">
+
 </head>
 
 <body  ng-controller="yuktix.admin.lake.edit">
@@ -43,15 +42,14 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
    
     <main class="mdl-components__pages mdl-layout__content ">
-
         <?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
-        <div class="mdl-grid mdl-grid--no-spacing">
-        <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
-            
+
+        <div class="mdl-grid">
+            <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
             <div class="mdl-cell mdl-cell--1-col"> </div>
             <div id ="content" class="mdl-grid mdl-cell mdl-cell--8-col" >
                 <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
-                <div class="form-container">
+                
                     <form name="createForm" >
                         
                             <h5> {{lakeObj.name}} / edit </h5>
@@ -173,22 +171,25 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             </div>
 
                         </form> 
-                    </div> <!-- form container -->
-        </div> <!-- grid -->
-        
-    </main>
-    
-    <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
+                   </div>
+                   
+        </div> <!-- grid:content -->
 
-</div> <!-- container div -->
+        <div class="mdl-grid mdl-grid--no-spacing">
+            <div class="mdl-cell mdl-cell--12-col">
+                <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
+            </div>
 
+        </div> <!-- footer -->
+
+    </main> 
+ </div> 
 </body>
 
 
-<script src="/assets/js/material.min.js"></script>
-<script src="/assets/js/mdl-selectfield.min.js"></script>
+<script src="/assets/mdl/material.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js?v=6"></script>
+<script src="/assets/js/main.js"></script>
 
 
 <script>

@@ -34,11 +34,10 @@
 <head>
     <title> Lake zone page </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="/assets/css/material.min.css">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css">
+     <link rel="stylesheet" href="/assets/mdl/material.min.css" />
+     <link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
+     <link rel="stylesheet" href="/assets/css/main.css" />
+
 
 </head>
 
@@ -52,42 +51,40 @@
     <main class="mdl-components__pages mdl-layout__content ">
         <?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
 
-        <div class="mdl-grid mdl-grid--no-spacing">
+        <div class="mdl-grid">
             <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
             <div class="mdl-cell mdl-cell--1-col"> </div>
-                <div id ="content" class="mdl-cell mdl-cell--6-col" >
+                <div class="mdl-cell mdl-cell--8-col container-810" >
                     <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
-                    <div class="form-container">
-                        <form name="createForm">
+                     
+                    <form name="createForm">
+                    
+                        <h5>  {{lakeObj.name}} / zone and boundary maps </h5>
+                        <p>
+                        To add zones and inlet/outlet markers on a map, 
+                        create the map and layers in google map. save the 
+                        html embed code together with a description.
+
+                        </p>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <textarea class="mdl-textfield__input" type="text" name="html" id="html" rows="5"
+                                    ng-model="lakeObj.zone.html" required>
+                            </textarea>
+                            <label class="mdl-textfield__label" for="html">paste html code here ...</label>
+                        </div>
                         
-                            <h5>  {{lakeObj.name}} / zone and boundary maps </h5>
-                            <p>
-                            To add zones and inlet/outlet markers on a map, 
-                            create the map and layers in google map. save the 
-                            html embed code together with a description.
-
-                            </p>
-                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <textarea class="mdl-textfield__input" type="text" name="html" id="html" rows="5"
-                                        ng-model="lakeObj.zone.html" required>
-                                </textarea>
-                                <label class="mdl-textfield__label" for="html">paste html code here ...</label>
-                            </div>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" name="description" id="description"
+                                    ng-model="lakeObj.zone.description">
                             
-                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <input class="mdl-textfield__input" type="text" name="description" id="description"
-                                        ng-model="lakeObj.zone.description">
-                                
-                                <label class="mdl-textfield__label" for="description">description</label>
-                            </div>
-                            <br>
-                            <button class="mdl-button mdl-js-button mdl-button--raised" ng-click="save_zone()" type="submit">
-                                Save zone information 
-                            </button>
+                            <label class="mdl-textfield__label" for="description">description</label>
+                        </div>
+                        <br>
+                        <button class="mdl-button mdl-js-button mdl-button--raised" ng-click="save_zone()" type="submit">
+                            Save zone information 
+                        </button>
 
-                        </form>
-                    </div>
-
+                    </form>
                     
                     <?php foreach($zones as $zone) { ?>
                         <div class="zone-container">
@@ -109,19 +106,22 @@
                     <?php } ?> 
 
 
-                </div> <!-- content -->
+                </div> 
+        </div> <!-- grid:content -->
 
-        </div> <!-- grid: -->
-       
+        <div class="mdl-grid mdl-grid--no-spacing">
+            <div class="mdl-cell mdl-cell--12-col">
+                <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
+            </div>
+
+        </div> <!-- footer -->
+
     </main>
     
-    <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
-
 </div> <!-- container div -->
 
 
-<script src="/assets/js/material.min.js"></script>
-<script src="/assets/js/mdl-selectfield.min.js"></script>
+<script src="/assets/mdl/material.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
 <script src="/assets/js/main.js?v=1"></script>
 

@@ -1,22 +1,22 @@
 <?php
 
-include("lake-app.inc");
-include(APP_WEB_DIR . '/inc/header.inc');
+    include("lake-app.inc");
+    include(APP_WEB_DIR . '/inc/header.inc');
 
-use \com\indigloo\Url;
+    use \com\indigloo\Url;
 
-$gparams = new \stdClass;
-$gparams->debug = false;
-$gparams->base = Url::base();
-$lakeId = Url::tryQueryParam("lake_id");
-if(empty($lakeId)) {
-    echo "<h1> required parameter lake_id is missing </h1>" ;
-    exit(1);
-}
+    $gparams = new \stdClass;
+    $gparams->debug = false;
+    $gparams->base = Url::base();
+    $lakeId = Url::tryQueryParam("lake_id");
+    if(empty($lakeId)) {
+        echo "<h1> required parameter lake_id is missing </h1>" ;
+        exit(1);
+    }
 
-if (array_key_exists("jsdebug", $_REQUEST)) {
-    $gparams->debug = true;
-}
+    if (array_key_exists("jsdebug", $_REQUEST)) {
+        $gparams->debug = true;
+    }
 
 ?>
 
@@ -27,11 +27,10 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
     <title> Lake Feature create page </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="/assets/css/material.min.css">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.light_green-amber.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/mdl/material.min.css" />
+    <link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
+    <link rel="stylesheet" href="/assets/css/main.css" />
+
 
 </head>
 
@@ -42,11 +41,12 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
     <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
    
         <main class="docs-layout-content mdl-layout__content ">
-            <div class="mdl-grid mdl-grid--no-spacing">
+            <div class="mdl-grid">
                 <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
                 <div class="mdl-cell mdl-cell--1-col"> </div>
-                <div id="content" class="mdl-grid mdl-cell mdl-cell--8-col">
-                    <?php include(APP_WEB_DIR . '/inc/ui/page-error.inc'); ?>
+                <div  class="mdl-cell mdl-cell--8-col container-810">
+                    <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
+
                     <form name="createForm">
                          <h5>Create inlet/outlet </h5>
                         
@@ -111,20 +111,25 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             </button>
                         </div>
                     </form>
+                    
+                </div>
+            </div> <!-- grid:content -->
+                
+            <div class="mdl-grid mdl-grid--no-spacing">
+                <div class="mdl-cell mdl-cell--12-col">
+                    <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
+                </div>
 
-                </div> <!-- grid -->
-            
+            </div> <!-- footer -->
+
         </main>
-    <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
-
-</div> <!-- container div -->
-
+    
+ </div> 
 </body>
 
 
 
-<script src="/assets/js/material.min.js"></script>
-<script src="/assets/js/mdl-selectfield.min.js"></script>
+<script src="/assets/mdl/material.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
 <script src="/assets/js/main.js"></script>
 
