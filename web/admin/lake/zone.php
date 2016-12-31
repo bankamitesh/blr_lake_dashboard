@@ -9,7 +9,7 @@
 
     // role check
     // redirect to login page
-    Login::isCustomerAdmin("/admin/login.php") ;
+    Login::isCustomerAdmin("/app/login.php") ;
 
     $gparams = new \stdClass;
     $gparams->debug = false;

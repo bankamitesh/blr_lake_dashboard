@@ -8,7 +8,7 @@ use \com\yuktix\lake\auth\Login as Login ;
 
 // role check
 // redirect to login page 
-Login::isCustomerAdmin("/admin/login.php") ;
+Login::isCustomerAdmin("/app/login.php") ;
 
 $gparams = new \stdClass;
 $gparams->debug = false;
