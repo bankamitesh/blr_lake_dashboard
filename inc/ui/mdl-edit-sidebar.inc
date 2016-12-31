@@ -1,6 +1,6 @@
 <div class="mdl-cell   mdl-cell--3-col mdl-shadow--2dp lake-edit-menu">
     
-        <h4 ng-bind="lakeObj.name">  </h4>
+        <h5 ng-bind="lakeObj.name">  </h5>
         <ul class="mdl-list">
             
                 <li class="mdl-list__item" ng-class="{active : display.lakeEditMenu.general} ">
