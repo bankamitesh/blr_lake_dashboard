@@ -51,6 +51,9 @@ namespace com\yuktix\lake\mysql {
             $lakeFileObj->fileId = $row["file_id"];
             $lakeFileObj->fileCode = $row["file_code"];
             $lakeFileObj->lakeId = $row["lake_id"];
+            $lakeFileObj->fileName = $row["file_name"];
+            $lakeFileObj->fileSize = $row["file_size"];
+            $lakeFileObj->tsUnix = $row["unix_ts"];
 
             return $lakeFileObj ;
         }
@@ -276,7 +279,13 @@ namespace com\yuktix\lake\mysql {
             
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $lakeId = $mysqli->real_escape_string($lakeId);
-            $sql = sprintf(" select * from atree_lake_file where lake_id = %d and file_code = %d ",$lakeId, $fileCode) ;
+
+            $sql = " select b.file_name, b.file_size, f.id, f.file_id, f.lake_id, f.file_code, "
+            ." unix_timestamp(f.created_on) as unix_ts  "
+            ." from atree_lake_file f , atree_file_blob b  where b.id = f.file_id " 
+            . " and f.lake_id = %d and f.file_code = %d " ;
+
+            $sql = sprintf($sql,$lakeId, $fileCode) ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return  self::createLakeFileObject($row) ;
             

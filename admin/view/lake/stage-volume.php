@@ -33,7 +33,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/mdl/material.min.css" />
     <link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/main.css?v=3" />
 
 </head>
 
@@ -54,45 +54,60 @@
                         <form name="csvUploadForm" >
                           
                             <p>
-                            Please upload the lake stage volume data in CSV format.
-                            *add a sample here *
+                            Please upload the lake stage volume relationship data
+                            as comma separated values file (.csv). 
+                            First column is stage in meters and second column is volume in cubic meters.
+                            
                             </p>
+
+                             <ul class="mdl-list mdl-shadow--2dp">
+                                <li class="mdl-list__item" ng-repeat="sample in samples">
+                                    <span class="mdl-list__item-primary-content" ng-bind="sample">  </span>    
+                                </li>
+                            </ul>
 
                             <div>
                                 <label class="mdl-button mdl-button--colored mdl-js-button">
-                                    <span> <i class="material-icons">attachment</i> </span>
+                                    <span> <i class="material-icons">attach_file</i> </span>
                                     Select File<input type="file" filelist-bind class="none"  name="files" style="display: none;">
                                 </label>
                             </div>
-                            <br>
+                            
                             <div>
                                 <ul class="mdl-list">
-                                    <li "mdl-list__item" ng-repeat="file in files">
+                                    <li class="mdl-list__item mdl-list__item--two-line" ng-repeat="file in files">
                                         <span class="mdl-list__item-primary-content">
-                                            <i class="material-icons mdl-list__item-icon">insert_drive_file</i>
-                                            {{ file.name}}, {{file.size/1000}} kb
+                                            
+                                            <span> {{ file.name}} </span>
+                                            <span class="mdl-list__item-sub-title">{{file.size/1000}} kb</span>
+                                            
                                         </span>
-                                    
+                                        <span class="mdl-list__item-secondary-content">
+                                            <i class="material-icons">check</i>
+                                        </span>
+
                                     </li>
                                 </ul>
                             </div>
 
-                            <div class="form-button-container">
-                                <button class="mdl-button mdl-js-button mdl-button--raised"ng-click="process_upload()" type="submit">
+                            <div class="upload-button-container" ng-show="files.length > 0 ">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" ng-click="process_upload()" type="submit">
                                     Upload 
                                 </button>
                             </div>
                         </form> 
                        
-                        <div ng-show="display.downloadLink">
-                            <h6>Download stored stage volume file </h6>
+                        <div class="file-download-container" ng-show="display.downloadLink">
+                            <h6>System stage volume relationship file</h6>
                             <a ng-href="{{base}}/admin/shim/download/file.php?id={{lakeFileObj.fileId}}">
-                                <i class="material-icons mdl-list__item-icon">file_download</i>
-                                <span> click to download csv</span>
+                                <span> {{lakeFileObj.fileName}} ( {{lakeFileObj.createdOn}} )</span>
+                                <i class="material-icons">file_download</i>
+                                
                             </a>
                         </div>
+
                         <div ng-show="!display.downloadLink">
-                            <h6>No stage volume file stored in the system </h6>
+                            <h6>No stage volume relationship file in the system </h6>
                         </div>
                    
 
@@ -175,6 +190,7 @@
                     // set display.downloadLink
                     if($scope.lakeFileObj.hasOwnProperty("fileId")) {
                         $scope.display.downloadLink = true ;
+                        $scope.lakeFileObj.createdOn =  new Date($scope.lakeFileObj.tsUnix * 1000).toLocaleString() ;
                     }
                     
                     $scope.clearPageMessage();
@@ -296,6 +312,19 @@
         // file code: 3 evaporation
 
         $scope.fileCode = 1 ;
+
+        // sample stage-volume data 
+        $scope.samples = [] ;
+        
+        $scope.samples.push("0.15 , 1317.281689");
+        $scope.samples.push("0.65 , 27859.87955");
+        $scope.samples.push("1.15 , 97549.57163");
+        $scope.samples.push("1.65 , 217217.1273");
+        
+
+        
+
+
         $scope.get_lake_object() ;
     
 
