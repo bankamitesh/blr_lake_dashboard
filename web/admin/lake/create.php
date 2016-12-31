@@ -277,7 +277,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                         return;
                     }
 
-                    $window.location.href = "/admin/view/lake/list.php";
+                    $window.location.href = "/admin/lake/list.php";
 
                 }, function (response) {
                     $scope.processResponse(response);

@@ -253,7 +253,7 @@
                 $scope.showMessage("lake evaporation data file uploaded successfully!");
                 // @debug
                 // reload page
-                $window.location.href = "/admin/view/lake/evaporation.php?lake_id=" + $scope.lakeId ;
+                $window.location.href = "/admin/lake/evaporation.php?lake_id=" + $scope.lakeId ;
 
             }, function (response) {
                 $scope.processResponse(response);

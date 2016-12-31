@@ -184,7 +184,7 @@
                         return;
                     }
 
-                    $window.location.href = "/admin/view/lake/zone.php?lake_id=" + $scope.lakeId ;
+                    $window.location.href = "/admin/lake/zone.php?lake_id=" + $scope.lakeId ;
 
                 }, function (response) {
                     $scope.processResponse(response);

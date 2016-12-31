@@ -182,14 +182,15 @@
 
 
       $scope.goto_create = function() {
-        $window.location.href = "/admin/view/lake/create.php";
+        $window.location.href = "/admin/lake/create.php";
       };
 
       $scope.goto_edit=function(lakeId){
         if($scope.debug){
             console.log("lake row clicked: id ::" + lakeId);
         }
-        $window.location.href = "/admin/view/lake/edit.php?lake_id="+lakeId;
+        
+        $window.location.href = "/admin/lake/edit.php?lake_id="+lakeId;
 
       };
 

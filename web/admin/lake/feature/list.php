@@ -238,11 +238,11 @@
 
 
         $scope.goto_create = function() {
-            $window.location.href = "/admin/view/lake/feature/create.php?lake_id="+ $scope.lakeId ;
+            $window.location.href = "/admin/lake/feature/create.php?lake_id="+ $scope.lakeId ;
         };
 
         $scope.goto_edit=function(featureId){
-            $window.location.href = "/admin/view/lake/feature/edit.php?lake_id="+ $scope.lakeId + "&feature_id=" + featureId ;
+            $window.location.href = "/admin/lake/feature/edit.php?lake_id="+ $scope.lakeId + "&feature_id=" + featureId ;
         };
 
         $scope.translate_feature_type_code = function(code) {

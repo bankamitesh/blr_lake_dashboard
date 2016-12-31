@@ -5,14 +5,16 @@
     $gMDLMenus = array();
 
     if(!empty($login)) {
-        array_push($gMDLMenus, ["name" => "Upload", "link" => "#" ]) ;
+        array_push($gMDLMenus, ["name" => "Citizen Dashboard", "link" => "#" ]) ;
+        array_push($gMDLMenus, ["name" => "Public Website", "link" => "#" ]) ;
+
         if($login->customerAdmin) { 
-            array_push($gMDLMenus, ["name" => "Admin Dashboard", "link" => "/admin/view/lake/list.php"]) ;
+            array_push($gMDLMenus, ["name" => "Admin Dashboard", "link" => "/admin/lake/list.php"]) ;
         }
-        array_push($gMDLMenus, ["name" => "Logout", "link" => "/admin/logout.php"]) ;
+        array_push($gMDLMenus, ["name" => "Logout", "link" => "/app/logout.php"]) ;
 
     } else {
-         array_push($gMDLMenus, ["name" => "Login", "link" => "/admin/login.php"]) ;
+         array_push($gMDLMenus, ["name" => "Login", "link" => "/app/login.php"]) ;
     }
 
 ?>

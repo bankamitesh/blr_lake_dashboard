@@ -544,7 +544,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                     }
 
                     $scope.showMessage("lake feature edited successfully!");
-                    $window.location.href = "/admin/view/lake/feature/list.php?lake_id=" + $scope.lakeId + "&feature_id=" + data.featureId;
+                    $window.location.href = "/admin/lake/feature/list.php?lake_id=" + $scope.lakeId + "&feature_id=" + data.featureId;
 
                 }, function (response) {
                     $scope.processResponse(response);

@@ -211,7 +211,7 @@
                         return;
                     }
 
-                   $window.location.href = "/admin/view/lake/feature/edit.php?lake_id=" + $scope.lakeId + "&feature_id=" + data.featureId;
+                   $window.location.href = "/admin/lake/feature/edit.php?lake_id=" + $scope.lakeId + "&feature_id=" + data.featureId;
 
                 }, function (response) {
                     $scope.processResponse(response);
