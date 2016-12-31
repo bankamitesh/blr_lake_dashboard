@@ -8,7 +8,7 @@
 
     // role check
     // redirect to login page
-    Login::isCustomerAdmin("/admin/login.php") ;
+    Login::isCustomerAdmin("/app/login.php") ;
 
     $gparams = new \stdClass;
     $gparams->debug = false;
@@ -29,7 +29,7 @@
 
 <html  ng-app="YuktixApp">
 <head>
-    <title> Lake stage volume edit page </title>
+    <title> Lake water balance data upload page </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/mdl/material.min.css" />
     <link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
@@ -37,7 +37,7 @@
 
 </head>
 
-<body  ng-controller="yuktix.admin.lake.csv.upload">
+<body  ng-controller="yuktix.admin.lake.wb.upload">
 
     <div class="mdl-layout mdl-js-layout">
         <?php include(APP_WEB_DIR . '/inc/ui/mdl-header.inc'); ?>
@@ -51,75 +51,59 @@
                     <div class="mdl-cell mdl-cell--1-col"> </div>
                     <div  class="mdl-cell mdl-cell--6-col container-810" >
                         <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
-                        <form name="csvUploadForm" >
-                          
-                            <p>
-                            Please upload the lake stage volume relationship data
-                            as comma separated values file (.csv). 
-                            First column is stage in meters and second column is volume in cubic meters.
-                            
-                            </p>
+                        
+                         <h5> Features </h5>
+                         <div>
+                            <select id="lake_feature"
+                                    ng-model="selectedFeature"
+                                    ng-change="select_feature(selectedFeature)"
+                                    ng-options="feature.name for feature in features">
+                            </select>
+                        </div>
 
-                             <ul class="mdl-list mdl-shadow--2dp">
-                                <li class="mdl-list__item" ng-repeat="sample in samples">
-                                    <span class="mdl-list__item-primary-content" ng-bind="sample">  </span>    
-                                </li>
-                            </ul>
-
-                            <div>
-                                <label class="mdl-button mdl-button--colored mdl-js-button">
-                                    <span> <i class="material-icons">attach_file</i> </span>
-                                    Select File<input type="file" filelist-bind class="none"  name="files" style="display: none;">
-                                </label>
-                            </div>
-                            
-                            <div>
+                       
                                 <ul class="mdl-list">
-                                    <li class="mdl-list__item mdl-list__item--two-line" ng-repeat="file in files">
+                                    <li class="mdl-list__item">
                                         <span class="mdl-list__item-primary-content">
-                                            
-                                            <span> {{ file.name}} </span>
-                                            <span class="mdl-list__item-sub-title">{{file.size/1000}} kb</span>
-                                            
+                                            <i class="material-icons mdl-list__item-icon">all_out</i>
+                                            {{selectedFeature.iocodeValue}} / {{selectedFeature.featureTypeValue}}
                                         </span>
-                                        <span class="mdl-list__item-secondary-content">
-                                            <i class="material-icons">check</i>
-                                        </span>
+                                        
 
                                     </li>
+
+                                    <li class="mdl-list__item">
+                                        <span class="mdl-list__item-primary-content">
+                                            <i class="material-icons mdl-list__item-icon">place</i>
+                                            {{selectedFeature.lat}},{{selectedFeature.lon}}
+                                        </span>
+                                        <span class="mdl-list__item-sub-title">Location</span>
+                                    </li>
+
+                                    <li class="mdl-list__item">
+                                        <span class="mdl-list__item-primary-content"> 
+                                            <i class="material-icons mdl-list__item-icon">visibility</i>
+                                        {{selectedFeature.monitoringValue}}
+                                        
+                                        </span>
+                                        <span class="mdl-list__item-sub-title">
+                                            Monitoring
+                                        </span>
+                                        
+                                    </li>
                                 </ul>
-                            </div>
+                            
 
-                            <div class="upload-button-container" ng-show="files.length > 0 ">
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" ng-click="process_upload()" type="submit">
-                                    Upload 
-                                </button>
-                            </div>
-                        </form> 
-                       
-                        <div class="file-download-container" ng-show="display.downloadLink">
-                            <h6>System stage volume relationship file</h6>
-                            <a ng-href="{{base}}/admin/shim/download/file.php?id={{lakeFileObj.fileId}}">
-                                <span> {{lakeFileObj.fileName}} ( {{lakeFileObj.createdOn}} )</span>
-                                <i class="material-icons">file_download</i>
-                                
-                            </a>
-                        </div>
-
-                        <div ng-show="!display.downloadLink">
-                            <h6>No stage volume relationship file in the system </h6>
-                        </div>
-                   
 
                 </div>
-        </div> <!-- grid:content -->
+            </div> <!-- grid:content -->
        
-        <div class="mdl-grid mdl-grid--no-spacing">
-            <div class="mdl-cell mdl-cell--12-col">
-                <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
-            </div>
+            <div class="mdl-grid mdl-grid--no-spacing">
+                <div class="mdl-cell mdl-cell--12-col">
+                    <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
+                </div>
 
-        </div> <!-- footer -->
+            </div> <!-- footer -->
 
     </main>
     
@@ -130,17 +114,17 @@
 
 <script src="/assets/mdl/material.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js?v=1"></script>
+<script src="/assets/js/main.js?v=2"></script>
 
 
 
 <script>
 
-    yuktixApp.controller("yuktix.admin.lake.csv.upload", function ($scope, lake, fupload,$window) {
+    yuktixApp.controller("yuktix.admin.lake.wb.upload", function ($scope, lake, fupload, feature,$window) {
 
          $scope.get_lake_object = function() {
 
-            $scope.showProgress("Getting lake object from server...");
+            $scope.showProgress("getting lake object from server...");
             lake.getLakeObject($scope.base,$scope.debug, $scope.lakeId).then( function(response) {
                     var status = response.status || 500;
                     var data = response.data || {};
@@ -156,7 +140,7 @@
                     }
 
                     $scope.lakeObj = data.result ;
-                    $scope.get_lake_file() ;
+                    $scope.get_lake_features() ;
 
                 },function(response) {
                     $scope.processResponse(response);
@@ -164,15 +148,64 @@
 
         };
 
-        $scope.get_lake_file = function() {
+        $scope.get_lake_features = function() {
 
-            $scope.showProgress("getting lake file object from server...");
-            lake.getFileObject($scope.base,$scope.debug, $scope.lakeId,$scope.fileCode).then( function(response) {
+            $scope.showProgress("getting lakes features data from the server...");
+            feature.list($scope.base,$scope.debug, $scope.lakeId) .then( function(response) {
+
+                var status = response.status || 500;
+                var data = response.data || {};
+
+                if($scope.debug) {
+                    console.log("server response:: lake features data:%O", data);
+                }
+
+                if (status != 200 || data.code != 200) {
+                    console.log(response);
+                    var error = data.error || (status + ":error retrieving  data from server");
+                    $scope.showError(error);
+                    return;
+
+                }
+
+                $scope.features = data.result ;
+                
+                for( var i = 0 ; i < $scope.features.length; i++) {
+                    var featureObj =  $scope.features[i] ;
+                    lake.assignFeatureCodeValues($scope.codeMap, featureObj);
+                    $scope.features[i] = featureObj ; 
+                    if($scope.debug) {
+                        console.log("feature : object with assigned code values ::%O", featureObj);
+                    }
+                }
+
+                if($scope.features.length > 0) {
+                    $scope.selectedFeature = $scope.features[0] ;
+                }
+
+                $scope.clearPageMessage();
+                
+
+            },function(response) {
+                $scope.processResponse(response);
+            });
+
+        };
+
+        $scope.select_feature = function(feature) {
+            $scope.selectedFeature = feature ;
+        };  
+
+        $scope.init_codes = function() {
+
+            $scope.showProgress("getting required codes from server...");
+            lake.getCodes($scope.base,$scope.debug).then( function(response) {
+
                     var status = response.status || 500;
                     var data = response.data || {};
 
                     if($scope.debug) {
-                        console.log("server response:: lake file object:%O", data);
+                        console.log("server response:: codes:%O", data);
                     }
 
                     if (status != 200 || data.code != 200) {
@@ -180,114 +213,21 @@
                         var error = data.error || (status + ":error retrieving  data from Server");
                         $scope.showError(error);
                         return;
+
                     }
 
-                    $scope.lakeFileObj = data.result || {} ;
-                    if($scope.debug) {
-                        console.log("lake file obj ::", $scope.lakeFileObj);
-                    }
-
-                    // set display.downloadLink
-                    if($scope.lakeFileObj.hasOwnProperty("fileId")) {
-                        $scope.display.downloadLink = true ;
-                        $scope.lakeFileObj.createdOn =  new Date($scope.lakeFileObj.tsUnix * 1000).toLocaleString() ;
-                    }
-                    
+                    // bind data 
+                    $scope.codeMap = data.result ;
                     $scope.clearPageMessage();
-                    
+                    $scope.get_lake_object() ;
 
                 },function(response) {
                     $scope.processResponse(response);
                 });
-
         };
+       
+        $scope.translate_code = function(feature) {
 
-        $scope.upload_file = function (uploadUrl,metadata) {
-
-            if(!angular.isDefined($scope.files)) {
-                // no files on page.
-                var error = "no files found. please select a file first!";
-                var xmsg = "no files found during processing. " 
-                    + " please check the you are using filelist-bind directive"
-                    + " with input type = file and  name=files element." ; 
-
-                $scope.showError(error);
-                console.error(xmsg);
-                return ;
-            }
-
-            var payload = new FormData();
-            var xfile = $scope.files[0] ;
-
-            payload.append("myfile", xfile);
-            payload.append("metadata", angular.toJson(metadata));
-            
-            $scope.showProgress("uploading file...");
-            fupload.send_mpart($scope.debug, uploadUrl, payload).then(function (response) {
-
-                var status = response.status || 500;
-                var data = response.data || {};
-
-                if ($scope.debug) {
-                    console.log("API response :");
-                    console.log(data);
-                }
-
-                if (status != 200 || data.code != 200) {
-                    console.error("browser response object: " ,response);
-                    var error  = data.error || (status + ":error while submitting data ");
-                    // show error 
-                    $scope.showError(error);
-                    return ;
-                }
-                
-                $scope.send_file_data(data.fileId) ;
-                return ;
-
-            }, function (response) {
-                $scope.processResponse(response);
-            });
-            
-        };
-
-        $scope.send_file_data = function(fileId) {
-
-            lake.storeFile($scope.base, $scope.debug,$scope.lakeId, $scope.fileCode, fileId).then(function (response) {
-
-                    var status = response.status || 500;
-                    var data = response.data || {};
-
-                    if ($scope.debug) {
-                        console.log("API response :");
-                        console.log(data);
-                    }
-
-                    if (status != 200 || data.code != 200) {
-                        console.log("browser response object: %o" ,response);
-                        var error = data.error || (status + ":error submitting feature create form");
-                        $scope.showError(error);
-                        
-                        return;
-                    }
-
-                    var message = "stage volume relationship file uploaded successfully!" 
-                    // $scope.showMessage(message);
-                    $window.alert(message);
-                    $window.location.href = "/admin/lake/stage-volume.php?lake_id=" + $scope.lakeId ;
-
-                }, function (response) {
-                    $scope.processResponse(response);
-                }); 
-        }
-
-        $scope.process_upload = function () {
-
-            var uploadUrl = $scope.base + "/admin/shim/upload/mpart.php" ;
-            var metadata = { 
-                "store" : "database"
-            } ;
-
-            $scope.upload_file(uploadUrl, metadata);
         };
 
         $scope.errorMessage = "" ;
@@ -299,20 +239,15 @@
 
         // data initialization
         $scope.lakeObj = {};
-        $scope.lakeFileObj = {} ;
+        $scope.features = [] ;
+        $scope.codeMap = {} ;
+
+        // display data initialization
         $scope.display = {} ;
-        $scope.display.downloadLink = false ;
-
-         // lake edit menu display 
+       
+        // lake edit menu display 
         $scope.display.lakeEditMenu = {} ;
-        $scope.display.lakeEditMenu.stageVolume = true ;
-
-
-        // file code: 1 stage-volume
-        // file code: 2 stage-area
-        // file code: 3 evaporation
-
-        $scope.fileCode = 1 ;
+        $scope.display.lakeEditMenu.waterBalance = true ;
 
         // sample stage-volume data 
         $scope.samples = [] ;
@@ -322,11 +257,8 @@
         $scope.samples.push("1.15 , 97549.57163");
         $scope.samples.push("1.65 , 217217.1273");
         
-
-        
-
-
-        $scope.get_lake_object() ;
+        // start:
+        $scope.init_codes() ;
     
 
     });

@@ -1,23 +1,23 @@
 <?php  
 
-  include ("lake-app.inc");
-  include(APP_WEB_DIR.'/inc/header.inc');
+    include ("lake-app.inc");
+    include(APP_WEB_DIR.'/inc/header.inc');
 
-  use \com\indigloo\Url ;
+    use \com\indigloo\Url ;
 
-  $gparams = new \stdClass ;
-  $gparams->debug = false ;
-  $gparams->base = Url::base() ;
+    $gparams = new \stdClass ;
+    $gparams->debug = false ;
+    $gparams->base = Url::base() ;
 
-  $lakeId = Url::tryQueryParam("lake_id") ;
-    if(empty($lakeId)) {
-        echo "<h1> lake_id is missing in request </h1>" ;
-        exit ;
-  }
+    $lakeId = Url::tryQueryParam("lake_id") ;
+        if(empty($lakeId)) {
+            echo "<h1> lake_id is missing in request </h1>" ;
+            exit ;
+    }
 
-  if(array_key_exists("jsdebug", $_REQUEST)) {
-    $gparams->debug = true ;
-  }
+    if(array_key_exists("jsdebug", $_REQUEST)) {
+        $gparams->debug = true ;
+    }
 
 ?>
 <html ng-app="YuktixApp">
@@ -144,7 +144,7 @@
 
     <script src="/assets/mdl/material.min.js"></script>
     <script src="/assets/js/angular.min.js"></script>
-    <script src="/assets/js/main.js?v=1"></script>
+    <script src="/assets/js/main.js?v=2"></script>
 
     <script>
 
@@ -168,7 +168,7 @@
                     }
 
                     $scope.lakeObj = data.result ;
-                    $scope.getFeatures() ;
+                    $scope.get_lake_features() ;
 
                 },function(response) {
                     $scope.processResponse(response);
@@ -176,10 +176,9 @@
 
         };
 
-        $scope.getFeatures = function() {
+        $scope.get_lake_features = function() {
 
             $scope.showProgress("getting lakes features data from the server...");
-
             feature.list($scope.base,$scope.debug, $scope.lakeId) .then( function(response) {
 
                 var status = response.status || 500;
@@ -216,20 +215,19 @@
                 var featureMonitoringValue ;
 
                 for(index =0; index < $scope.features.length ; index++) {
-                  featureObj = $scope.features[index];
-                  featureObj.featureTypeValue = $scope.translate_feature_type_code(featureObj.featureTypeCode) ;
-                  featureObj.monitoringValue = $scope.translate_feature_monitoring_code(featureObj.monitoringCode) ;
-                  featureObj.iocodeValue = $scope.translate_feature_io_code(featureObj.iocode) ;
 
+                  featureObj = $scope.features[index];
+                  lake.assignFeatureCodeValues($scope.codeMap, featureObj);
                   $scope.features[index]= featureObj ;
 
                 }
 
-                console.log("translated features:", $scope.features);
+                if($scope.debug) { 
+                    console.log("lake feature with assigned code values::", $scope.features);
+                }
 
                 $scope.clearPageMessage();
                 
-
             },function(response) {
                 $scope.processResponse(response);
             });
@@ -245,47 +243,11 @@
             $window.location.href = "/admin/lake/feature/edit.php?lake_id="+ $scope.lakeId + "&feature_id=" + featureId ;
         };
 
-        $scope.translate_feature_type_code = function(code) {
-
-          var index = lake.findObjectOnCode($scope.featureTypes, code, $scope.debug);
-          if(index == -1) {
-            console.error("error: no feature type found for code: %d", code);
-            index = 0 ;
-          }
-
-          return $scope.featureTypes[index].value ;
-
-        };
-
-        $scope.translate_feature_monitoring_code = function(code) {
-
-          var index = lake.findObjectOnCode($scope.featureMonitorings, code, $scope.debug);
-          if(index == -1) {
-            console.error("error: no feature monitoring found for code: %d", code);
-            index = 0 ;
-          }
-
-          return $scope.featureMonitorings[index].value ;
-
-        };
-
-         $scope.translate_feature_io_code = function(code) {
-
-          var index = lake.findObjectOnCode($scope.featureIOCodes, code, $scope.debug);
-          if(index == -1) {
-            console.error("error: no feature io found for code: %d", code);
-            index = 0 ;
-          }
-
-          return $scope.featureIOCodes[index].value ;
-
-        };
-
+        
         $scope.init_codes = function() {
 
-            $scope.showProgress("Getting required codes from server...");
-            lake.getCodes($scope.base,$scope.debug)
-                .then( function(response) {
+            $scope.showProgress("getting required codes from server...");
+            lake.getCodes($scope.base,$scope.debug).then( function(response) {
 
                     var status = response.status || 500;
                     var data = response.data || {};
@@ -303,19 +265,14 @@
                     }
 
                     // bind data 
-                    $scope.featureTypes = data.result.featureTypes ;
-                    $scope.featureMonitorings = data.result.featureMonitorings ;
-                    $scope.featureIOCodes = data.result.featureIOCodes ;
-
+                    $scope.codeMap =  data.result  ;
                     $scope.clearPageMessage();
                     $scope.get_lake_object() ;
 
                 },function(response) {
                     $scope.processResponse(response);
                 });
-
         };
-
 
         // set page parameters
         $scope.gparams = <?php echo json_encode($gparams); ?> ;
@@ -324,8 +281,7 @@
 
         // init data
         $scope.lakeId = <?php echo $lakeId ; ?> ;
-        $scope.featureTypes = {} ;
-        $scope.featureMonitorings = {} ;
+        $scope.codeMap = {} ;
 
         $scope.features = {} ;
         $scope.errorMessage = "";

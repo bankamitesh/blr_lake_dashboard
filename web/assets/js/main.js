@@ -732,6 +732,7 @@
                  return promise;
              };
 
+			 
 			lake.findObjectOnCode = function(arr, code, debug) {
 
 				var index = -1 ;
@@ -746,6 +747,35 @@
             	}
 
 				return index ;
+            }; 
+
+			lake.assignFeatureCodeValues = function(codeMap, featureObj, debug) {
+
+				var code ;
+				var index = -1 ;
+				
+				code = featureObj.featureTypeCode   ;
+				for(i = 0 ; i < codeMap.featureTypes.length; i++) {
+					if(codeMap.featureTypes[i].id == code ) {
+						featureObj.featureTypeValue = codeMap.featureTypes[i].value ;
+					}
+				}
+
+				code = featureObj.monitoringCode ;
+				for(i = 0 ; i < codeMap.featureMonitorings.length; i++) {
+					if(codeMap.featureMonitorings[i].id == code ) {
+						featureObj.monitoringValue = codeMap.featureMonitorings[i].value ;
+					}
+				}
+
+				code = featureObj.iocode ;
+				for(i = 0 ; i < codeMap.featureIOCodes.length; i++) {
+					if(codeMap.featureIOCodes[i].id == code ) {
+						featureObj.iocodeValue = codeMap.featureIOCodes[i].value ;
+					}
+				}
+				
+				
             };
 
 			lake.getLakeObject = function(base,debug, lakeId) {
