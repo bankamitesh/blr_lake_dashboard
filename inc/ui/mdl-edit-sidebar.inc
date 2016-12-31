@@ -10,6 +10,12 @@
                     
                 </li>
                 
+                <li class="mdl-list__item" ng-class="{active : display.lakeEditMenu.waterBalance} ">
+                    <a href="/admin/view/lake/wb/upload.php?lake_id=<?php echo $lakeId; ?>" class="mdl-components__link mdl-component"> 
+                        <span class="mdl-list__item-primary-content">Water Balance</span>
+                    </a>
+                </li>
+
                 <li class="mdl-list__item" ng-class="{active : display.lakeEditMenu.zone} ">
                     <a href="/admin/view/lake/zone.php?lake_id=<?php echo $lakeId; ?>" class="mdl-components__link mdl-component"> 
                         <span class="mdl-list__item-primary-content">Zones/Boundaries</span> 
@@ -43,7 +49,7 @@
 
                 <li class="mdl-list__item" ng-class="{active : display.lakeEditMenu.evaporation} ">
                     <a href="/admin/view/lake/evaporation.php?lake_id=<?php echo $lakeId; ?>" class="mdl-components__link mdl-component"> 
-                        <span class="mdl-list__item-primary-content">Evaporation data</span> 
+                        <span class="mdl-list__item-primary-content">Evaporation</span> 
                     </a>
                 </li>
 
