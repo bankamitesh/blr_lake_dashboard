@@ -266,12 +266,13 @@
                         console.log("browser response object: %o" ,response);
                         var error = data.error || (status + ":error submitting feature create form");
                         $scope.showError(error);
+                        
                         return;
                     }
 
-                    $scope.showMessage("lake file data uploaded successfully!");
-                    // @debug
-                    // reload page
+                    var message = "stage volume relationship file uploaded successfully!" 
+                    // $scope.showMessage(message);
+                    $window.alert(message);
                     $window.location.href = "/admin/view/lake/stage-volume.php?lake_id=" + $scope.lakeId ;
 
                 }, function (response) {
