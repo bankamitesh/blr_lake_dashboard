@@ -51,48 +51,69 @@
                     <div class="mdl-cell mdl-cell--1-col"> </div>
                     <div  class="mdl-cell mdl-cell--6-col container-810" >
                         <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
-                        
-                         <h5> Features </h5>
-                         <div>
-                            <select id="lake_feature"
-                                    ng-model="selectedFeature"
-                                    ng-change="select_feature(selectedFeature)"
-                                    ng-options="feature.name for feature in features">
-                            </select>
-                        </div>
 
-                       
+                        <h5> Features </h5>
+                        <p>
+                            Please select a feature by clicking on radio button.
+                            Upload level and calibration file for selected feature.
+                        </p>
+                        <ul class="feature-list mdl-list">
+                            <li class="mdl-list__item mdl-list__item--three-line" ng-repeat="feature in features">
+                                <span class="mdl-list__item-primary-content">
+                                    <i class="material-icons">{{feature.icon1}}</i>
+                                    <span>{{feature.name}} </span>
+                                    <span class="mdl-list__item-text-body">
+                                        {{feature.details}}
+                                    </span>
+                                    
+                                </span>
+                                <span class="mdl-list__item-secondary-content">
+                                    
+                                    <a href="#" ng-click="select_feature(feature)"> 
+                                        <i class="material-icons">{{feature.icon2}}</i>
+                                    </a>
+                                </span>
+                                
+                            </li>
+                        </ul>
+                        <form class="upload-button-container">
+                            <div>
+                                <span> Data for</span>
+                                <span ng-bind="selectedFeature.name"> </span>
+
+                            </div>
+
+                            <div>
+                                <label class="mdl-button mdl-button--colored mdl-js-button">
+                                    <span> <i class="material-icons">attach_file</i> </span>
+                                    Select Files<input type="file" filelist-bind class="none"  name="files" style="display: none;" multiple>
+                                </label>
+                            </div>
+                            
+                            <div>
                                 <ul class="mdl-list">
-                                    <li class="mdl-list__item">
+                                    <li class="mdl-list__item mdl-list__item--two-line" ng-repeat="file in files">
                                         <span class="mdl-list__item-primary-content">
-                                            <i class="material-icons mdl-list__item-icon">all_out</i>
-                                            {{selectedFeature.iocodeValue}} / {{selectedFeature.featureTypeValue}}
+                                            
+                                            <span> {{ file.name}} </span>
+                                            <span class="mdl-list__item-sub-title">{{file.size/1000}} kb</span>
+                                            
                                         </span>
-                                        
+                                        <span class="mdl-list__item-secondary-content">
+                                            <i class="material-icons">check</i>
+                                        </span>
 
-                                    </li>
-
-                                    <li class="mdl-list__item">
-                                        <span class="mdl-list__item-primary-content">
-                                            <i class="material-icons mdl-list__item-icon">place</i>
-                                            {{selectedFeature.lat}},{{selectedFeature.lon}}
-                                        </span>
-                                        <span class="mdl-list__item-sub-title">Location</span>
-                                    </li>
-
-                                    <li class="mdl-list__item">
-                                        <span class="mdl-list__item-primary-content"> 
-                                            <i class="material-icons mdl-list__item-icon">visibility</i>
-                                        {{selectedFeature.monitoringValue}}
-                                        
-                                        </span>
-                                        <span class="mdl-list__item-sub-title">
-                                            Monitoring
-                                        </span>
-                                        
                                     </li>
                                 </ul>
-                            
+                            </div>
+
+                            <div class="upload-button-container" ng-show="files.length > 0 ">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" ng-click="process_upload()" type="submit">
+                                    Upload 
+                                </button>
+                            </div>
+                        </form>
+                       
 
 
                 </div>
@@ -122,7 +143,12 @@
 
     yuktixApp.controller("yuktix.admin.lake.wb.upload", function ($scope, lake, fupload, feature,$window) {
 
-         $scope.get_lake_object = function() {
+        
+        $scope.select_list_feature = function () {
+            $window.alert("clicked");
+        };
+
+        $scope.get_lake_object = function() {
 
             $scope.showProgress("getting lake object from server...");
             lake.getLakeObject($scope.base,$scope.debug, $scope.lakeId).then( function(response) {
@@ -170,17 +196,40 @@
 
                 $scope.features = data.result ;
                 
+                // add data to features
                 for( var i = 0 ; i < $scope.features.length; i++) {
                     var featureObj =  $scope.features[i] ;
+                    // add code values to feature 
                     lake.assignFeatureCodeValues($scope.codeMap, featureObj);
+                    // assign icons 
+                    featureObj.icon1 = "place" ;
+                    featureObj.icon2 = "radio_button_unchecked" ;
+                    featureObj.details = featureObj.iocodeValue 
+                                        + featureObj.featureTypeValue 
+                                        + "Lat,Lon: [" 
+                                        + featureObj.lat + "," + featureObj.lon 
+                                        + "]  /" + featureObj.monitoringValue ;
+
                     $scope.features[i] = featureObj ; 
                     if($scope.debug) {
                         console.log("feature : object with assigned code values ::%O", featureObj);
                     }
                 }
 
+                // add Lake level as feature 
+                var xfeature = { 
+                    "icon1" : "pool",
+                    "icon2" : "radio_button_unchecked",
+                    "name" : "Lake Level" ,
+                    "details" : "manual measurement of lake levels" 
+                    
+                }
+
+                $scope.features.push(xfeature);
+
+                // default assignment 
                 if($scope.features.length > 0) {
-                    $scope.selectedFeature = $scope.features[0] ;
+                    $scope.select_feature($scope.features[0]);
                 }
 
                 $scope.clearPageMessage();
@@ -193,6 +242,13 @@
         };
 
         $scope.select_feature = function(feature) {
+            
+            // uncheck other features 
+            for(var i = 0 ; i < $scope.features.length; i++) {
+                $scope.features[i].icon2 = "radio_button_unchecked" ;
+            }
+
+            feature.icon2 =  "radio_button_checked" ;
             $scope.selectedFeature = feature ;
         };  
 
