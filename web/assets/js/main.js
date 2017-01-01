@@ -522,6 +522,7 @@
 
 				if(debug) { 
 					console.log("file upload URL is:" + myurl);
+					console.log("file payload is %O", payload);
 				}
 
                 var promise = $http({
@@ -966,6 +967,32 @@
 					data: { 
 						"featureObj" : featureObj, 
 						"fileUploadData" : fileUploadData 
+					} 
+					
+                }).then(
+                    function (response) { return response ; }, 
+                    function(response) { return response ; }
+                );
+
+                return promise;
+
+            };
+
+			feature1.uploadData = function(base,debug,lakeId,featureObj, fileIds) {
+
+				var myurl = "/admin/shim/lake/feature/upload-data.php";
+				if(debug) { 
+					console.log("POST: %s, lakeId:%d, feature: %O, fileIds:%O", myurl, featureObj, fileIds);
+				}
+
+                var promise = $http({
+                    method : 'POST',
+                    url : myurl,
+                    headers : { 'Content-Type' : 'application/json' },
+					data: { 
+						"lakeId" : lakeId,
+						"featureObj" : featureObj, 
+						"fileIds" : fileIds 
 					} 
 					
                 }).then(

@@ -135,7 +135,7 @@
 
 <script src="/assets/mdl/material.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js?v=2"></script>
+<script src="/assets/js/main.js?v=4"></script>
 
 
 
@@ -143,11 +143,116 @@
 
     yuktixApp.controller("yuktix.admin.lake.wb.upload", function ($scope, lake, fupload, feature,$window) {
 
-        
-        $scope.select_list_feature = function () {
-            $window.alert("clicked");
+        $scope.send_data = function() {
+            
+            if($scope.debug) {
+                console.log("submitting: lakeId, feature and fileIds for water balance calculations");
+                console.log($scope.lakeId);
+                console.log($scope.selectedFeature);
+                console.log($scope.fileIds);
+            }
+
+            feature.uploadData($scope.base,$scope.debug, $scope.lakeId, $scope.selectedFeature, $scope.fileIds)
+            .then(function(response) {
+                    var status = response.status || 500;
+                    var data = response.data || {};
+                    if($scope.debug) {
+                        console.log("server response:: feature data upload:%O", data);
+                    }
+
+                    if (status != 200 || data.code != 200) {
+                        console.log(response);
+                        var error = data.error || (status + ":error retrieving  data from Server");
+                        $scope.showError(error);
+                        return;
+                    }
+
+                    var message = "Feature data  uploaded successfully!" 
+                    $scope.showMessage(message);
+                    $window.alert(message);
+                    return ;
+
+                },function(response) {
+                    $scope.processResponse(response);
+                });
+
+          
+
         };
 
+        $scope.upload_file = function (uploadUrl,metadata, index, callback) {
+            
+            if($scope.debug) {
+                console.log("processing file at index: %d", index);
+            }
+
+            var payload = new FormData();
+            var xfile = $scope.files[index] ;
+
+            payload.append("myfile", xfile);
+            payload.append("metadata", angular.toJson(metadata));
+            
+            $scope.showProgress("uploading file...");
+            fupload.send_mpart($scope.debug, uploadUrl, payload).then(function (response) {
+
+                var status = response.status || 500;
+                var data = response.data || {};
+
+                if ($scope.debug) {
+                    console.log("API response: %O", data);
+                }
+
+                if (status != 200 || data.code != 200) {
+                    console.error("browser response object: %O" ,response);
+                    var error  = data.error || (status + ":error while submitting data "); 
+                    // halt file upload processing!
+                    $scope.showError(error);
+                    $window.alert(error) ;
+                    return ;
+                }
+
+                $scope.fileIds.push(data.fileId);
+                $scope.clearPageMessage();
+
+                if(index == 0) {
+                    if($scope.debug){ 
+                        console.log("file upload done. over to callback ...");
+                    }
+
+                    callback();
+                }
+
+                return ;
+
+            }, function (response) {
+                $scope.processResponse(response);
+            });
+            
+        };
+
+
+        $scope.process_upload = function () {
+
+            $scope.fileIds = [] ;
+            if(!angular.isDefined($scope.files)) {
+                // no files on page.
+                var error = "no files found. please select a file first!";
+                $scope.showError(error);
+                $window.alert(error);
+                return ;
+            }
+
+            var total = $scope.files.length ;
+            var uploadUrl = $scope.base + "/admin/shim/upload/mpart.php" ;
+            var metadata = { "store" : "database" } ;
+            for(var i = total-1 ; i >= 0 ; i--) { 
+                $scope.upload_file(uploadUrl, metadata,i, $scope.send_data);
+            }
+           
+
+        };
+
+        
         $scope.get_lake_object = function() {
 
             $scope.showProgress("getting lake object from server...");
@@ -166,6 +271,7 @@
                     }
 
                     $scope.lakeObj = data.result ;
+                    $scope.clearPageMessage();
                     $scope.get_lake_features() ;
 
                 },function(response) {
@@ -217,9 +323,14 @@
                 }
 
                 // add Lake level as feature 
+                // iocode 1: inlet
+                // iocode 2: outlet 
+                // iocode 3: lake level file 
+
                 var xfeature = { 
                     "icon1" : "pool",
                     "icon2" : "radio_button_unchecked",
+                    "iocode" : 3,
                     "name" : "Lake Level" ,
                     "details" : "manual measurement of lake levels" 
                     
@@ -282,10 +393,7 @@
                 });
         };
        
-        $scope.translate_code = function(feature) {
-
-        };
-
+        
         $scope.errorMessage = "" ;
         // page params
         $scope.gparams = <?php echo json_encode($gparams); ?> ;
@@ -297,7 +405,7 @@
         $scope.lakeObj = {};
         $scope.features = [] ;
         $scope.codeMap = {} ;
-
+        $scope.fileIds = [] ;
         // display data initialization
         $scope.display = {} ;
        
@@ -305,13 +413,8 @@
         $scope.display.lakeEditMenu = {} ;
         $scope.display.lakeEditMenu.waterBalance = true ;
 
-        // sample stage-volume data 
+        // sample data 
         $scope.samples = [] ;
-        
-        $scope.samples.push("0.15 , 1317.281689");
-        $scope.samples.push("0.65 , 27859.87955");
-        $scope.samples.push("1.15 , 97549.57163");
-        $scope.samples.push("1.65 , 217217.1273");
         
         // start:
         $scope.init_codes() ;
