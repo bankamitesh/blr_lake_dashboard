@@ -17,6 +17,9 @@ namespace com\yuktix\lake\mysql {
 
             $sql = " select * from atree_sensor where serial_number = '".$serialNumber. "' " ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
+
+            // release mysqli resources 
+            MySQL\Connection::getInstance()->closeHandle() ;
             return $row ;
 
         }
@@ -38,6 +41,8 @@ namespace com\yuktix\lake\mysql {
             
             $stmt->execute();
             $sensorId = $dbh->lastInsertId() ;
+
+            $stmt = NULL ;
             return $sensorId ;
 
         }
@@ -58,6 +63,8 @@ namespace com\yuktix\lake\mysql {
             
             $stmt->execute();
             $sensorId = $dbh->lastInsertId() ;
+
+            $stmt = NULL ;
             return $sensorId ;
 
         }

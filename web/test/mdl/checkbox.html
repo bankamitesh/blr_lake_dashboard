@@ -1,0 +1,20 @@
+
+
+    <div class="usage-container">
+        <h6> Usage </h6>
+        
+        <div ng-repeat="usage in lakeUsages">
+            <label for="{{usage.id}}" class="mdl-checkbox mdl-js-checkbox" >
+                <input
+                    type="checkbox"
+                    id="{{usage.id}}" 
+                    class="mdl-checkbox__input "
+                    ng-checked="lakeObj.usageCode.indexOf(usage.id) > -1"
+                    ng-click="toggle_usage_code(usage.id)"
+                    value="{usage.value}"
+                    name="usageCode" />
+                    <span class="mdl-checkbox__label" ng-bind="usage.value"></span>
+            </label>
+        </div> 
+    </div> <!-- usage -->
+                            

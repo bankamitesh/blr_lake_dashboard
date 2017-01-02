@@ -243,9 +243,9 @@
             $rootScope.showPageMessage = false ;
             $rootScope.showPageError = false ;
             $rootScope.showProgressIcon = false ;
-            
             $rootScope.pageMessage = "" ;
-            
+            $rootScope.fileIds = [] ;
+
             $rootScope.setDebug = function(flag) {
                 $rootScope.debug = flag ;
             };
@@ -353,7 +353,6 @@
 	        		}
 	        	}
 	        	
-	        	
 	        	if(fields.length > 0) {
 	        		var formError = "" ;
 	        		for(var j = 0 ; j < fields.length ; j++) {
@@ -368,100 +367,10 @@
 
 	         };
 	         
+	       
 
-	         $rootScope.unixToHuman = function(unixTime) {
-	        	 
-	        	 var fd = "" ;
-	        	 if(unixTime == 0 || unixTime == "0" ) {
-	        		 return "--" ;
-	        	 }
-	        	 
-	        	 if(unixTime) {
-	        		 var d = new  Date(unixTime * 1.0);
-	        		 months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-	        		 fd = d.getDate()
-	        		 			+ "-" + months[d.getMonth()]
-	        		  			+ "-" + d.getFullYear()
-	        		  			+ " " + d.getHours() 
-	        		  			+ ":" + d.getMinutes() ;
-	        		 
-	        	 }
-	        	 
-	        	 return fd ;
-	         };
-	         
-	         $rootScope.unixToHumanDate = function(unixTime) {
-	        	 
-	        	 var fd = "" ;
-	        	 if(unixTime == 0 || unixTime == "0" ) {
-	        		 return "--" ;
-	        	 }
-	        	 
-	        	 unixTime = parseInt(unixTime);
-	        	 
-	        	 if(unixTime) {
-	        		 var d = new  Date(unixTime);
-	        		 months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-	        		 fd = d.getDate() + "-" + months[d.getMonth()] + "-" + d.getFullYear() ;
-	        	 }
-	        	 
-	        	 return fd ;
-	         };
-   
-	         $rootScope.unixToHumanTime = function(unixTime) {
-	        	 
-	        	 var fd = "" ;
-	        	 if(unixTime == 0 || unixTime == "0" ) {
-	        		 return "--" ;
-	        	 }
-	        	 
-	        	 unixTime = parseInt(unixTime);
-	        	 if(unixTime) {
-	        		 var d = new  Date(unixTime);
-	        		 fd = d.getHours() + ":" + d.getMinutes() ;
-	        	 }
-	        	 
-	        	 return fd ;
-	         };
- 
-	         $rootScope.HumanMonthToNumber = function (m) {
-	        	 if( m == 'Jan') return 1 ;
-	        	 if( m == 'Feb') return 2 ;
-	        	 if( m == 'Mar') return 3 ;
-	        	 if( m == 'Apr') return 4 ;
-	        	 if( m == 'May') return 5 ;
-	        	 if( m == 'Jun') return 6 ;
-	        	 if( m == 'Jul') return 7 ;
-	        	 if( m == 'Aug') return 8 ;
-	        	 if( m == 'Sep') return 9 ;
-	        	 if( m == 'Oct') return 10 ;
-	        	 if( m == 'Nov') return 11 ;
-	        	 if( m == 'Dec') return 12 ;
-	        	 
-	        	 console.log("error: Unknown month " + m) ;
-	        	 return -1 ;
-	        	 
-	         } ;
-	         
-	         
-	         $rootScope.conditionConverter = function (conditionValue) {
-	        	 if(conditionValue) {
-	        		 if(conditionValue == "gt") {
-	        			 return "Greater than";
-	        		 } else if (conditionValue == "lt") {
-	        			 return "Less than";
-	        		 }else if (conditionValue == "eq") {
-	        			 return "equals";
-	        		 } else {
-	        			 return "";
-	        		 }
-	        	 }
-	        	 return "";
-	         }
-	               
         }]);
-
-      
+		
         // text service of YuktixApp module returns a promise
         // object. 
         // $http.then(successCallback, errorCallback) 
@@ -544,62 +453,6 @@
 
         });
 
-        yuktixApp.factory('calendar', function() {
-			 var calendar = {} ;
-			 
-			 calendar.now = function(debug) {
-				 return Math.floor(new Date().getTime() / 1000.0);
-			 };
-			 
-			 calendar.midnightOffset = function(debug) {
-				var today = new Date();
-				var hh,mm,ss ;
-				hh = today.getHours();
-				mm = today.getMinutes();
-				ss = today.getSeconds();
-       		
-				return hh*3600 + mm*60 + ss ;
-       		
-			 } ;
-			 
-			calendar.timezoneOffset = function(debug) {
-				var timeOffsetInSeconds = new Date().getTimezoneOffset() * 60;
-				// @see docs : javascript returns offset in MINUS
-				timeOffsetInSeconds *= -1 ;
-				return timeOffsetInSeconds ;
-			 };
-			 
-			 calendar.getIMDTime = function(day, month, year, debug) {
-				// convert day, month, year to unix timestamp in millis
-				// javascript month is 0->11
-				var d1 = new Date(year, month-1, day,8,30);
-				return d1.getTime();
-				 
-			 } ;
-			 
-			 calendar.getGraphEndTimestamp = function(day,month,year,debug) {
-				 var cdate = new Date(year, month-1, day);
-				 
-				 var today = new Date();
-				 var dd = today.getDate();
-				 var mm = today.getMonth();
-				 var yyyy = today.getFullYear();
-				 var tdate = new Date(yyyy,mm,dd);
-				 
-				 if(cdate.getTime() >= tdate.getTime()) {
-					 // today or future date in box
-					 return Math.floor(new Date().getTime() / 1000.0);
-				 } else {
-					 // past date in box
-					 // get date + 23:59:59
-					 return Math.floor(new Date(year,month-1,day,23,59,59).getTime() / 1000.0);
-				 }
-				 
-			 }
-			 
-			 return calendar ;
-		 });
-		 
         
         yuktixApp.factory('user', function($http) {
 
@@ -629,8 +482,6 @@
             	
             };
             
-            
-                
             return user ;
         });
 
@@ -776,7 +627,6 @@
 					}
 				}
 				
-				
             };
 
 			lake.getLakeObject = function(base,debug, lakeId) {
@@ -802,9 +652,9 @@
                  return promise;
              };
 
-			lake.getFileObject = function(base,debug, lakeId, fileCode) {
+			lake.getRelationshipFile = function(base,debug, lakeId, fileCode) {
 
-                 var myurl = base + '/admin/shim/lake/file/get-object.php' ;
+                 var myurl = base + '/admin/shim/lake/file/get-relationship.php' ;
                  var postData = {
 					 "lakeId" : lakeId, 
 					 "fileCode" : fileCode
@@ -825,10 +675,10 @@
                  );
 
                  return promise;
-             };
+            };
 
-			lake.storeFile = function(base,debug, lakeId, fileCode,fileId) {
-				 var myurl = base + '/admin/shim/lake/file/store.php' ;
+			lake.storeRelationshipFile = function(base,debug, lakeId, fileCode,fileId) {
+				 var myurl = base + '/admin/shim/lake/file/store-relationship.php' ;
                  var postData = {
 					 "lakeId" : lakeId, 
 					 "fileCode" : fileCode,
@@ -838,6 +688,53 @@
                  if(debug) {
                      console.log("POST:%s, data=%O ", myurl, postData);
                  }
+                 var promise = $http({
+                     method : 'POST',
+                     url : myurl,
+                     data : postData,
+                     headers: {'Content-Type': 'application/json'}
+                 }).then(
+                     function (response) { return response ; },
+                     function(response) { return response ; }
+                 );
+
+                 return promise;
+            };
+
+			lake.getImages = function(base,debug, lakeId) {
+
+                 var myurl = base + '/admin/shim/lake/file/get-images.php' ;
+                 var postData = { "lakeId" : lakeId } 
+				 
+                 if(debug) {
+                     console.log("POST:%s, data=%O ", myurl, postData);
+                 }
+
+                 var promise = $http({
+                     method : 'POST',
+                     url : myurl,
+                     data : postData,
+                     headers: {'Content-Type': 'application/json'}
+                 }).then(
+                     function (response) { return response ; },
+                     function(response) { return response ; }
+                 );
+
+                 return promise;
+            };
+
+			lake.storeImages = function(base,debug, lakeId, imageIds) {
+
+                 var myurl = base + '/admin/shim/lake/file/store-images.php' ;
+                 var postData = {
+					 "lakeId" : lakeId, 
+					 "imageFileIds" : imageIds
+				 } ;
+
+                 if(debug) {
+                     console.log("POST:%s, data=%O ", myurl, postData);
+                 }
+
                  var promise = $http({
                      method : 'POST',
                      url : myurl,
@@ -903,6 +800,7 @@
             };
 
             return lake ;
+
         });
 
 		yuktixApp.factory('feature', function($http) {

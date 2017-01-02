@@ -42,7 +42,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             <div class="mdl-cell mdl-cell--3-col"> </div>
             <div class="mdl-grid mdl-cell mdl-cell--9-col container-810">
                 <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
-                                  <form name="createForm">
+                    <form name="createForm">
                     
                         <h5>Create a new lake </h5>
                         
@@ -83,7 +83,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             <div class="mdl-textfield mdl-js-textfield">
                             <textarea class="mdl-textfield__input" type="text" rows="5" id="about" name="about"
                                         ng-model="lakeObj.about" required></textarea>
-                            <label class="mdl-textfield__label" for="about">About / provide a write up for the lake...</label>
+                            <label class="mdl-textfield__label" for="about">Write up about the lake...</label>
                         </div>
                         <br>
 

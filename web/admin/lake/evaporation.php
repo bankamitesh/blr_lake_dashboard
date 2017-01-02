@@ -149,7 +149,7 @@
         $scope.get_lake_file = function() {
 
             $scope.showProgress("getting lake file object from server...");
-            lake.getFileObject($scope.base,$scope.debug, $scope.lakeId,$scope.fileCode).then( function(response) {
+            lake.getRelationshipFile($scope.base,$scope.debug, $scope.lakeId,$scope.fileCode).then( function(response) {
                 var status = response.status || 500;
                 var data = response.data || {};
 
@@ -233,7 +233,7 @@
 
         $scope.send_file_data = function(fileId) {
 
-            lake.storeFile($scope.base, $scope.debug,$scope.lakeId, $scope.fileCode, fileId).then(function (response) {
+            lake.storeRelationshipFile($scope.base, $scope.debug,$scope.lakeId, $scope.fileCode, fileId).then(function (response) {
 
                 var status = response.status || 500;
                 var data = response.data || {};

@@ -52,7 +52,6 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                 
                     <form name="createForm" >
                         
-                             
                             <div class="mdl-textfield mdl-js-textfield">
                                 <h6>Name</h6>
                                 <input class="mdl-textfield__input" type="text" name="name" id="name"
@@ -60,16 +59,15 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                 
                             </div>
                             <br>
+                            <div class="mdl-textfield mdl-js-textfield">
                                 <h6>Latitude</h6>
-                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" id="lat" name="latitude"
                                         ng-model="lakeObj.lat" required>
-                               
+                                
                             </div>
                             <br>
 
-
-                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <div class="mdl-textfield mdl-js-textfield ">
                                 <h6>Longitude</h6>
                                 <input class="mdl-textfield__input" type="text" id="lon" name="longtitude"
                                         ng-model="lakeObj.lon" required>
@@ -144,23 +142,19 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                             <div class="usage-container">
                                 <h6> Usage </h6>
                                 
-                                
-                                    <div ng-repeat="usage in lakeUsages">
-                                        <label for="{{usage.id}}" class="mdl-checkbox mdl-js-checkbox" >
-                                            <input
-                                                type="checkbox"
-                                                id="{{usage.id}}" 
-                                                class="mdl-checkbox__input "
-                                                ng-checked="lakeObj.usageCode.indexOf(usage.id) > -1"
-                                                ng-click="toggle_usage_code(usage.id)"
-                                                value="{usage.value}"
-                                                name="usageCode" />
-                                                <span class="mdl-checkbox__label" ng-bind="usage.value"></span>
-                                        </label>
-                                    
-                                
-                                
-                                    </div> 
+                                <div ng-repeat="usage in lakeUsages">
+                                    <label for="{{usage.id}}" class="mdl-checkbox mdl-js-checkbox" >
+                                        <input
+                                            type="checkbox"
+                                            id="{{usage.id}}" 
+                                            class="mdl-checkbox__input"
+                                            ng-checked="lakeObj.usageCode.indexOf(usage.id) > -1"
+                                            ng-click="toggle_usage_code(usage.id)"
+                                            value="{usage.value}"
+                                            name="usageCode" />
+                                            <span class="mdl-checkbox__label" ng-bind="usage.value"></span>
+                                    </label>
+                                </div> 
                             </div> <!-- usage -->
                             
                             <div class="form-button-container">
@@ -185,9 +179,8 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
  </div> 
 </body>
 
-
-<script src="/assets/mdl/material.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
+<script src="/assets/mdl/material.min.js"></script>
 <script src="/assets/js/main.js"></script>
 
 

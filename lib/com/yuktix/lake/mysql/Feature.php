@@ -70,6 +70,9 @@ namespace com\yuktix\lake\mysql {
             $sql = " select * from atree_lake_feature where id = ".$featureId ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             $featureObj = self::createFeatureObject($row) ;
+
+            // release mysqli resources 
+            MySQL\Connection::getInstance()->closeHandle() ;
             return $featureObj ;
         }
 
@@ -93,7 +96,7 @@ namespace com\yuktix\lake\mysql {
                 array_push($result, $feature);
             }
 
-             // relase resources 
+            // relase resources 
             MySQL\Connection::getInstance()->closeHandle() ;
             return $result ;
 
@@ -133,6 +136,8 @@ namespace com\yuktix\lake\mysql {
             $stmt->execute();
             // remember lastInsertId is a function!
             $featureId = $dbh->lastInsertId() ;
+            $stmt = NULL ;
+
             return $featureId ;
 
         }
@@ -202,6 +207,7 @@ namespace com\yuktix\lake\mysql {
             
 
             $stmt->execute();
+            $stmt = NULL ;
             return ;
 
         }
@@ -215,6 +221,7 @@ namespace com\yuktix\lake\mysql {
             $stmt->bindParam(":feature_id",$featureId, \PDO::PARAM_INT);
             $stmt->bindParam(":sensor_id",$sensorId, \PDO::PARAM_INT);
             $stmt->execute();
+            $stmt = NULL ;
             return ;
          
         }

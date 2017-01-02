@@ -27,7 +27,7 @@
 
         $dbh = PDOWrapper::getHandle();
         $dbh->beginTransaction();
-        Lake::storeFile($dbh,$postData);
+        Lake::storeRelationshipFile($dbh,$postData);
         $dbh->commit();
         $dbh = null;
 

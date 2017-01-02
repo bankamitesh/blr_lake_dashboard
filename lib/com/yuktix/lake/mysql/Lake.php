@@ -78,27 +78,29 @@ namespace com\yuktix\lake\mysql {
                 . ":max_area, :max_volume, :recharge_rate, :agency_code, :type_code, :usage_code, "
                 . " now())" ; 
 
-                $stmt = $dbh->prepare($sql);
-                $cname = StringUtil::convertNameToKey($lakeObj->name) ;
-                $usageCode = json_encode($lakeObj->usageCode);
+            $stmt = $dbh->prepare($sql);
+            $cname = StringUtil::convertNameToKey($lakeObj->name) ;
+            $usageCode = json_encode($lakeObj->usageCode);
 
-                $stmt->bindParam(":name",$lakeObj->name, \PDO::PARAM_STR);
-                $stmt->bindParam(":cname",$cname, \PDO::PARAM_STR);
-                $stmt->bindParam(":about",$lakeObj->about, \PDO::PARAM_STR);
-                $stmt->bindParam(":lat",$lakeObj->lat, \PDO::PARAM_STR);
-                $stmt->bindParam(":lon",$lakeObj->lon, \PDO::PARAM_STR);
-                $stmt->bindParam(":address",$lakeObj->address, \PDO::PARAM_STR);
-                $stmt->bindParam(":max_area",$lakeObj->maxArea, \PDO::PARAM_STR);
-                $stmt->bindParam(":max_volume",$lakeObj->maxVolume, \PDO::PARAM_STR);
-                $stmt->bindParam(":recharge_rate",$lakeObj->rechargeRate, \PDO::PARAM_STR);
-                $stmt->bindParam(":agency_code",$lakeObj->agencyCode, \PDO::PARAM_INT);
-                $stmt->bindParam(":type_code",$lakeObj->typeCode, \PDO::PARAM_INT);
-                $stmt->bindParam(":usage_code",$usageCode, \PDO::PARAM_STR);
+            $stmt->bindParam(":name",$lakeObj->name, \PDO::PARAM_STR);
+            $stmt->bindParam(":cname",$cname, \PDO::PARAM_STR);
+            $stmt->bindParam(":about",$lakeObj->about, \PDO::PARAM_STR);
+            $stmt->bindParam(":lat",$lakeObj->lat, \PDO::PARAM_STR);
+            $stmt->bindParam(":lon",$lakeObj->lon, \PDO::PARAM_STR);
+            $stmt->bindParam(":address",$lakeObj->address, \PDO::PARAM_STR);
+            $stmt->bindParam(":max_area",$lakeObj->maxArea, \PDO::PARAM_STR);
+            $stmt->bindParam(":max_volume",$lakeObj->maxVolume, \PDO::PARAM_STR);
+            $stmt->bindParam(":recharge_rate",$lakeObj->rechargeRate, \PDO::PARAM_STR);
+            $stmt->bindParam(":agency_code",$lakeObj->agencyCode, \PDO::PARAM_INT);
+            $stmt->bindParam(":type_code",$lakeObj->typeCode, \PDO::PARAM_INT);
+            $stmt->bindParam(":usage_code",$usageCode, \PDO::PARAM_STR);
 
-                $stmt->execute();
-                $stmt = NULL;
+            $stmt->execute();
+            $stmt = NULL;
 
         }
+
+       
 
         static function update ($dbh, $lakeObj) {
 
@@ -161,7 +163,7 @@ namespace com\yuktix\lake\mysql {
 
         }
 
-         static function removeZone($dbh, $lakeId, $zoneId) {
+        static function removeZone($dbh, $lakeId, $zoneId) {
 
             if(empty($lakeId)) {
                 $xmsg = "required parameter lakeId is missing";
@@ -196,6 +198,9 @@ namespace com\yuktix\lake\mysql {
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             $lakeObj = self::createLakeObject($row) ;
             
+            // release mysqli resources 
+            MySQL\Connection::getInstance()->closeHandle() ;
+
             return $lakeObj ;
 
         }
@@ -211,6 +216,9 @@ namespace com\yuktix\lake\mysql {
                 $lake = self::createLakeObject($row) ;
                 array_push($result, $lake);
             }
+
+            // release mysqli resources 
+            MySQL\Connection::getInstance()->closeHandle() ;
 
             return $result ;
         }
@@ -237,12 +245,12 @@ namespace com\yuktix\lake\mysql {
             return $result ;
         }
 
-        static function storeFile($dbh,$lakeFileObj) {
+        static function storeRelationshipFile($dbh,$lakeFileObj) {
 
             // @todo input check
 
             // delete any existing rows
-            $sql1 = " delete from atree_lake_file where lake_id = :lake_id and file_code = :file_code  ";
+            $sql1 = " delete from atree_relationship_file where lake_id = :lake_id and file_code = :file_code  ";
             
             $stmt1 = $dbh->prepare($sql1);
             $stmt1->bindParam(":lake_id",$lakeFileObj->lakeId, \PDO::PARAM_INT);
@@ -251,7 +259,7 @@ namespace com\yuktix\lake\mysql {
             $stmt1 = NULL;
             
             // insert new ones
-            $sql2 = "insert INTO atree_lake_file(lake_id, file_code, file_id, " 
+            $sql2 = "insert INTO atree_relationship_file(lake_id, file_code, file_id, " 
                 . " created_on) VALUES (:lake_id, :file_code, :file_id, "
                 . " now())" ; 
 
@@ -265,7 +273,21 @@ namespace com\yuktix\lake\mysql {
 
         }
 
-        static function getFileOnCode($lakeId, $fileCode) {
+         static function storeImage($dbh,$lakeId, $fileId) {
+            
+             $sql = "insert INTO atree_image_file(lake_id, file_id, created_on)  " 
+                . "  VALUES (:lake_id, :file_id, now()) " ;
+        
+
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam(":lake_id",$lakeId, \PDO::PARAM_INT);
+            $stmt->bindParam(":file_id",$fileId, \PDO::PARAM_INT);
+            $stmt->execute();
+            $stmt = NULL;
+
+        }
+
+        static function getRelationshipFile($lakeId, $fileCode) {
 
             if(empty($lakeId)) {
                 $xmsg = "required parameter lakeId is missing";
@@ -282,15 +304,45 @@ namespace com\yuktix\lake\mysql {
 
             $sql = " select b.file_name, b.file_size, f.id, f.file_id, f.lake_id, f.file_code, "
             ." unix_timestamp(f.created_on) as unix_ts  "
-            ." from atree_lake_file f , atree_file_blob b  where b.id = f.file_id " 
+            ." from atree_relationship_file f , atree_file_blob b  where b.id = f.file_id " 
             . " and f.lake_id = %d and f.file_code = %d " ;
 
             $sql = sprintf($sql,$lakeId, $fileCode) ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            // release mysqli resources 
+            MySQL\Connection::getInstance()->closeHandle() ;
+
             return  self::createLakeFileObject($row) ;
             
 
         }
+
+        static function getImages($lakeId) {
+
+            if(empty($lakeId)) {
+                $xmsg = "required parameter lakeId is missing";
+                Response::raiseBadInputError($xmsg) ;
+            }
+            
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $lakeId = $mysqli->real_escape_string($lakeId);
+
+            $sql = " select b.file_name, b.file_size, b.mime, f.id, f.file_id, f.lake_id, "
+            ." unix_timestamp(f.created_on) as unix_ts  "
+            ." from atree_image_file f , atree_file_blob b  where b.id = f.file_id " 
+            . " and f.lake_id = %d  " ;
+
+            $sql = sprintf($sql,$lakeId, $fileCode) ;
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+
+            // release mysqli resources 
+            MySQL\Connection::getInstance()->closeHandle() ;
+            return  $rows ;
+            
+
+        }
+
+
 
     }
 
