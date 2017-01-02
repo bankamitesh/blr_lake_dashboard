@@ -273,18 +273,29 @@ namespace com\yuktix\lake\mysql {
 
         }
 
-         static function storeImage($dbh,$lakeId, $fileId) {
+        static function storeImage($dbh,$lakeId, $fileId) {
             
              $sql = "insert INTO atree_image_file(lake_id, file_id, created_on)  " 
                 . "  VALUES (:lake_id, :file_id, now()) " ;
         
-
             $stmt = $dbh->prepare($sql);
             $stmt->bindParam(":lake_id",$lakeId, \PDO::PARAM_INT);
             $stmt->bindParam(":file_id",$fileId, \PDO::PARAM_INT);
             $stmt->execute();
             $stmt = NULL;
 
+        }
+
+        static function setWallpaper($dbh,$lakeId, $fileId) {
+
+            // @todo input check 
+            $sql = " update atree_lake set wallpaper_file_id = :file_id where id = :lake_id " ;
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam(":file_id",$fileId, \PDO::PARAM_INT);
+            $stmt->bindParam(":lake_id",$lakeId, \PDO::PARAM_INT);
+            
+            $stmt->execute();
+            $stmt = NULL;
         }
 
         static function getRelationshipFile($lakeId, $fileCode) {
@@ -313,8 +324,7 @@ namespace com\yuktix\lake\mysql {
             MySQL\Connection::getInstance()->closeHandle() ;
 
             return  self::createLakeFileObject($row) ;
-            
-
+        
         }
 
         static function getImages($lakeId) {
@@ -332,17 +342,14 @@ namespace com\yuktix\lake\mysql {
             ." from atree_image_file f , atree_file_blob b  where b.id = f.file_id " 
             . " and f.lake_id = %d  " ;
 
-            $sql = sprintf($sql,$lakeId, $fileCode) ;
+            $sql = sprintf($sql,$lakeId) ;
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
 
             // release mysqli resources 
             MySQL\Connection::getInstance()->closeHandle() ;
             return  $rows ;
             
-
         }
-
-
 
     }
 

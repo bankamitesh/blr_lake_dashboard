@@ -74,6 +74,15 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                 
                             </div>
                             <br>
+                            <div>
+                                <a href="/admin/lake/images.php?lake_id=<?php echo $lakeId; ?>"> 
+                                    <span class="mdl-chip mdl-chip--deletable">
+                                        <span class="mdl-chip__text">set lake wallpaper</span>
+                                        <button type="button" class="mdl-chip__action"><i class="material-icons">camera</i></button>
+                                    </span>
+                                </a>
+
+                            </div>
 
                             <h6> Lake Type </h6>
 
@@ -93,6 +102,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
                                
                             </div>
                             <br>
+                            
 
                             <div class="mdl-textfield mdl-js-textfield">
                                 <h6>address</h6>

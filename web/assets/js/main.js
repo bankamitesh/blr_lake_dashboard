@@ -370,7 +370,7 @@
 	       
 
         }]);
-		
+
         // text service of YuktixApp module returns a promise
         // object. 
         // $http.then(successCallback, errorCallback) 
@@ -729,6 +729,31 @@
                  var postData = {
 					 "lakeId" : lakeId, 
 					 "imageFileIds" : imageIds
+				 } ;
+
+                 if(debug) {
+                     console.log("POST:%s, data=%O ", myurl, postData);
+                 }
+
+                 var promise = $http({
+                     method : 'POST',
+                     url : myurl,
+                     data : postData,
+                     headers: {'Content-Type': 'application/json'}
+                 }).then(
+                     function (response) { return response ; },
+                     function(response) { return response ; }
+                 );
+
+                 return promise;
+            };
+
+			lake.setWallpaper = function(base,debug, lakeId, imageFileId) {
+
+                 var myurl = base + '/admin/shim/lake/file/set-wallpaper.php' ;
+                 var postData = {
+					 "lakeId" : lakeId, 
+					 "imageFileId" : imageFileId
 				 } ;
 
                  if(debug) {

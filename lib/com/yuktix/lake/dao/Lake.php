@@ -25,7 +25,6 @@ namespace com\yuktix\lake\dao {
             }
 
             $dbh = NULL ;
-
             try {
 
                 $dbh = PDOWrapper::getHandle();
@@ -38,12 +37,10 @@ namespace com\yuktix\lake\dao {
                 $dbh = null;
 
             } catch (\Exception $ex) {
-
                 $dbh->rollBack();
                 $dbh = null;
                 throw $ex ;
             }
-
 
         }
 
@@ -58,6 +55,7 @@ namespace com\yuktix\lake\dao {
             $result = array() ;
 
             foreach($rows as $row) {
+
                 $image = new \stdClass ;
                 $image->name = $row["file_name"];
                 $image->mime = $row["mime"];
@@ -72,6 +70,35 @@ namespace com\yuktix\lake\dao {
 
         }
 
+        static function setWallpaper($lakeId, $fileId) {
+
+            if(empty($lakeId)) {
+                $xmsg = "required parameter lakeId is missing";
+                Response::raiseBadInputError($xmsg) ;
+            }
+
+            if(empty($fileId)) {
+                $xmsg = "required  fileId image file id is missing!";
+                Response::raiseBadInputError($xmsg) ;
+            }
+
+            $dbh = NULL ;
+
+            try {
+                
+                $dbh = PDOWrapper::getHandle();
+                $dbh->beginTransaction();
+                LakeDB::setWallpaper($dbh,$lakeId, $fileId);
+                $dbh->commit();
+                $dbh = null;
+
+            } catch (\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                throw $ex ;
+            }
+
+        }
     }
 }
 

@@ -33,27 +33,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/mdl/material.min.css" />
     <link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=3" />
+    <link rel="stylesheet" href="/assets/css/main.css?v=4" />
+
+  
     <style>
+    
+        .mdl-card__media {
+            margin: 0;
+        }
 
-    .mdl-card__media {
-	margin: 0;
-}
-.mdl-card__media > img {
-	max-width: 100%;
-}
-.mdl-card__actions {
-	display: flex;
-	box-sizing:border-box;
-	align-items: center;
-}
-.mdl-card__actions > .mdl-button--icon {
-	margin-right: 3px;
-	margin-left: 3px;
-}
+        .mdl-card__media > img {
+            max-width: 100%;
+            height: 240px ;
+        }
 
+        .mdl-card__actions {
+            display: flex;
+            box-sizing:border-box;
+            align-items: center;
+        }
+        .mdl-card__actions > .mdl-button--icon {
+            margin-right: 3px;
+            margin-left: 3px;
+        }
 
-</style>
+        .image-mdl-card {
+            width:320px ;
+            
+        }
+
+    </style>
 
 </head>
 
@@ -67,18 +76,19 @@
             <?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
 
                 <div class="mdl-grid">
-                    <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
-                    <div class="mdl-cell mdl-cell--1-col"> </div>
-                    <div  class="mdl-cell mdl-cell--6-col container-810" >
+                    <div  class="mdl-cell mdl-cell--12-col" >
                         <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
-
-
+                    </div>
+                </div> <!-- grid:1 -->
+                 
+                <div class="mdl-grid">
+                    <div  class="mdl-cell mdl-cell--6-col" >
                         <form name="csvUploadForm">
-                            <h3> Upload images </h3>
+                            <h3> <a href="/admin/lake/edit.php?lake_id=<?php echo $lakeId; ?>"><i class="material-icons">arrow_back</i>{{lakeObj.name}}</a> </h3>
                             <div>
                                 <label class="mdl-button mdl-button--colored mdl-js-button">
-                                    <span> <i class="material-icons">attach_file</i> </span>
-                                    Select Files<input type="file" filelist-bind class="none"  name="files" style="display: none;" multiple>
+                                    <span> <i class="material-icons">photo_camera</i> </span>
+                                    Select photos<input type="file" filelist-bind class="none"  name="files" style="display: none;" multiple>
                                 </label>
                             </div>
                             
@@ -86,7 +96,6 @@
                                 <ul class="mdl-list">
                                     <li class="mdl-list__item mdl-list__item--two-line" ng-repeat="file in files">
                                         <span class="mdl-list__item-primary-content">
-                                            
                                             <span> {{file.name}} </span>
                                             <span class="mdl-list__item-sub-title">{{file.size/1000}} kb</span>
                                             
@@ -105,51 +114,51 @@
                                 </button>
                             </div>
                         </form> 
-                         
-                            
+                    </div>
+                </div> <!-- grid:2 -->
+
+                <div class="mdl-grid container">
+                    <div  class="mdl-cell mdl-cell--4-col"  ng-repeat="image in images">
                         <!-- display images in cards --> 
-                        <div class="mdl-card wide-mdl-card mdl-shadow--2dp" ng-repeat="image in images">
+                        <div class="mdl-card image-mdl-card mdl-shadow--2dp" >
                             <figure class="mdl-card__media">
                                 <img ng-src="{{base}}/admin/shim/download/file.php?id={{image.fileId}}" alt="" />
                             </figure>
                             <div class="mdl-card__title">
-                                <h1 class="mdl-card__title-text">Learning Web Design</h1>
+                                <h1 class="mdl-card__title-text">{{image.fileId}}</h1>
                             </div>
                            
 							<div class="mdl-card__actions mdl-card--border"> 
-                                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Read More</a>
-                                <!-- <div class="mdl-layout-spacer"></div> -->
+                                <span>&nbsp;</span>
+                                <div class="mdl-layout-spacer"></div>
 
-					            <button id="{{actionId}}" class="mdl-button mdl-button--icon mdl-button--colored"><i class="material-icons">share</i></button>
-				                <ul class="mdl-menu mdl-menu--top-right mdl-js-menu" for="{{actionId}}">
-                                    <li class="mdl-menu__item">Facebook</li>
-                                    <li class="mdl-menu__item">Twitter</li>
-                                    <li class="mdl-menu__item">Pinterest</li>
+					            <button id="image-{{image.fileId}}" class="mdl-button mdl-button--icon mdl-button--colored"><i class="material-icons">settings</i></button>
+				                <ul class="mdl-menu mdl-menu--top-right mdl-js-menu" for="image-{{image.fileId}}">
+                                    <li class="mdl-menu__item">
+                                        <a ng-click="set_wallpaper(image.fileId)">set wallpaper</a>
+                                    </li>
+                                    <li class="mdl-menu__item">delete</li>
+                                    
                                 </ul>
 	                        </div>
                         </div> <!-- card --> 
-
-
-                </div>
-        </div> <!-- grid:content -->
+                    </div>
+                </div> <!-- grid:3 --> 
        
-        <div class="mdl-grid mdl-grid--no-spacing">
-            <div class="mdl-cell mdl-cell--12-col">
-                <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
-            </div>
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-cell mdl-cell--12-col">
+                        <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
+                    </div>
 
-        </div> <!-- footer -->
-
-    </main>
-    
-    
+                </div> <!-- footer -->
+            </main>
  </div> 
 </body>
 
 
 <script src="/assets/mdl/material.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js?v=6"></script>
+<script src="/assets/js/main.js?v=7"></script>
 
 
 
@@ -234,6 +243,34 @@
                 });
 
         };
+
+        $scope.set_wallpaper  = function(imageFileId)  {
+
+            lake.setWallpaper($scope.base,$scope.debug, $scope.lakeId,imageFileId)
+            .then(function(response) {
+                    var status = response.status || 500;
+                    var data = response.data || {};
+                    if($scope.debug) {
+                        console.log("server response:: set wallpaper image :%O", data);
+                    }
+
+                    if (status != 200 || data.code != 200) {
+                        console.log(response);
+                        var error = data.error || (status + ":error retrieving  data from server");
+                        $scope.showError(error);
+                        return;
+                    }
+
+                    var message = "image: " + imageFileId + " has been set as wallpaper!" 
+                    $scope.showMessage(message);
+                    $window.alert(message);
+                    return ;
+
+                },function(response) {
+                    $scope.processResponse(response);
+                });
+
+        } ;
 
         $scope.store_images = function() {
             

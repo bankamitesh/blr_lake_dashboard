@@ -24,6 +24,7 @@ create table atree_lake(
     agency_code tinyint default 1 ,
     type_code tinyint default 1 ,
     usage_codes varchar(256), 
+    wallpaper_file_id int,
     created_on timestamp default current_timestamp,
     updated_on timestamp default current_timestamp ,
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
