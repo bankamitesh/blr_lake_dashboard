@@ -274,6 +274,15 @@
 				$rootScope.showPageMessage = true ;
 		        $rootScope.showPageError = false ;
 				$rootScope.pageMessage = message ;
+				
+			};
+
+			$rootScope.showToastMessage = function (message) {
+				// 
+				var snackbarContainer = document.querySelector('#toast-message-container');
+                var data = { "message" : message } ;
+                snackbarContainer.MaterialSnackbar.showSnackbar(data);
+
 			};
 
 			$rootScope.showProgress = function(message) {

@@ -76,9 +76,9 @@
     	try {
 
 			$dbh = PDOWrapper::getHandle();
-			$sql = "insert INTO atree_file_blob(file_name, file_size, file_code, file_blob, "
+			$sql = "insert INTO atree_file_blob(file_name, file_size, file_blob, "
 					. " login_id, email, mime, created_on) "
-					. " VALUES (:name, :size, :code, :blob, :login_id, :email, :mime, now()) ";
+					. " VALUES (:name, :size, :blob, :login_id, :email, :mime, now()) ";
 					
 
 			// Tx start
@@ -88,7 +88,6 @@
 			// bind params 
 			$stmt->bindParam(":name",$fname, \PDO::PARAM_STR);
 			$stmt->bindParam(":size",$size, \PDO::PARAM_INT);
-			$stmt->bindParam(":code",$code, \PDO::PARAM_STR);
 			$stmt->bindParam(":blob",$fp_tmp_file, \PDO::PARAM_LOB);
 			$stmt->bindParam(":login_id",$loginId, \PDO::PARAM_INT);
 			$stmt->bindParam(":email",$email, \PDO::PARAM_STR);

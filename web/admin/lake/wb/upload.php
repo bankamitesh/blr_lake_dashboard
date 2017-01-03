@@ -135,7 +135,7 @@
 
 <script src="/assets/mdl/material.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js?v=4"></script>
+<script src="/assets/js/main.js?v=5"></script>
 
 
 
@@ -143,6 +143,7 @@
 
     yuktixApp.controller("yuktix.admin.lake.wb.upload", function ($scope, lake, fupload, feature,$window) {
 
+        
         $scope.send_data = function() {
             
             if($scope.debug) {
@@ -164,19 +165,18 @@
                         console.log(response);
                         var error = data.error || (status + ":error retrieving  data from Server");
                         $scope.showError(error);
+                        $scope.showToastMessage(error);
                         return;
                     }
 
                     var message = "Feature data  uploaded successfully!" 
-                    $scope.showMessage(message);
-                    $window.alert(message);
+                    $scope.showToastMessage(message);
                     return ;
 
                 },function(response) {
                     $scope.processResponse(response);
                 });
 
-          
 
         };
 
@@ -206,8 +206,8 @@
                     console.error("browser response object: %O" ,response);
                     var error  = data.error || (status + ":error while submitting data "); 
                     // halt file upload processing!
+                    $scope.showToastMessage(error);
                     $scope.showError(error);
-                    $window.alert(error) ;
                     return ;
                 }
 
@@ -230,7 +230,6 @@
             
         };
 
-
         $scope.process_upload = function () {
 
             $scope.fileIds = [] ;
@@ -238,7 +237,7 @@
                 // no files on page.
                 var error = "no files found. please select a file first!";
                 $scope.showError(error);
-                $window.alert(error);
+                $scope.showToastMessage(error);
                 return ;
             }
 

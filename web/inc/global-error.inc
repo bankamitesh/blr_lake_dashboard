@@ -27,11 +27,12 @@
 	function webgloo_exception_handler($ex) {
 	   
 	    if($ex instanceof \com\indigloo\exception\UIException) {
-		// As of PHP 5.4 it is possible to array dereference the result 
-		// of a function or method call directly. Before it was only 
-		// possible using a temporary variable
-		// we are playing it safe here!
-		$ui_messages = $ex->getMessages();
+
+			// As of PHP 5.4 it is possible to array dereference the result 
+			// of a function or method call directly. Before it was only 
+			// possible using a temporary variable
+			// we are playing it safe here!
+			$ui_messages = $ex->getMessages();
 	        $ui_message = $ui_messages[0] ;
 	        $errorPageUrl = "/site/500.php?message=".$ui_message ;
 	        header('Location: '.$errorPageUrl);
@@ -66,7 +67,7 @@
 	    
 	    if($ex instanceof \com\indigloo\exception\UIException) {
 	    	// first message
-		$ui_messages = $ex->getMessages();
+			$ui_messages = $ex->getMessages();
 	        $ui_message = $ui_messages[0] ;
 	        
 	        $error = array('code' => 500, 'error' => $ui_message);
@@ -74,8 +75,8 @@
 	        echo $strJson ;
 	        
 	    } else {
+
 	    	$message = $ex->getMessage();
-	    	
 	    	$message = sprintf("%s:%d  __EXCEPTION__ %s \n",$ex->getFile(),$ex->getLine(),$message);
 	    	\com\indigloo\Logger::getInstance()->error($message);
 	    	\com\indigloo\Logger::getInstance()->backtrace($ex->getTrace());
@@ -84,6 +85,7 @@
 	    	$error = array('code' => 500, 'error' => $ui_message);
 	    	$strJson =  json_encode($error) ;
 	    	echo $strJson ;
+			
 	    }
 	 
 	    exit(1) ;

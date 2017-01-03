@@ -49,11 +49,11 @@ alter table atree_relationship_file add constraint unique alfidx1 (lake_id, file
 
 
 DELIMITER //
-DROP TRIGGER IF EXISTS trg_rel_file_del1;
-CREATE  TRIGGER trg_rel_file_del1 BEFORE DELETE ON atree_relationship_file
+DROP TRIGGER IF EXISTS trg_relfile_del1;
+CREATE  TRIGGER trg_relfile_del1 BEFORE DELETE ON atree_relationship_file
     FOR EACH ROW
     BEGIN
-        insert into atree_relationship_file(lake_id,file_id,file_code, created_on)
+        insert into atree_relationship_file_log(lake_id,file_id,file_code, created_on)
         values (OLD.lake_id, OLD.file_id, OLD.file_code, now() ) ;
 
     END //
@@ -77,6 +77,21 @@ create table atree_image_file(
     id int NOT NULL auto_increment,
     lake_id int not null ,
     file_id int not null ,
+    created_on timestamp default current_timestamp,
+    updated_on timestamp default current_timestamp ,
+    PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
+
+
+
+drop table if exists atree_feature_file;
+create table atree_feature_file(
+    id int NOT NULL auto_increment,
+    lake_id int not null ,
+    feature_id not null,
+    file_id int not null ,
+    calibration_file_id int,
+    io_code TINYINT default 1,
+    op_code TINYINT default 1,
     created_on timestamp default current_timestamp,
     updated_on timestamp default current_timestamp ,
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;
@@ -151,7 +166,6 @@ drop table if exists atree_file_blob;
 create table atree_file_blob (
     id int NOT NULL auto_increment,
     file_blob MEDIUMBLOB ,
-    file_code varchar(16) ,
     file_size int,
     file_name varchar(64),
     mime varchar(128),

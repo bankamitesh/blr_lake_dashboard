@@ -236,8 +236,8 @@
                 if (status != 200 || data.code != 200) {
                     console.error("browser response object: " ,response);
                     var error  = data.error || (status + ":error while submitting data ");
-                    // show error 
                     $scope.showError(error);
+                    $scope.showToastMessage(error);
                     return ;
                 }
                 
@@ -266,14 +266,13 @@
                         console.log("browser response object: %o" ,response);
                         var error = data.error || (status + ":error submitting feature create form");
                         $scope.showError(error);
-                        
+                        $scope.showToastMessage(error);
                         return;
                     }
 
-                    var message = "stage volume relationship file uploaded successfully!" 
-                    // $scope.showMessage(message);
-                    $window.alert(message);
-                    $window.location.href = "/admin/lake/stage-volume.php?lake_id=" + $scope.lakeId ;
+                    var message = "file uploaded. reload the page to see new file." 
+                    $scope.showToastMessage(message);
+                    $scope.clearPageMessage();
 
                 }, function (response) {
                     $scope.processResponse(response);
