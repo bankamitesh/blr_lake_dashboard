@@ -71,8 +71,12 @@ namespace com\yuktix\lake\mysql {
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             $featureObj = self::createFeatureObject($row) ;
 
-            // release mysqli resources 
-            MySQL\Connection::getInstance()->closeHandle() ;
+            // release mysqli resources
+            // @imp: this should never be done inside DAO or DB 
+            // layers as the mysqli connection is shared by all calls on 
+            // same page. The calling script should release the resources 
+            // at the end.  
+            // MySQL\Connection::getInstance()->closeHandle() ;
             return $featureObj ;
         }
 
@@ -96,8 +100,7 @@ namespace com\yuktix\lake\mysql {
                 array_push($result, $feature);
             }
 
-            // relase resources 
-            MySQL\Connection::getInstance()->closeHandle() ;
+            
             return $result ;
 
         }

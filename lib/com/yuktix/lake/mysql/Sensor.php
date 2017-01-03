@@ -17,9 +17,6 @@ namespace com\yuktix\lake\mysql {
 
             $sql = " select * from atree_sensor where serial_number = '".$serialNumber. "' " ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
-
-            // release mysqli resources 
-            MySQL\Connection::getInstance()->closeHandle() ;
             return $row ;
 
         }

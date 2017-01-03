@@ -198,9 +198,6 @@ namespace com\yuktix\lake\mysql {
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             $lakeObj = self::createLakeObject($row) ;
             
-            // release mysqli resources 
-            MySQL\Connection::getInstance()->closeHandle() ;
-
             return $lakeObj ;
 
         }
@@ -216,9 +213,6 @@ namespace com\yuktix\lake\mysql {
                 $lake = self::createLakeObject($row) ;
                 array_push($result, $lake);
             }
-
-            // release mysqli resources 
-            MySQL\Connection::getInstance()->closeHandle() ;
 
             return $result ;
         }
@@ -241,7 +235,6 @@ namespace com\yuktix\lake\mysql {
                 array_push($result, $lake);
             }
 
-            MySQL\Connection::getInstance()->closeHandle();
             return $result ;
         }
 
@@ -320,9 +313,7 @@ namespace com\yuktix\lake\mysql {
 
             $sql = sprintf($sql,$lakeId, $fileCode) ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            // release mysqli resources 
-            MySQL\Connection::getInstance()->closeHandle() ;
-
+            
             return  self::createLakeFileObject($row) ;
         
         }
@@ -344,9 +335,6 @@ namespace com\yuktix\lake\mysql {
 
             $sql = sprintf($sql,$lakeId) ;
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-
-            // release mysqli resources 
-            MySQL\Connection::getInstance()->closeHandle() ;
             return  $rows ;
             
         }
