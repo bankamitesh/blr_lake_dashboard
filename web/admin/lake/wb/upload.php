@@ -135,7 +135,7 @@
 
 <script src="/assets/mdl/material.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js?v=5"></script>
+<script src="/assets/js/main.js?v=6"></script>
 
 
 
@@ -144,33 +144,32 @@
     yuktixApp.controller("yuktix.admin.lake.wb.upload", function ($scope, lake, fupload, feature,$window) {
 
         
-        $scope.send_data = function() {
+        $scope.confirm_upload = function() {
             
             if($scope.debug) {
-                console.log("submitting: lakeId, feature and fileIds for water balance calculations");
+                console.log("submitting: fileIds for water balance calculations");
                 console.log($scope.lakeId);
                 console.log($scope.selectedFeature);
                 console.log($scope.fileIds);
             }
 
-            feature.uploadData($scope.base,$scope.debug, $scope.lakeId, $scope.selectedFeature, $scope.fileIds)
+            feature.confirmUpload($scope.base,$scope.debug, $scope.fileIds)
             .then(function(response) {
                     var status = response.status || 500;
                     var data = response.data || {};
                     if($scope.debug) {
-                        console.log("server response:: feature data upload:%O", data);
+                        console.log("server response:: feature data upload confirm:%O", data);
                     }
 
                     if (status != 200 || data.code != 200) {
                         console.log(response);
-                        var error = data.error || (status + ":error retrieving  data from Server");
+                        var error = data.error || (status + ":error retrieving  data from server");
                         $scope.showError(error);
                         $scope.showToastMessage(error);
                         return;
                     }
 
-                    var message = "Feature data  uploaded successfully!" 
-                    $scope.showToastMessage(message);
+                    // show confirmation to user 
                     return ;
 
                 },function(response) {
@@ -245,7 +244,7 @@
             var uploadUrl = $scope.base + "/admin/shim/upload/mpart.php" ;
             var metadata = { "store" : "database" } ;
             for(var i = total-1 ; i >= 0 ; i--) { 
-                $scope.upload_file(uploadUrl, metadata,i, $scope.send_data);
+                $scope.upload_file(uploadUrl, metadata,i, $scope.confirm_upload);
             }
            
 

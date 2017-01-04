@@ -17,28 +17,7 @@ namespace com\yuktix\lake\dao {
 
         static function uploadData($lakeId, $featureObj, $fileIds) {
 
-            $calibration_count = 0 ;
-            $data_count = 0 ;
-
-            foreach($fileIds as $fileId) {
-
-                // peek into file and get type
-                $file_type = FileDao::pokeFeatureFile($fileId) ;
-                if($file_type == LakeConstants::FEATURE_CALIBRATION_FILE ) {
-                    $calibration_count = $calibration_count + 1 ;
-                    if($calibration_count > 1 ) { 
-                        throw new UIException(array("only one calibration file can be uploaded!"));
-                    }
-
-                } else {
-                    $data_count = $data_count + 1 ;
-                }
-
-            }
-
-            if($data_count == 0 ) {
-                throw new UIException(array("no data file found in upload!"));
-            }
+            
             
             // peek into data 
             // figure out calibration file and level file

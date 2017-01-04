@@ -8,7 +8,7 @@
     use \com\indigloo\exception\UIException as UIException;
 
 	use \com\yuktix\lake\auth\Login as Login ;
-    use \com\yuktix\lake\dao\Feature as FeatureDao ;
+    use \com\yuktix\lake\dao\File as FileDao ;
     
 
 	set_exception_handler('webgloo_ajax_exception_handler');
@@ -19,17 +19,15 @@
     $postData = json_decode($rawPostData) ;
 
     if(Config::getInstance()->is_debug()) {
-        Logger::getInstance()->info(json_encode($postData->lakeId));
-        Logger::getInstance()->info(json_encode($postData->featureObj));
         Logger::getInstance()->info(json_encode($postData->fileIds));
-
     }
     
-    FeatureDao::uploadData($postData->lakeId, $postData->featureObj, $postData->fileIds);
+    $result = FileDao::getFeatureDataPreview($postData->fileIds);
+
     $responseObj = new \stdClass ;
     $responseObj->code = 200;
-    $responseObj->response = "lake feature data upload is success!" ;
-    // $responseObj->featureId = $featureId ;
+    $responseObj->result = $result ;
+    
     echo json_encode($responseObj) ;
     exit(0) ;
 

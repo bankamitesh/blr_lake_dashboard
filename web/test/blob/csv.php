@@ -43,11 +43,6 @@
         echo "<br>" ;
     }
 
-  
-    $fileId = 3156 ;
-    $result = FileDao::parseCSVBlob($fileId, array("limit" => 4));
-    echo json_encode($result);
-
     // relase resources 
     MySQL\Connection::getInstance()->closeHandle() ;
 

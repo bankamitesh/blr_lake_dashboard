@@ -910,6 +910,28 @@
 
             };
 
+			feature1.confirmUpload = function(base,debug, fileIds) {
+
+				var myurl = "/admin/shim/lake/feature/confirm-upload.php";
+				if(debug) { 
+					console.log("POST: %s, fileIds:%O", myurl, fileIds);
+				}
+
+                var promise = $http({
+                    method : 'POST',
+                    url : myurl,
+                    headers : { 'Content-Type' : 'application/json' },
+					data: { "fileIds" : fileIds } 
+					
+                }).then(
+                    function (response) { return response ; }, 
+                    function(response) { return response ; }
+                );
+
+                return promise;
+
+            };
+
 			feature1.uploadData = function(base,debug,lakeId,featureObj, fileIds) {
 
 				var myurl = "/admin/shim/lake/feature/upload-data.php";
