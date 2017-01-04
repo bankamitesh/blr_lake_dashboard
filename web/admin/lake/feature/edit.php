@@ -380,17 +380,7 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             return ;      
         } ;
 
-        /*
-        for (var i = 0 ; i < $scope.files.length;  i++) {
-            var xfile = $scope.files[i];
-            if($scope.debug) {
-                console.log("file name=%s, size=%d, type=%s",xfile.name, xfile.size, xfile.type);
-            }
-
-            $scope.upload_file(uploadUrl, metadata, xfile);
-
-        } */
-
+        
         $scope.upload_file = function (uploadUrl,metadata) {
 
             $scope.fileUploadData = {} ;
@@ -411,11 +401,11 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             var payload = new FormData();
             var xfile = $scope.files[0] ;
 
-            payload.append("myfile", xfile);
-            payload.append("metadata", angular.toJson(metadata));
+            formData.append("myfile", xfile);
+            formData.append("metadata", angular.toJson(metadata));
             
             $scope.showProgress("uploading file...");
-            fupload.send_mpart($scope.debug, uploadUrl, payload).then(function (response) {
+            fupload.send_form_data($scope.debug, uploadUrl, formData).then(function (response) {
 
                 var status = response.status || 500;
                 var data = response.data || {};

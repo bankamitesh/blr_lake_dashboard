@@ -103,11 +103,11 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
             }
 
             var myurl = $scope.base + "/admin/shim/upload/mpart.php" ;
-            var payload = new FormData();
-            payload.append("myfile", $scope.files[0]);
-            payload.append("metadata", angular.toJson(metadata));
+            var formData = new FormData();
+            formData.append("myfile", $scope.files[0]);
+            formData.append("metadata", angular.toJson(metadata));
             
-            fupload.send_mpart($scope.debug, myurl, payload).then(function (response) {
+            fupload.send_form_data($scope.debug, myurl, formData).then(function (response) {
 
                 var status = response.status || 500;
                 var data = response.data || {};

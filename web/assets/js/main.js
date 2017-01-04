@@ -433,7 +433,45 @@
 
             };
 
-			fupload.send_mpart = function(debug,myurl,payload) {
+			fupload.send_form_data = function(debug,myurl,formData) {
+				// it is necessary to keep Content-Type: undefined 
+				// to let browser fill in the Content-Type 
+				// also we tell angularjs not to change any data/headers!
+
+				if(debug) { 
+					console.log("file upload URL is:" + myurl);
+					console.log("file payload is %O", payload);
+				}
+
+                var promise = $http({
+                    method : 'POST',
+                    url : myurl,
+                    headers : { 'Content-Type': undefined},
+					data: formData,
+					transformRequest:  angular.identity
+                }).then(
+                    function (response) { return response ; }, 
+                    function(response) { return response ; }
+                );
+
+				
+                return promise;
+
+            };
+
+			fupload.send_file = function(
+				debug,
+				myurl,
+				xfile, 
+				metadata,
+				success_callback,
+				error_callback) {
+
+				var payload = new FormData();
+				payload.append("myfile", xfile);
+				payload.append("metadata", angular.toJson(metadata));
+				
+
 				// it is necessary to keep Content-Type: undefined 
 				// to let browser fill in the Content-Type 
 				// also we tell angularjs not to change any data/headers!
@@ -450,13 +488,14 @@
 					data: payload,
 					transformRequest:  angular.identity
                 }).then(
-                    function (response) { return response ; }, 
-                    function(response) { return response ; }
-                );
-
-                return promise;
-
-            };
+                    function (response) { 
+						return success_callback(response) ; 
+					}, 
+                    function(response) { 
+						return failure_callback(response) ; 
+					}
+            	);
+			} ;
 
             return fupload ;
 

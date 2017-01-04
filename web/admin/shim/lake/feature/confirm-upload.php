@@ -16,14 +16,14 @@
 	
     $postData = NULL ;
     $rawPostData = file_get_contents("php://input");
-    $postData = json_decode($rawPostData) ;
-
     if(Config::getInstance()->is_debug()) {
-        Logger::getInstance()->info(json_encode($postData->fileIds));
+        Logger::getInstance()->debug("/admin/shim/confirm-upload.php: raw POST data >>");
+        Logger::getInstance()->debug($rawPostData);
     }
-    
-    $result = FileDao::getFeatureDataPreview($postData->fileIds);
 
+    $postData = json_decode($rawPostData) ;
+    $result = FileDao::getFeatureDataPreview($postData->fileIds);
+    
     $responseObj = new \stdClass ;
     $responseObj->code = 200;
     $responseObj->result = $result ;

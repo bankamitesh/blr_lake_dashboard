@@ -26,6 +26,7 @@
     
 ?>
 
+<!DOCTYPE html>
 
 <html  ng-app="YuktixApp">
 <head>
@@ -135,30 +136,29 @@
 
 <script src="/assets/mdl/material.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js?v=6"></script>
+<script src="/assets/js/main.js?v=7"></script>
 
 
 
 <script>
 
-    yuktixApp.controller("yuktix.admin.lake.wb.upload", function ($scope, lake, fupload, feature,$window) {
+    yuktixApp.controller("yuktix.admin.lake.wb.upload", function ($scope,$q,$window, lake, fupload, feature) {
 
         
         $scope.confirm_upload = function() {
             
+            console.log("file upload:: final callback");
             if($scope.debug) {
                 console.log("submitting: fileIds for water balance calculations");
-                console.log($scope.lakeId);
-                console.log($scope.selectedFeature);
                 console.log($scope.fileIds);
             }
 
-            feature.confirmUpload($scope.base,$scope.debug, $scope.fileIds)
-            .then(function(response) {
+            feature.confirmUpload($scope.base,$scope.debug, $scope.fileIds).then(function(response) {
+
                     var status = response.status || 500;
                     var data = response.data || {};
                     if($scope.debug) {
-                        console.log("server response:: feature data upload confirm:%O", data);
+                        console.log("server response:: confirm feature data upload :%O", data);
                     }
 
                     if (status != 200 || data.code != 200) {
@@ -179,59 +179,36 @@
 
         };
 
-        $scope.upload_file = function (uploadUrl,metadata, index, callback) {
-            
+        
+        $scope.handle_file_upload_success = function(response) {
+
+            var status = response.status || 500;
+            var data = response.data || {};
             if($scope.debug) {
-                console.log("processing file at index: %d", index);
+                console.log("server response :: %O", data);
             }
 
-            var payload = new FormData();
-            var xfile = $scope.files[index] ;
+            if (status != 200 || data.code != 200) {
+                console.log(response);
+                var error = data.error || (status + ": error from server");
+                console.error(error);
+                $window.alert(error);
+                return;
+            }
 
-            payload.append("myfile", xfile);
-            payload.append("metadata", angular.toJson(metadata));
-            
-            $scope.showProgress("uploading file...");
-            fupload.send_mpart($scope.debug, uploadUrl, payload).then(function (response) {
+            $scope.fileIds.push(data.fileId); 
+            $scope.file_counter = $scope.file_counter - 1 ;
+            if($scope.file_counter == 0 ) {
+                $scope.confirm_upload() ;
+            }
 
-                var status = response.status || 500;
-                var data = response.data || {};
+            // console.log($scope.fileIds);
+            return ;
 
-                if ($scope.debug) {
-                    console.log("API response: %O", data);
-                }
-
-                if (status != 200 || data.code != 200) {
-                    console.error("browser response object: %O" ,response);
-                    var error  = data.error || (status + ":error while submitting data "); 
-                    // halt file upload processing!
-                    $scope.showToastMessage(error);
-                    $scope.showError(error);
-                    return ;
-                }
-
-                $scope.fileIds.push(data.fileId);
-                $scope.clearPageMessage();
-
-                if(index == 0) {
-                    if($scope.debug){ 
-                        console.log("file upload done. over to callback ...");
-                    }
-
-                    callback();
-                }
-
-                return ;
-
-            }, function (response) {
-                $scope.processResponse(response);
-            });
-            
         };
 
         $scope.process_upload = function () {
 
-            $scope.fileIds = [] ;
             if(!angular.isDefined($scope.files)) {
                 // no files on page.
                 var error = "no files found. please select a file first!";
@@ -240,13 +217,27 @@
                 return ;
             }
 
-            var total = $scope.files.length ;
-            var uploadUrl = $scope.base + "/admin/shim/upload/mpart.php" ;
-            var metadata = { "store" : "database" } ;
-            for(var i = total-1 ; i >= 0 ; i--) { 
-                $scope.upload_file(uploadUrl, metadata,i, $scope.confirm_upload);
+            var promises = [];
+            $scope.file_counter = $scope.files.length ;
+
+            for (var i = 0;  i < $scope.files.length ; i++) {
+
+                var apromise = fupload.send_file(
+                    $scope.debug, 
+                    $scope.base + "/admin/shim/upload/mpart.php" ,
+                    $scope.files[i], 
+                    { "store" : "database" },
+                    $scope.handle_file_upload_success,
+                    $scope.processResponse);
+
+                promises.push(apromise);
             }
-           
+            
+            $q.all(promises).then(function(){
+                // final callback 
+                console.log("all done...");
+
+            }); 
 
         };
 
@@ -403,6 +394,8 @@
         $scope.lakeObj = {};
         $scope.features = [] ;
         $scope.codeMap = {} ;
+
+        $scope.file_counter = 0 ;
         $scope.fileIds = [] ;
         // display data initialization
         $scope.display = {} ;

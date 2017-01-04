@@ -24,11 +24,21 @@ namespace com\yuktix\lake\dao {
             $data->previews = array() ;
             $data->errors = array() ;
 
+            if(Config::getInstance()->is_debug()) {
+                Logger::getInstance()->debug("feature data preview: fileIds:: ");
+                Logger::getInstance()->dump($fileIds);
+            }
+
             foreach($fileIds as $fileId) {
 
                 $preview = self::parseCSVBlob($fileId, array("limit" => 4));
-                array_push($data->previews, $preview);
 
+                if(Config::getInstance()->is_debug()) {
+                    Logger::getInstance()->debug("feature data preview:: ");
+                    Logger::getInstance()->dump($preview);
+                }
+
+                array_push($data->previews, $preview);
                 if($preview->file_type == LakeConstants::CALIBRATION_FILE) {
                     $calibration_count = $calibration_count + 1 ;
                 }

@@ -3,9 +3,22 @@
         
             <div class="mdl-mega-footer__top-section">
                 <div class="mdl-mega-footer__left-section">
-                    <button class="class="mdl-mega-footer--social-btn social-btn social-btn__twitter"></button>
-                    <button class="mdl-mega-footer__social-btn"></button>
-                    <button class="mdl-mega-footer__social-btn"></button>
+                    <a class="mdl-mini-footer__social-btn mdl-button mdl-js-button social-btn"
+                        href="#" target="_blank" rel="me" >
+                        <img src="/assets/images/twitter_logo.png" width="36px;" height="36px;"> 
+                    </a>
+                    
+                     <a class="mdl-mini-footer__social-btn mdl-button mdl-js-button social-btn"
+                        href="#" target="_blank" rel="me" >
+                        <img src="/assets/images/facebook-icon-2.png" width="36px;" height="36px;"> 
+                    </a>
+
+                     <a class="mdl-mini-footer__social-btn mdl-button mdl-js-button social-btn"
+                        href="#" target="_blank" rel="me" >
+                        <img src="/assets/images/googleplus-logo.png" width="36px;" height="36px;"> 
+                    </a>
+
+                   
                 </div>
                 <div class="mdl-mega-footer__right-section">
                     <a href="#">About the project</a>

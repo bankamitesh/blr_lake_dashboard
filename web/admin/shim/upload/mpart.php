@@ -146,8 +146,11 @@
 
 	foreach($_FILES as $index => $file) {
 		
-		$xmsg = sprintf("upload/mpart.php: index:%d, file=%s",$index, $file["name"]);
-		Logger::getInstance()->info($xmsg);
+		if(Config::getInstance()->is_debug()) {
+			$xmsg = sprintf("/admin/shim/upload/mpart.php: index:%d, file=%s >>",$index, $file["name"]);
+			Logger::getInstance()->debug($xmsg);
+		}
+
 		$fname =  basename($file["name"]);
 		$tmp_file = $file["tmp_name"];
 		
