@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html ng-app="YuktixApp">
+
+<body ng-controller="yuktix.test.promise">
+<h1> Open console to see promise calls </h1>
+
+<script src="/assets/js/angular.min.js"></script>
+
+<script>
+
+    // self contained example of using multiple promises with a final callback 
+    // using angularjs $q service. 
+    // 
+    // our angularjs module
+	var yuktixApp = angular.module('YuktixApp', []);
+
+    // factory that wraps $http and returns a promise
+    // factory method uses success and error callbacks passed 
+    // from outside.
+
+    yuktixApp.factory('calculator', function($http) {
+
+        var calculator = {} ;
+
+            calculator.double = function(base,debug,x, success_callback, failure_callback) {
+                // sample HTTP URL to contact 
+                // this URL simply returns double of what we pass as x GET parameter. 
+                var myurl = base + '/test/promise/double.php?x=' + x  ;
+                
+                if(debug) { 
+                    console.log("x =" + x);
+                    console.log("GET  %s ", myurl); 
+                }
+                
+                var promise = $http({
+                    method : 'GET',
+                    url : myurl,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                }).then(
+                    function (response) { 
+                        return success_callback(response) ; 
+                    }, 
+                    function(response) { 
+                        return failure_callback(response) ; 
+                    }
+                );
+
+                return promise;
+            };
+
+        return calculator ;
+
+    });
+
+
+
+    yuktixApp.controller("yuktix.test.promise", function ($q,$scope,$window, calculator) {
+
+        // a controller function that uses factory method 
+        // to do calculations. 
+        $scope.make_double = function (x) {
+
+            calculator.double(
+                $scope.base,
+                $scope.debug,
+                x, 
+                $scope.handle_success, 
+                $scope.handle_error);
+
+
+        };
+
+        // success and failure callbacks for 
+        // factory method.
+        $scope.handle_success = function(response) {
+
+            var status = response.status || 500;
+            var data = response.data || {};
+            if($scope.debug) {
+                console.log("server response :: %O", data);
+            }
+
+            if (status != 200 || data.code != 200) {
+                console.log(response);
+                var error = data.error || (status + ": error from server");
+                console.error(error);
+                $window.alert(error);
+                return;
+            }
+
+            $scope.results.push(data.result); 
+            $scope.counter = $scope.counter - 1 ;
+            if($scope.counter == 0) {
+                console.log("results from succes handle => " , $scope.results);
+            }
+
+            return ;
+        };
+
+        $scope.handle_error = function(response) {
+
+            console.log("response >> "); 
+            console.log(response);
+            var status = response.status || 500 ;
+            var data = response.data || {} ;
+
+            if (status != 200 || !data || (data.code != 200)) {
+                var error = data.error || "request failed" ;
+                $window.alert(error) ;
+                return;
+            } else {
+                console.log(data.token);
+            }
+        };
+
+        // wrong way is to call the multiple 
+        // calculator method arguments in a loop and then 
+        // jump to print results. this will not print anything most 
+        // of the time because promises are not resolved yet! 
+        $scope.calculate_wrong = function () {
+
+            for (var i = 0 ; i < $scope.numbers.length; i++ ) {
+
+                calculator.double(
+                    $scope.base,
+                    $scope.debug,
+                    $scope.numbers[i], 
+                    $scope.handle_success, 
+                    $scope.handle_error);
+
+            }
+
+            $scope.print_results() ;
+
+        };
+
+        // right way to calculate 
+        // wrap all promises in angular $q service
+        // provide a final callback to do something with the 
+        // results of multiple factory method calls. 
+        $scope.calculate_right = function () {
+
+            var promises = [];
+
+            $scope.numbers.forEach(function (number, i) {
+                var apromise = calculator.double(
+                    $scope.base, 
+                    $scope.debug, 
+                    number, 
+                    $scope.handle_success,
+                    $scope.handle_error );
+
+                promises.push(apromise);
+            });
+
+            
+            $q.all(promises).then(function(){
+                console.log($scope.results);
+                $scope.print_results() ;
+
+            }); 
+
+            
+        }; 
+
+        $scope.print_results = function () {
+            
+            console.log("final callback:: print results...");
+            for (var i = 0 ; i < $scope.results.length; i++) {
+                console.log($scope.results[i]);
+            }
+        }; 
+
+        $scope.debug = true ;
+        $scope.numbers = [1,2,3,4,5] ;
+        $scope.results = [] ;
+        $scope.counter = 5 ;
+
+        $scope.base = "http://localhost:8081" ;
+
+        
+       // $scope.calculate_wrong();
+       // $scope.make_double(1) ;
+       // $scope.calculate_wrong();
+       $scope.calculate_right();
+
+    });
+
+</script>
+
+
+</body>
+</html>
