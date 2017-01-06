@@ -96,7 +96,7 @@
                                     <li class="mdl-list__item mdl-list__item--two-line" ng-repeat="file in files">
                                         <span class="mdl-list__item-primary-content">
                                             
-                                            <span> {{ file.name}} </span>
+                                            <span> {{file.name}} </span>
                                             <span class="mdl-list__item-sub-title">{{file.size/1000}} kb</span>
                                             
                                         </span>
@@ -109,13 +109,48 @@
                             </div>
 
                             <div class="upload-button-container" ng-show="files.length > 0 ">
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" ng-click="process_upload()" type="submit">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" ng-click="process_file_uploads()" type="submit">
                                     Upload 
                                 </button>
                             </div>
                         </form>
                        
+                       <div style="padding-top:30px;" ng-if="preview.errors.length > 0 || preview.snapshots.length > 0">
+                        
+                            <p> <span ng-bind="preview.errors"> </span> </p> 
+                            <div ng-repeat="snapshot in preview.snapshots">
+                                <ul class="mdl-list">
+                                   <li>
+                                        <span ng-bind="file_id_to_name(snapshot.fileId)"> </span>
+                                        &nbsp;(<span ng-bind="file_code_to_name(snapshot.fileCode)"> </span>)
+                                        
+                                        <span ng-bind="snapshot.columns"> </span>
+                                        <span ng-bind="snapshot.dateColumns"> </span>
+                                        <span ng-bind="snapshot.numericColumns"> </span>
 
+                                    </li>
+
+                                    <li ng-repeat="row in snapshot.rows">
+                                        <span> {{row}} </span>
+                                    </li>
+                                   
+                                </ul>
+
+                                
+                            </div>
+
+                            <div  class="upload-button-container">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" ng-click="confirm_upload()" type="submit">
+                                    Confirm 
+                                </button>
+                                <button class="mdl-button mdl-js-button mdl-button--raised" ng-click="cancel_upload()" type="submit">
+                                    Cancel 
+                                </button>
+
+                            </div>
+
+                        </div> <!-- confirm upload --> 
+                    
 
                 </div>
             </div> <!-- grid:content -->
@@ -136,7 +171,7 @@
 
 <script src="/assets/mdl/material.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js?v=7"></script>
+<script src="/assets/js/main.js?v=11"></script>
 
 
 
@@ -145,36 +180,110 @@
     yuktixApp.controller("yuktix.admin.lake.wb.upload", function ($scope,$q,$window, lake, fupload, feature) {
 
         
-        $scope.confirm_upload = function() {
+        $scope.file_code_to_name = function(code) {
+
+            var name = "__unknown__" ;
+            var map = $scope.codeMap.featureFileCodes ;
+            for(var i = 0; i < map.length; i++  ) {
+                if(map[i].id == code) {
+                    return map[i].value ;
+                }
+            }
+
+            return name ;
+
+        };
+
+        $scope.file_id_to_name = function(xid) {
+
+            return $scope.fileNames[xid]  ;
+
+        };
+
+        $scope.confirm_upload = function () {
+
+            $scope.showProgress("uploading feature data to the server...");
+            if($scope.debug) {
+                console.log("submitting: file data to server");
+                console.log("lakeId=%d", $scope.lakeId);
+                console.log("fileIds = %O", $scope.fileIds);
+                console.log("feature = %O", $scope.selectedFeature);
+
+            }
+
+
+            feature.confirmUpload(
+                $scope.base,
+                $scope.debug, 
+                $scope.lakeId,
+                $scope.selectedFeature,
+                $scope.fileIds).then(function(response) {
+
+                var status = response.status || 500;
+                var data = response.data || {};
+                if($scope.debug) {
+                    console.log("server response:: feature data upload:%O", data);
+                }
+
+                if (status != 200 || data.code != 200) {
+                    console.log(response);
+                    var error = data.error || (status + ":error retrieving  data from the server");
+                    $scope.showError(error);
+                    $scope.showToastMessage(error);
+                    return;
+                }
+
+                $scope.showToastMessage(data.response);
+                $scope.showPageMessage(data.response); 
+                
+                return ;
+
+            },function(response) {
+                $scope.processResponse(response);
+            });
+        };
+
+        $scope.cancel_upload = function () {
+            // reload page 
+            $window.href = $scope.base + "/wb/upload.php?lake_id=" + $scope.lakeId ;
+
+        };
+
+        $scope.preview_upload = function() {
             
             console.log("file upload:: final callback");
+            $scope.showProgress("uploading files to the server...");
+
             if($scope.debug) {
-                console.log("submitting: fileIds for water balance calculations");
+                console.log("submitting: files for preview...");
                 console.log($scope.fileIds);
             }
 
-            feature.confirmUpload($scope.base,$scope.debug, $scope.fileIds).then(function(response) {
+            feature.previewUpload($scope.base,$scope.debug, $scope.fileIds).then(function(response) {
 
-                    var status = response.status || 500;
-                    var data = response.data || {};
-                    if($scope.debug) {
-                        console.log("server response:: confirm feature data upload :%O", data);
-                    }
+                var status = response.status || 500;
+                var data = response.data || {};
+                if($scope.debug) {
+                    console.log("server response:: preview feature data files:%O", data);
+                }
 
-                    if (status != 200 || data.code != 200) {
-                        console.log(response);
-                        var error = data.error || (status + ":error retrieving  data from server");
-                        $scope.showError(error);
-                        $scope.showToastMessage(error);
-                        return;
-                    }
+                if (status != 200 || data.code != 200) {
+                    console.log(response);
+                    var error = data.error || (status + ":error retrieving  data from server");
+                    $scope.showError(error);
+                    $scope.showToastMessage(error);
+                    return;
+                }
 
-                    // show confirmation to user 
-                    return ;
+                $scope.preview = {} ;
+                $scope.preview.errors = data.result.errors || [] ; 
+                $scope.preview.snapshots = data.result.snapshots || [] ;
 
-                },function(response) {
-                    $scope.processResponse(response);
-                });
+                return ;
+
+            },function(response) {
+                $scope.processResponse(response);
+            });
 
 
         };
@@ -196,10 +305,13 @@
                 return;
             }
 
+
             $scope.fileIds.push(data.fileId); 
+            $scope.fileNames[data.fileId] = data.name ;
             $scope.file_counter = $scope.file_counter - 1 ;
+
             if($scope.file_counter == 0 ) {
-                $scope.confirm_upload() ;
+                $scope.preview_upload() ;
             }
 
             // console.log($scope.fileIds);
@@ -207,7 +319,7 @@
 
         };
 
-        $scope.process_upload = function () {
+        $scope.process_file_uploads = function () {
 
             if(!angular.isDefined($scope.files)) {
                 // no files on page.
@@ -218,6 +330,7 @@
             }
 
             var promises = [];
+            $scope.fileData = {} ;
             $scope.file_counter = $scope.files.length ;
 
             for (var i = 0;  i < $scope.files.length ; i++) {
@@ -397,6 +510,12 @@
 
         $scope.file_counter = 0 ;
         $scope.fileIds = [] ;
+        $scope.fileNames = {} ;
+
+        $scope.preview = {} ;
+        $scope.preview.errors = [] ;
+        $scope.preview.snapshots = [] ;
+
         // display data initialization
         $scope.display = {} ;
        

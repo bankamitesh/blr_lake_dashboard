@@ -196,25 +196,6 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
 <script>
 
-    yuktixApp.run(function () {
-			
-			var mdlUpgradeDom = false;
-			setInterval(function() {
-                if (mdlUpgradeDom) {
-                    componentHandler.upgradeDom();
-                    mdlUpgradeDom = false;
-                }
-			}, 200);
-
-			var observer = new MutationObserver(function () {
-			    mdlUpgradeDom = true;
-			});
-			observer.observe(document.body, {
-				childList: true,
-				subtree: true
-			});
-			
-	});
     
     yuktixApp.controller("yuktix.admin.lake.edit", function ($scope, lake, $window) {
 

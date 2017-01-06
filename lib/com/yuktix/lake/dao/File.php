@@ -21,7 +21,7 @@ namespace com\yuktix\lake\dao {
             $data_count = 0 ;
 
             $data = new \stdClass ;
-            $data->previews = array() ;
+            $data->snapshots = array() ;
             $data->errors = array() ;
 
             if(Config::getInstance()->is_debug()) {
@@ -38,16 +38,22 @@ namespace com\yuktix\lake\dao {
                     Logger::getInstance()->dump($preview);
                 }
 
-                array_push($data->previews, $preview);
-                if($preview->file_type == LakeConstants::CALIBRATION_FILE) {
-                    $calibration_count = $calibration_count + 1 ;
-                }
+                array_push($data->snapshots, $preview);
 
-                if($preview->file_type == LakeConstants::DATA_FILE) {
-                    $data_count = $data_count + 1 ;
-                }
+                switch($preview->fileCode) {
 
-                if($preview->num_columns < 2 ) {
+                    case LakeConstants::CALIBRATION_FILE :
+                        $calibration_count++ ;
+                        break ;
+                    case LakeConstants::DATA_FILE :
+                        $data_count++ ;
+                        break ;
+                    default :
+                        break ;
+                        
+                }
+                
+                if($preview->columns < 2 ) {
                     $xmsg = "error: file with zero or one column found!" ;
                     array_push($data->errors, $xmsg) ;
                 }
@@ -56,7 +62,7 @@ namespace com\yuktix\lake\dao {
 
             if($calibration_count > 1 ) {
                 $xmsg = "error: more than one calibration file found!" ;
-                array_push($data->messages, $xmsg) ;
+                array_push($data->errors, $xmsg) ;
             }
 
             if($calibration_count > 1 ) {
@@ -73,6 +79,17 @@ namespace com\yuktix\lake\dao {
 
         }
 
+        static function array_to_line($parts) {
+            $line = "" ;
+            $count =  sizeof($parts) ;
+            for($i = 0 ; $i < $count ; $i++ )  {
+                $line = ($i == 0) ? ($line. $parts[$i]) : ($line. ", ".$parts[$i])  ;
+            }
+
+            return $line ;
+            
+        }
+        
         static function parseCSVBlob($fileId, $options=array()) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -89,6 +106,8 @@ namespace com\yuktix\lake\dao {
             $count = 0 ;
             $result = new \stdClass ;
             $result->rows = array() ;
+            // $result->lines = array() ;
+
             $numeric_col = 0 ;
             $date_col = 0 ;
             $num_parts = 0 ;
@@ -105,14 +124,6 @@ namespace com\yuktix\lake\dao {
 
                 $parts = explode("," , $line) ;
                 $num_parts = sizeof($parts) ;
-
-                // error if no parts
-                /*
-                if($num_parts < 2 ) {
-                    $xmessage = "csv data file should contain at least 2 columns" ;
-                    throw new UIException(array($xmessage), E_USER_ERROR);
-                } */
-
                 $fixed_parts = array() ;
 
                 // reset column counter 
@@ -147,7 +158,8 @@ namespace com\yuktix\lake\dao {
                     array_push($fixed_parts, $value) ;
                 }
 
-                array_push($result->rows, $fixed_parts);
+
+                array_push($result->rows, self::array_to_line($fixed_parts));
                 $count = $count + 1 ;
 
                 // guess file type
@@ -161,23 +173,23 @@ namespace com\yuktix\lake\dao {
                     if($count >= $limit) {
                         break ;
                     }
-
                 }
             }
 
             // csv parser response 
             $result->count = $count ;
-            $result->num_columns = $num_parts ;
-            $result->num_date_columns = $date_col ;
-            $result->numeric_columns = $numeric_col ;
+            $result->columns = $num_parts ;
+            $result->dateColumns = $date_col ;
+            $result->numericColumns = $numeric_col ;
+            $result->fileId = $fileId ;
 
             // guess file type
             if( ($date_col == 0) && ($num_parts == 2)) {
-                $result->file_type = LakeConstants::CALIBRATION_FILE ;
+                $result->fileCode = LakeConstants::CALIBRATION_FILE ;
             } else if ( ($date_col == 2) && ($num_parts == 3) ) {
-                $result->file_type = LakeConstants::DATA_FILE ;
+                $result->fileCode = LakeConstants::DATA_FILE ;
             } else {
-                $result->file_type = LakeConstants::UNKNOWN_FILE;
+                $result->fileCode = LakeConstants::UNKNOWN_FILE;
             }
 
             return $result ;

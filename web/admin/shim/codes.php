@@ -61,13 +61,21 @@
     ] ;
 
 
+    $featureFileCodes = [
+        ["id" => 1 , "value" => "Unknown file"],
+        ["id" => 2 , "value" => "Calibration file"],
+        ["id" => 3 , "value" => "Data file"]
+    ] ;
+
     $codes = [
         "lakeAgencies" => $lakeAgencies,
         "lakeTypes" => $lakeTypes ,
         "featureTypes" => $featureTypes,
         "featureMonitorings" => $featureMonitorings,
         "lakeUsages" => $lakeUsages,
-        "featureIOCodes" => $featureIOCodes];
+        "featureIOCodes" => $featureIOCodes,
+        "featureFileCodes" => $featureFileCodes
+        ];
 
 
     // API response 

@@ -232,6 +232,28 @@
 			});
 		 
 		
+		// run module for upgrading MDL
+		// components inside angularjs pages 
+		yuktixApp.run(function () {
+			
+			var mdlUpgradeDom = false;
+			setInterval(function() {
+				if (mdlUpgradeDom) {
+					componentHandler.upgradeDom();
+					mdlUpgradeDom = false;
+				}
+			}, 200);
+
+			var observer = new MutationObserver(function () {
+				mdlUpgradeDom = true;
+			});
+			observer.observe(document.body, {
+				childList: true,
+				subtree: true
+			});
+			
+		});
+
         // All controllers of this module can use the 
         // functions defined  inside run()
         // refactor common functionality of hiding/showing 
@@ -949,9 +971,9 @@
 
             };
 
-			feature1.confirmUpload = function(base,debug, fileIds) {
+			feature1.previewUpload = function(base,debug, fileIds) {
 
-				var myurl = "/admin/shim/lake/feature/confirm-upload.php";
+				var myurl = "/admin/shim/lake/feature/preview-upload.php";
 				if(debug) { 
 					console.log("POST: %s, fileIds:%O", myurl, fileIds);
 				}
@@ -971,11 +993,11 @@
 
             };
 
-			feature1.uploadData = function(base,debug,lakeId,featureObj, fileIds) {
+			feature1.confirmUpload = function(base,debug,lakeId,featureObj, fileIds) {
 
-				var myurl = "/admin/shim/lake/feature/upload-data.php";
+				var myurl = "/admin/shim/lake/feature/confirm-upload.php";
 				if(debug) { 
-					console.log("POST: %s, lakeId:%d, feature: %O, fileIds:%O", myurl, featureObj, fileIds);
+					console.log("POST: %s, lakeId:%d, feature: %O, fileIds:%O", myurl, lakeId,featureObj, fileIds);
 				}
 
                 var promise = $http({
