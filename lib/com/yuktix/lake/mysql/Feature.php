@@ -229,6 +229,35 @@ namespace com\yuktix\lake\mysql {
          
         }
 
+        static function storeData(
+                    $dbh,
+                    $lakeId,
+                    $featureId,
+                    $ioCode,
+                    $fileId,
+                    $calibrationFileId ) {
+
+            $sql = "insert into atree_feature_file (lake_id, feature_id, io_code, " 
+            . " file_id, calibration_file_id, op_code, created_on) "
+            . " values (:lake_id, :feature_id, :io_code, :file_id, " 
+            . " :calibration_file_id, :op_code, now() ) " ;
+
+            $opCode = 1 ;
+            $stmt = $dbh->prepare($sql);
+
+            $stmt->bindParam(":lake_id",$lakeId, \PDO::PARAM_INT);
+            $stmt->bindParam(":feature_id",$featureId, \PDO::PARAM_INT);
+            $stmt->bindParam(":io_code",$ioCode, \PDO::PARAM_INT);
+            $stmt->bindParam(":file_id",$fileId, \PDO::PARAM_INT);
+            $stmt->bindParam(":calibration_file_id",$calibrationFileId, \PDO::PARAM_INT);
+            $stmt->bindParam(":op_code",$opCode, \PDO::PARAM_INT);
+
+            $stmt->execute();
+            $stmt = NULL ;
+            return ;
+            
+        }
+
     }
 
 }

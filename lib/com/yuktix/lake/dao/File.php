@@ -17,9 +17,14 @@ namespace com\yuktix\lake\dao {
 
         static function getFeatureDataPreview($fileIds) {
 
+             if(!is_array($fileIds) || (sizeof($fileIds) > 2)) {
+                $xmsg = "error: wrong number of files in upload!! max. limit is 2" ;
+                trigger_error($xmsg, E_USER_ERROR);
+            }
+
             $calibration_count = 0 ;
             $data_count = 0 ;
-
+            
             $data = new \stdClass ;
             $data->snapshots = array() ;
             $data->errors = array() ;
@@ -58,11 +63,6 @@ namespace com\yuktix\lake\dao {
                     array_push($data->errors, $xmsg) ;
                 }
                 
-            }
-
-            if($calibration_count > 1 ) {
-                $xmsg = "error: more than one calibration file found!" ;
-                array_push($data->errors, $xmsg) ;
             }
 
             if($calibration_count > 1 ) {

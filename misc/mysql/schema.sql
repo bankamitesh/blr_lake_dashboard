@@ -87,11 +87,11 @@ drop table if exists atree_feature_file;
 create table atree_feature_file(
     id int NOT NULL auto_increment,
     lake_id int not null ,
-    feature_id not null,
+    feature_id int not null,
     file_id int not null ,
     calibration_file_id int,
-    io_code TINYINT default 1,
-    op_code TINYINT default 1,
+    io_code TINYINT  default 0,
+    op_code TINYINT  default 0,
     created_on timestamp default current_timestamp,
     updated_on timestamp default current_timestamp ,
     PRIMARY KEY (id)) ENGINE = InnoDB default character set utf8 collate utf8_general_ci;

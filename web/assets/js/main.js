@@ -993,22 +993,18 @@
 
             };
 
-			feature1.confirmUpload = function(base,debug,lakeId,featureObj, fileIds) {
+			feature1.confirmUpload = function(base,debug,postData) {
 
 				var myurl = "/admin/shim/lake/feature/confirm-upload.php";
 				if(debug) { 
-					console.log("POST: %s, lakeId:%d, feature: %O, fileIds:%O", myurl, lakeId,featureObj, fileIds);
+					console.log("POST URL:%s, data:%O", myurl, postData);
 				}
 
                 var promise = $http({
                     method : 'POST',
                     url : myurl,
                     headers : { 'Content-Type' : 'application/json' },
-					data: { 
-						"lakeId" : lakeId,
-						"featureObj" : featureObj, 
-						"fileIds" : fileIds 
-					} 
+					data: postData
 					
                 }).then(
                     function (response) { return response ; }, 

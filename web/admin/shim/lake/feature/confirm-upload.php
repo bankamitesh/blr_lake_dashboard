@@ -19,17 +19,14 @@
     $postData = json_decode($rawPostData) ;
 
     if(Config::getInstance()->is_debug()) {
-        Logger::getInstance()->info(json_encode($postData->lakeId));
-        Logger::getInstance()->info(json_encode($postData->featureObj));
-        Logger::getInstance()->info(json_encode($postData->fileIds));
-
+        Logger::getInstance()->debug("/admin/shim/feature/confirm-upload.php: POST data >>");
+        Logger::getInstance()->debug($rawPostData);
     }
     
-    FeatureDao::uploadData($postData->lakeId, $postData->featureObj, $postData->fileIds);
+    FeatureDao::uploadData($postData);
     $responseObj = new \stdClass ;
     $responseObj->code = 200;
     $responseObj->response = "lake feature data upload is success!" ;
-    // $responseObj->featureId = $featureId ;
     echo json_encode($responseObj) ;
     exit(0) ;
 

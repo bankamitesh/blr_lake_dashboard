@@ -171,15 +171,14 @@
 
 <script src="/assets/mdl/material.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js?v=11"></script>
+<script src="/assets/js/main.js?v=14"></script>
 
 
 
 <script>
 
-    yuktixApp.controller("yuktix.admin.lake.wb.upload", function ($scope,$q,$window, lake, fupload, feature) {
+    yuktixApp.controller("yuktix.admin.lake.wb.upload", function ($scope,$q,$window, $timeout, lake, fupload, feature) {
 
-        
         $scope.file_code_to_name = function(code) {
 
             var name = "__unknown__" ;
@@ -203,21 +202,37 @@
         $scope.confirm_upload = function () {
 
             $scope.showProgress("uploading feature data to the server...");
-            if($scope.debug) {
-                console.log("submitting: file data to server");
-                console.log("lakeId=%d", $scope.lakeId);
-                console.log("fileIds = %O", $scope.fileIds);
-                console.log("feature = %O", $scope.selectedFeature);
+            
+            var postData = {} ;
+            postData.lakeId = $scope.lakeId ;
+            postData.featureId = $scope.selectedFeature.id ;
+            postData.ioCode = $scope.selectedFeature.iocode ;
+            postData.fileId = -1 ;
+            postData.calibrationFileId = -1 ;
+
+            for (var i = 0 ; i < $scope.preview.snapshots.length ; i++) {
+
+                var snapshot = $scope.preview.snapshots[i] ;
+                console.log("examine uploaded file: %O", snapshot);
+                
+                if(snapshot.fileCode == 2 ) {
+                    postData.calibrationFileId = snapshot.fileId ;
+                }
+
+                if(snapshot.fileCode == 3 ) {
+                    postData.fileId = snapshot.fileId ;
+                }
 
             }
 
+            if($scope.debug) {
+                console.log("confirm feature upload: data :%O", postData);
+            }
 
             feature.confirmUpload(
                 $scope.base,
                 $scope.debug, 
-                $scope.lakeId,
-                $scope.selectedFeature,
-                $scope.fileIds).then(function(response) {
+                postData).then(function(response) {
 
                 var status = response.status || 500;
                 var data = response.data || {};
@@ -234,19 +249,28 @@
                 }
 
                 $scope.showToastMessage(data.response);
-                $scope.showPageMessage(data.response); 
+                $scope.showMessage(data.response); 
+                $timeout($scope.reload_page,3000);
                 
                 return ;
 
             },function(response) {
                 $scope.processResponse(response);
             });
+
+            
         };
 
-        $scope.cancel_upload = function () {
-            // reload page 
+        $scope.reload_page = function() {
+            $scope.showToastMessage("reloading the page...") ;
             $window.href = $scope.base + "/wb/upload.php?lake_id=" + $scope.lakeId ;
+        }; 
 
+
+        $scope.cancel_upload = function () {
+            $scope.showToastMessage("cancelling...") ;
+            $timeout($scope.reload_page,2000);
+            
         };
 
         $scope.preview_upload = function() {
@@ -278,7 +302,8 @@
                 $scope.preview = {} ;
                 $scope.preview.errors = data.result.errors || [] ; 
                 $scope.preview.snapshots = data.result.snapshots || [] ;
-
+                $scope.clearPageMessage() ;
+                
                 return ;
 
             },function(response) {
@@ -324,6 +349,14 @@
             if(!angular.isDefined($scope.files)) {
                 // no files on page.
                 var error = "no files found. please select a file first!";
+                $scope.showError(error);
+                $scope.showToastMessage(error);
+                return ;
+            }
+
+             if($scope.files.length > 2) {
+                // more than 2 files not supported!
+                var error = "Only two files (data and calibration) can be uploaded at a time!";
                 $scope.showError(error);
                 $scope.showToastMessage(error);
                 return ;
@@ -434,6 +467,7 @@
                     "icon2" : "radio_button_unchecked",
                     "iocode" : 3,
                     "name" : "Lake Level" ,
+                    "id": 0 ,
                     "details" : "manual measurement of lake levels" 
                     
                 }
