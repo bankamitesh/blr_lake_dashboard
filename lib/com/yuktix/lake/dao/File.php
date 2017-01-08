@@ -89,9 +89,76 @@ namespace com\yuktix\lake\dao {
             return $line ;
             
         }
+
+        static function getContourData($fileId) {
+
+            $options = array("split_line" => true);
+            $result = self::parseCSVBlob($fileId, $options);
+            $count = $result->count ;
+
+            $count  = intval(sqrt($result->count)) ;
+            Logger::getInstance()->error("count=".$count);
+
+            // input check 
+            // count should be full integer 
+            // number of colums: 3 
+
+            $xarr = array() ;
+            $yarr= array() ;
+            $zarr = array() ;
+            $row = array() ;
+            $total = 0 ;
+            $i = 0 ;
+            $j = 0 ;
+
+            for($i = 0 ; $i < $count; $i++) {
+
+                $fns = array() ;
+                $row = $result->rows[$i];
+                array_push($xarr, $row[0]) ;
+
+                for($j = 0 ; $j < $count; $j++) {
+                    Logger::getInstance()->error("total=".$total);
+                    $row = $result->rows[$total];
+                    if($j == 0 ) {
+                        array_push($yarr, $row[1]) ;
+                    }
+
+                    array_push($fns, $row[2]);
+                    $total++ ;
+
+                }
+
+                 array_push($zarr, $fns);
+
+            }
+
+            $data = array();
+            $data = array(
+                "x" => $xarr,
+                "y" => $yarr,
+                "z" => $zarr 
+            );
+
+            return $data ;
+            
+        }
+        
+        /*
+         * $options  = array( "limit" => 4, "split_line" => true ) ;
+         * 
+         */
         
         static function parseCSVBlob($fileId, $options=array()) {
 
+            // default is not to split line in parts 
+            // no limits 
+            // 
+            $defaults = array(
+                "split_line" => false
+            );
+
+            $settings = array_merge($defaults,$options);
             $mysqli = MySQL\Connection::getInstance()->getHandle();
     
             // get BLOB 
@@ -106,8 +173,7 @@ namespace com\yuktix\lake\dao {
             $count = 0 ;
             $result = new \stdClass ;
             $result->rows = array() ;
-            // $result->lines = array() ;
-
+            
             $numeric_col = 0 ;
             $date_col = 0 ;
             $num_parts = 0 ;
@@ -159,16 +225,22 @@ namespace com\yuktix\lake\dao {
                 }
 
 
-                array_push($result->rows, self::array_to_line($fixed_parts));
-                $count = $count + 1 ;
+                if(array_key_exists("split_line", $settings)) {
+                    if($settings["split_line"]) {
+                        array_push($result->rows, $fixed_parts);
+                    } else {
+                        array_push($result->rows, self::array_to_line($fixed_parts));
+                    }
 
-                // guess file type
+                }
+
+                $count = $count + 1 ;
                 if($count == 1 ){
                     $num_parts = sizeof($parts);
 
                 }
 
-                if(array_key_exists("limit", $options)) {
+                if(array_key_exists("limit", $settings)) {
                     $limit = intval($options["limit"]);
                     if($count >= $limit) {
                         break ;
@@ -182,19 +254,26 @@ namespace com\yuktix\lake\dao {
             $result->dateColumns = $date_col ;
             $result->numericColumns = $numeric_col ;
             $result->fileId = $fileId ;
-
-            // guess file type
-            if( ($date_col == 0) && ($num_parts == 2)) {
-                $result->fileCode = LakeConstants::CALIBRATION_FILE ;
-            } else if ( ($date_col == 2) && ($num_parts == 3) ) {
-                $result->fileCode = LakeConstants::DATA_FILE ;
-            } else {
-                $result->fileCode = LakeConstants::UNKNOWN_FILE;
-            }
-
+            $result->fileCode = self::getCSVFileType( $result->dateColumns, $result->columns) ;
             return $result ;
            
         }
+
+        static function getCSVFileType($numParts, $dateColumns) {
+
+            $tof = LakeConstants::UNKNOWN_FILE ;
+
+            // guess file type
+            if( ($dateColumns == 0) && ($numParts == 2)) {
+                return LakeConstants::CALIBRATION_FILE ;
+            }
+
+            if ( ($dateColumns == 2) && ($numParts == 3) ) {
+                return LakeConstants::DATA_FILE ;
+            }
+
+        }
+
     }
 
 }

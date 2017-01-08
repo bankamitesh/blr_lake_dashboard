@@ -36,9 +36,12 @@
     <link rel="stylesheet" href="/assets/css/main.css?v=4" />
 
     <style>
-      
+        #map {
+            width:800px;
+            height:640px ;
+        }
 
-    </style>
+     </style>
 
 </head>
 
@@ -54,14 +57,13 @@
                 <div class="mdl-grid">
                     <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
                     <div class="mdl-cell mdl-cell--1-col"> </div>
-                    <div  class="mdl-cell mdl-cell--6-col container-810" >
+                    <div  class="mdl-cell mdl-cell--6-col" >
                         <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
                         <form name="csvUploadForm" >
                           
                             <p>
-                            Upload data for lake bathymetry. For contour plotting, 
-                            The file should contain [x ,y, f(x,y)] tuples like shown 
-                            below in sample.
+                            Upload data for lake bathymetry. 
+                            The file should contain [x ,y, f(x,y)] tuples in three columns.
                             </p>
                              <h5> sample </h5>
                              <ul class="mdl-list">
@@ -114,14 +116,17 @@
                             <h6>No Bathymetry data file in the system </h6>
                         </div>
                         
-                        <div style="padding-top:41px;">
-                        Add preview here 
-                        </div> <!-- preview -->
-
+                       
                 </div>
         </div> <!-- grid:content -->
        
-       
+        <div class="mdl-grid mdl-grid--no-spacing">
+            <div class="mdl-cell mdl-cell--12-col">
+                 <div id="map"></div>
+            </div>
+
+        </div> <!-- preview -->
+
         <div class="mdl-grid mdl-grid--no-spacing">
             <div class="mdl-cell mdl-cell--12-col">
                 <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
@@ -138,7 +143,8 @@
 
 <script src="/assets/mdl/material.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js?v=1"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="/assets/js/main.js?v=2"></script>
 
 
 
@@ -199,8 +205,49 @@
                     if($scope.lakeFileObj.hasOwnProperty("fileId")) {
                         $scope.display.downloadLink = true ;
                         $scope.lakeFileObj.createdOn =  new Date($scope.lakeFileObj.tsUnix * 1000).toLocaleString() ;
+                        $scope.get_contour_data() ;
                     }
                     
+                    $scope.clearPageMessage();
+                    
+
+                },function(response) {
+                    $scope.processResponse(response);
+                });
+
+        };
+
+        $scope.get_contour_data = function() {
+
+            $scope.showProgress("getting lake contour map data from server...");
+            // get JSON data for contour using fileId 
+            lake.getContourData($scope.base,$scope.debug, $scope.lakeFileObj.fileId)
+            .then( function(response) {
+
+                    // promise resolved
+                    var status = response.status || 500;
+                    var data = response.data || {};
+
+                    if($scope.debug) {
+                        console.log("server response:: lake contour data:%O", data);
+                    }
+
+                    if (status != 200 || data.code != 200) {
+                        console.log(response);
+                        var error = data.error || (status + ":error retrieving  data from server");
+                        $scope.showError(error);
+                        $scope.showToastMessage(error);
+                        return;
+                    }
+                    
+                    var cdata = data.result ;
+                    cdata.type = 'contour' ;
+                    var contours = [] ;
+                    contours.push(cdata);
+                    
+                    console.log("lake contour data:%O", $scope.contours);
+                    var map = document.getElementById('map');
+                    Plotly.newPlot(map, contours);
                     $scope.clearPageMessage();
                     
 
@@ -309,6 +356,9 @@
         // data initialization
         $scope.lakeObj = {};
         $scope.lakeFileObj = {} ;
+        $scope.contours = [] ;
+
+        // display data 
         $scope.display = {} ;
         $scope.display.downloadLink = false ;
 

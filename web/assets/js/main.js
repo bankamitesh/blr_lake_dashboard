@@ -818,6 +818,29 @@
                  return promise;
             };
 
+			lake.getContourData = function (base, debug, fileId) {
+
+				 var myurl = base + '/admin/shim/lake/file/get-contour-data.php' ;
+                 var postData = { "fileId" : fileId } ;
+
+                 if(debug) {
+                     console.log("POST:%s, data=%O ", myurl, postData);
+                 }
+				 
+                 var promise = $http({
+                     method : 'POST',
+                     url : myurl,
+                     data : postData,
+                     headers: {'Content-Type': 'application/json'}
+                 }).then(
+                     function (response) { return response ; },
+                     function(response) { return response ; }
+                 );
+
+                 return promise;
+
+			};
+
 			lake.setWallpaper = function(base,debug, lakeId, imageFileId) {
 
                  var myurl = base + '/admin/shim/lake/file/set-wallpaper.php' ;

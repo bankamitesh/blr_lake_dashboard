@@ -17,7 +17,7 @@
     $postData = NULL ;
     $rawPostData = file_get_contents("php://input");
     if(Config::getInstance()->is_debug()) {
-        Logger::getInstance()->debug("/admin/shim/confirm-upload.php: raw POST data >>");
+        Logger::getInstance()->debug("/admin/shim/lake/feature/confirm-upload.php: raw POST data >>");
         Logger::getInstance()->debug($rawPostData);
     }
 

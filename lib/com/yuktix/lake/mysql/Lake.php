@@ -313,7 +313,6 @@ namespace com\yuktix\lake\mysql {
 
             $sql = sprintf($sql,$lakeId, $fileCode) ;
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            
             return  self::createLakeFileObject($row) ;
         
         }
