@@ -263,9 +263,8 @@
 
         $scope.reload_page = function() {
             $scope.showToastMessage("reloading the page...") ;
-            $window.href = $scope.base + "/wb/upload.php?lake_id=" + $scope.lakeId ;
+            $window.location.href = $scope.base + "/admin/lake/wb/upload.php?lake_id=" + $scope.lakeId ;
         }; 
-
 
         $scope.cancel_upload = function () {
             $scope.showToastMessage("cancelling...") ;
@@ -445,12 +444,14 @@
                     // assign icons 
                     featureObj.icon1 = "place" ;
                     featureObj.icon2 = "radio_button_unchecked" ;
-                    featureObj.details = featureObj.iocodeValue 
-                                        + featureObj.featureTypeValue 
-                                        + "Lat,Lon: [" 
-                                        + featureObj.lat + "," + featureObj.lon 
-                                        + "]  /" + featureObj.monitoringValue ;
-
+                    featureObj.details = "{featureType} at location: [{lat},{lon}] / {monitoring}" ;
+                    featureObj.details = featureObj.details.supplant({
+                        "featureType" : featureObj.featureTypeValue, 
+                        "lat" : featureObj.lat,
+                        "lon" : featureObj.lon,
+                        "monitoring" : featureObj.monitoringValue 
+                    }); 
+                    
                     $scope.features[i] = featureObj ; 
                     if($scope.debug) {
                         console.log("feature : object with assigned code values ::%O", featureObj);
