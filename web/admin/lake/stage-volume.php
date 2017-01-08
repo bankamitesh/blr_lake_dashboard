@@ -29,7 +29,7 @@
 
 <html  ng-app="YuktixApp">
 <head>
-    <title> Lake stage volume edit page </title>
+    <title> Lake stage volume relationship page </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/mdl/material.min.css" />
     <link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
@@ -59,14 +59,14 @@
                             First column is stage in meters and second column is volume in cubic meters.
                             
                             </p>
-
-                             <ul class="mdl-list mdl-shadow--2dp">
+                             <h5> sample </h5>
+                             <ul class="mdl-list">
                                 <li class="mdl-list__item" ng-repeat="sample in samples">
                                     <span class="mdl-list__item-primary-content" ng-bind="sample">  </span>    
                                 </li>
                             </ul>
 
-                            <div>
+                            <div class="upload-button-container">
                                 <label class="mdl-button mdl-button--colored mdl-js-button">
                                     <span> <i class="material-icons">attach_file</i> </span>
                                     Select File<input type="file" filelist-bind class="none"  name="files" style="display: none;">
@@ -223,6 +223,8 @@
             formData.append("metadata", angular.toJson(metadata));
             
             $scope.showProgress("uploading file...");
+
+            // resolve file upload promise
             fupload.send_form_data($scope.debug, uploadUrl, formData).then(function (response) {
 
                 var status = response.status || 500;
@@ -270,7 +272,7 @@
                         return;
                     }
 
-                    var message = "file uploaded. reload the page to see new file." 
+                    var message = "stage volume relationship file uploaded!" 
                     $scope.showToastMessage(message);
                     $scope.clearPageMessage();
 
@@ -319,12 +321,8 @@
         $scope.samples.push("0.15 , 1317.281689");
         $scope.samples.push("0.65 , 27859.87955");
         $scope.samples.push("1.15 , 97549.57163");
-        $scope.samples.push("1.65 , 217217.1273");
         
-
-        
-
-
+        // start 
         $scope.get_lake_object() ;
     
 
