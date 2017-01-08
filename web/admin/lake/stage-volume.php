@@ -33,7 +33,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/mdl/material.min.css" />
     <link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=3" />
+    <link rel="stylesheet" href="/assets/css/main.css?v=4" />
 
 </head>
 
@@ -61,7 +61,7 @@
                             </p>
                              <h5> sample </h5>
                              <ul class="mdl-list">
-                                <li class="mdl-list__item" ng-repeat="sample in samples">
+                                <li class="mdl-list__item small-sample" ng-repeat="sample in samples">
                                     <span class="mdl-list__item-primary-content" ng-bind="sample">  </span>    
                                 </li>
                             </ul>
