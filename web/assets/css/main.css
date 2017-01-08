@@ -150,6 +150,10 @@ select {
     margin-top: 11px ;
 }
 
-
+.small-sample {
+    min-height: 0px ;
+    font-size : 11px; 
+    padding: 4px ;
+}
 
   
