@@ -28,7 +28,7 @@
          <?php foreach($gMDLMenus as $gMDLMenu)  { ?>
             <a class="mdl-navigation__link"  href="<?php echo $gMDLMenu['link']; ?>"> <?php echo $gMDLMenu['name']; ?></a>
                     
-            <? } ?> 
+            <?php } ?> 
        
         </nav>
         

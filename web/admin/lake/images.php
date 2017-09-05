@@ -1,388 +1,395 @@
 <?php
 
-    include("lake-app.inc");
-    include(APP_WEB_DIR . '/inc/header.inc');
+        include("lake-app.inc");
+        include(APP_WEB_DIR . '/inc/header.inc');
 
-    use \com\indigloo\Url;
-    use \com\yuktix\lake\auth\Login as Login ;
+        use \com\indigloo\Url;
+        use \com\yuktix\lake\auth\Login as Login ;
 
-    // role check
-    // redirect to login page
-    Login::isCustomerAdmin("/app/login.php") ;
+        // role check
+        // redirect to login page
+        Login::isCustomerAdmin("/app/login.php") ;
 
-    $gparams = new \stdClass;
-    $gparams->debug = false;
-    $gparams->base = Url::base();
+        $gparams = new \stdClass;
+        $gparams->debug = false;
+        $gparams->base = Url::base();
 
-    $lakeId = Url::tryQueryParam("lake_id");
-    if(empty($lakeId)) {
-        echo "<h1> required parameter lake_id is missing </h1>" ;
-        exit(1);
-    }
+        $lakeId = Url::tryQueryParam("lake_id");
+        if(empty($lakeId)) {
+            echo "<h1> required parameter lake_id is missing </h1>" ;
+            exit(1);
+        }
 
-    if (array_key_exists("jsdebug", $_REQUEST)) {
-        $gparams->debug = true;
-    }
-    
+        if (array_key_exists("jsdebug", $_REQUEST)) {
+            $gparams->debug = true;
+        }
+        
 ?>
 
 
 <html  ng-app="YuktixApp">
-<head>
-    <title> Lake images upload/edit page </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/mdl/material.min.css" />
-    <link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=4" />
+    <head>
+        <title> Lake images upload/edit page </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap-theme.css">
+        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap-theme.min.css" />
+        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.css" />
+        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/test/bootstrap/assets/css/style.css" />
+        <link rel="stylesheet" href="/assets/css/main.css">
 
-  
-    <style>
     
-        .mdl-card__media {
-            margin: 0;
-        }
-
-        .mdl-card__media > img {
-            max-width: 100%;
-            height: 240px ;
-        }
-
-        .mdl-card__actions {
-            display: flex;
-            box-sizing:border-box;
-            align-items: center;
-        }
-        .mdl-card__actions > .mdl-button--icon {
-            margin-right: 3px;
-            margin-left: 3px;
-        }
-
-        .image-mdl-card {
-            width:320px ;
-            
-        }
-
-    </style>
-
-</head>
-
-<body  ng-controller="yuktix.admin.lake.image.upload">
-
-    <div class="mdl-layout mdl-js-layout">
-        <?php include(APP_WEB_DIR . '/inc/ui/mdl-header.inc'); ?>
-        <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
+        <style>
         
-        <main class="mdl-components__pages mdl-layout__content ">
-            <?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
+            .mdl-card__media {
+                margin: 0;
+            }
 
-                <div class="mdl-grid">
-                    <div  class="mdl-cell mdl-cell--12-col" >
-                        <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
-                    </div>
-                </div> <!-- grid:1 -->
-                 
-                <div class="mdl-grid">
-                    <div  class="mdl-cell mdl-cell--6-col" >
-                        <form name="csvUploadForm">
-                            <h3> <a href="/admin/lake/edit.php?lake_id=<?php echo $lakeId; ?>"><i class="material-icons">arrow_back</i>{{lakeObj.name}}</a> </h3>
-                            <div>
-                                <label class="mdl-button mdl-button--colored mdl-js-button">
-                                    <span> <i class="material-icons">photo_camera</i> </span>
-                                    Select photos<input type="file" filelist-bind class="none"  name="files" style="display: none;" multiple>
-                                </label>
-                            </div>
-                            
-                            <div>
-                                <ul class="mdl-list">
-                                    <li class="mdl-list__item mdl-list__item--two-line" ng-repeat="file in files">
-                                        <span class="mdl-list__item-primary-content">
-                                            <span> {{file.name}} </span>
-                                            <span class="mdl-list__item-sub-title">{{file.size/1000}} kb</span>
-                                            
-                                        </span>
-                                        <span class="mdl-list__item-secondary-content">
-                                            <i class="material-icons">check</i>
-                                        </span>
+            .mdl-card__media > img {
+                max-width: 100%;
+                height: 240px ;
+            }
 
-                                    </li>
-                                </ul>
-                            </div>
+            .mdl-card__actions {
+                display: flex;
+                box-sizing:border-box;
+                align-items: center;
+            }
+            .mdl-card__actions > .mdl-button--icon {
+                margin-right: 3px;
+                margin-left: 3px;
+            }
 
-                            <div class="upload-button-container" ng-show="files.length > 0 ">
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" ng-click="process_upload()" type="submit">
-                                    Upload 
-                                </button>
-                            </div>
-                        </form> 
-                    </div>
-                </div> <!-- grid:2 -->
+            .image-mdl-card {
+                width:320px ;
+                
+            }
 
-                <div class="mdl-grid container">
-                    <div  class="mdl-cell mdl-cell--4-col"  ng-repeat="image in images">
-                        <!-- display images in cards --> 
-                        <div class="mdl-card image-mdl-card mdl-shadow--2dp" >
-                            <figure class="mdl-card__media">
-                                <img ng-src="{{base}}/admin/shim/download/file.php?id={{image.fileId}}" alt="" />
-                            </figure>
-                            <div class="mdl-card__title">
-                                <h1 class="mdl-card__title-text">{{image.fileId}}</h1>
-                            </div>
-                           
-							<div class="mdl-card__actions mdl-card--border"> 
-                                <span>&nbsp;</span>
-                                <div class="mdl-layout-spacer"></div>
+        </style>
 
-					            <button id="image-{{image.fileId}}" class="mdl-button mdl-button--icon mdl-button--colored"><i class="material-icons">settings</i></button>
-				                <ul class="mdl-menu mdl-menu--top-right mdl-js-menu" for="image-{{image.fileId}}">
-                                    <li class="mdl-menu__item">
-                                        <a ng-click="set_wallpaper(image.fileId)">set wallpaper</a>
-                                    </li>
-                                    <li class="mdl-menu__item">delete</li>
-                                    
-                                </ul>
-	                        </div>
-                        </div> <!-- card --> 
-                    </div>
-                </div> <!-- grid:3 --> 
-       
-                <div class="mdl-grid mdl-grid--no-spacing">
-                    <div class="mdl-cell mdl-cell--12-col">
-                        <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
-                    </div>
+    </head>
 
-                </div> <!-- footer -->
-            </main>
- </div> 
-</body>
+    <body  ng-controller="yuktix.admin.lake.image.upload">
 
+        <div>
+            <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-header.inc'); ?>
+            
+            <main>
+                <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-progress.inc'); ?>
 
-<script src="/assets/mdl/material.min.js"></script>
-<script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js?v=7"></script>
-
-
-
-<script>
-    
-    yuktixApp.controller("yuktix.admin.lake.image.upload", function ($scope, $q, $window, lake, fupload) {
-
-         $scope.get_lake_object = function() {
-
-            $scope.showProgress("Getting lake object from server...");
-            lake.getLakeObject($scope.base,$scope.debug, $scope.lakeId).then( function(response) {
-                    var status = response.status || 500;
-                    var data = response.data || {};
-                    if($scope.debug) {
-                        console.log("server response:: lake object:%O", data);
-                    }
-
-                    if (status != 200 || data.code != 200) {
-                        console.log(response);
-                        var error = data.error || (status + ":error retrieving  data from Server");
-                        $scope.showError(error);
-                        return;
-                    }
-
-                    $scope.lakeObj = data.result ;
-                    $scope.get_lake_images() ;
-
-                },function(response) {
-                    $scope.processResponse(response);
-                });
-
-        };
-
-        $scope.get_lake_images = function() {
-
-            $scope.showProgress("getting lake images from the server...");
-            lake.getImages($scope.base,$scope.debug, $scope.lakeId).then( function(response) {
-                    var status = response.status || 500;
-                    var data = response.data || {};
-
-                    if($scope.debug) {
-                        console.log("server response:: lake images :%O", data);
-                    }
-
-                    if (status != 200 || data.code != 200) {
-                        console.log(response);
-                        var error = data.error || (status + ":error retrieving  data from server");
-                        $scope.showError(error);
-                        return;
-                    }
-
-                    $scope.images = data.result || {} ;
-                    if($scope.debug) {
-                        console.log("lake images :: %O", $scope.images);
-                    }
+                <div class="container">
+                
+                    <div class="row" style="padding:50px">
+                        <div  class="col-md-12" >
+                            <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
+                        </div>
+                    </div> <!-- grid:1 -->
                     
-                    $scope.clearPageMessage();
+                    <div class="row">
+                        <div  class="col-md-6" >
+                            <form name="csvUploadForm">
+                                <h3><a href="/admin/lake/edit.php?lake_id=<?php echo $lakeId; ?>"> <span class="glyphicon glyphicon-arrow-left"></span> {{lakeObj.name}} </a> </h3>
+                                </br>
+                                <div>
+                                    <label class="btn btn-primary">
+                                       
+                                        <span class="glyphicon glyphicon-camera"></span>
+                                        <span>
+                                            Select photos<input type="file" filelist-bind class="none"  name="files" style="display: none;" multiple>
+                                        </span>
+                                        
+                                    </label>
+                                </div>
+                                </br>
+                                <div>
+                                    <ul>
+                                        <li ng-repeat="file in files">
+                                            <span>
+                                                <span> {{file.name}} </span>
+                                                <span>{{file.size/1000}} KB</span>
+                                                &nbsp;
+                                            </span>
+                                            
 
-                },function(response) {
-                    $scope.processResponse(response);
-                });
+                                            <span class="glyphicon glyphicon-check"></span>
 
-        };
+                                        </li>
+                                    </ul>
+                                </div>
 
-        $scope.set_wallpaper  = function(imageFileId)  {
+                                <div class="upload-button-container" ng-show="files.length > 0 ">
+                                    <button class="btn btn-primary" ng-click="process_upload()" type="submit">
+                                        Upload 
+                                    </button>
+                                </div>
+                            </form> 
+                        </div>
+                    </div> <!-- grid:2 -->
 
-            lake.setWallpaper($scope.base,$scope.debug, $scope.lakeId,imageFileId)
-            .then(function(response) {
-                    var status = response.status || 500;
-                    var data = response.data || {};
-                    if($scope.debug) {
-                        console.log("server response:: set wallpaper image :%O", data);
-                    }
+                    <div class="row">
+                        <div class="col-md-3"></div>
+                        <div  class="col-md-6">
+                            <!-- display images in cards --> 
+                            <div class="card" ng-repeat="image in images">
+                                <figure class="card-img-top">
+                                    <img class="img-responsive" ng-src="{{base}}/admin/shim/download/file.php?id={{image.fileId}}" alt="" />
+                                </figure>
+                                <div class="card-block">
+                                    <h1 class="card-title">{{image.fileId}}</h1>
+                                    <div class="card-text">
+                                        <a ng-click="set_wallpaper(image.fileId)">Set Wallpaper</a>
+                                        </br>    
+                                        <a href="#">Delete</a>
+                                        
+                                    </div>
+                                    
+                                </div>
+                            </div> <!-- card --> 
+                        </div>
+                    </div> <!-- grid:3 --> 
+        
+                   
+                </div> 
+                <div class="row">
+                        <div class="col-md-12">
+                            <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-footer.inc'); ?>
+                        </div>
 
-                    if (status != 200 || data.code != 200) {
-                        console.log(response);
-                        var error = data.error || (status + ":error retrieving  data from server");
-                        $scope.showError(error);
-                        return;
-                    }
+                </div> <!-- footer -->           
+            </main>
+        </div> 
+    </body>
 
-                    var message = "image: " + imageFileId + " has been set as wallpaper!" 
-                    $scope.showMessage(message);
-                    $window.alert(message);
-                    return ;
 
-                },function(response) {
-                    $scope.processResponse(response);
-                });
+    <script src="/assets/js/jquery-2.1.1.min.js"></script>
+    <script src="/test/bootstrap/assets/js/bootstrap.js"></script>
+    <script src="/test/bootstrap/assets/js/npm.js"></script>
+    <script src="/test/bootstrap/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/angular.min.js"></script>
+    <script src="/assets/js/main.js"></script>
 
-        } ;
 
-        $scope.store_images = function() {
+    <script>
+        
+        yuktixApp.controller("yuktix.admin.lake.image.upload", function ($scope, $q, $window, lake, fupload) {
+
+            $scope.get_lake_object = function() {
+
+                $scope.showProgress("Getting lake object from server...");
+                lake.getLakeObject($scope.base,$scope.debug, $scope.lakeId).then( function(response) {
+                        var status = response.status || 500;
+                        var data = response.data || {};
+                        if($scope.debug) {
+                            console.log("server response:: lake object:%O", data);
+                        }
+
+                        if (status != 200 || data.code != 200) {
+                            console.log(response);
+                            var error = data.error || (status + ":error retrieving  data from Server");
+                            $scope.showError(error);
+                            return;
+                        }
+
+                        $scope.lakeObj = data.result ;
+                        $scope.get_lake_images() ;
+
+                    },function(response) {
+                        $scope.processResponse(response);
+                    });
+
+            };
+
+            $scope.get_lake_images = function() {
+
+                $scope.showProgress("getting lake images from the server...");
+                lake.getImages($scope.base,$scope.debug, $scope.lakeId).then( function(response) {
+                        var status = response.status || 500;
+                        var data = response.data || {};
+
+                        if($scope.debug) {
+                            console.log("server response:: lake images :%O", data);
+                        }
+
+                        if (status != 200 || data.code != 200) {
+                            console.log(response);
+                            var error = data.error || (status + ":error retrieving  data from server");
+                            $scope.showError(error);
+                            return;
+                        }
+
+                        $scope.images = data.result || {} ;
+                        if($scope.debug) {
+                            console.log("lake images :: %O", $scope.images);
+                        }
+                        
+                        $scope.clearPageMessage();
+
+                    },function(response) {
+                        $scope.processResponse(response);
+                    });
+
+            };
+
+            $scope.set_wallpaper  = function(imageFileId)  {
+
+                lake.setWallpaper($scope.base,$scope.debug, $scope.lakeId,imageFileId)
+                .then(function(response) {
+                        var status = response.status || 500;
+                        var data = response.data || {};
+                        if($scope.debug) {
+                            console.log("server response:: set wallpaper image :%O", data);
+                        }
+
+                        if (status != 200 || data.code != 200) {
+                            console.log(response);
+                            var error = data.error || (status + ":error retrieving  data from server");
+                            $scope.showError(error);
+                            return;
+                        }
+
+                        var message = "image: " + imageFileId + " has been set as wallpaper!" 
+                        $scope.showMessage(message);
+                        $window.alert(message);
+                        return ;
+
+                    },function(response) {
+                        $scope.processResponse(response);
+                    });
+
+            } ;
+
+            $scope.store_images = function() {
+                
+                console.log("file upload:: final callback...");
+                if($scope.debug) {
+                    console.log("storing:: lakeId and fileIds...");
+                    console.log($scope.lakeId);
+                    console.log($scope.fileIds);
+                }
+
+                lake.storeImages($scope.base,$scope.debug, $scope.lakeId, $scope.fileIds).then(function(response) {
+                        var status = response.status || 500;
+                        var data = response.data || {};
+                        if($scope.debug) {
+                            console.log("server response:: image store :%O", data);
+                        }
+
+                        if (status != 200 || data.code != 200) {
+                            console.log(response);
+                            var error = data.error || (status + ":error retrieving  data from server");
+                            $scope.showError(error);
+                            return;
+                        }
+
+                        var message = "images  uploaded successfully!" 
+                        $scope.showMessage(message);
+                        $window.alert(message);
+                        return ;
+
+                    },function(response) {
+                        $scope.processResponse(response);
+                    });
+
             
-            console.log("file upload:: final callback...");
-            if($scope.debug) {
-                console.log("storing:: lakeId and fileIds...");
-                console.log($scope.lakeId);
-                console.log($scope.fileIds);
-            }
+            };
 
-            lake.storeImages($scope.base,$scope.debug, $scope.lakeId, $scope.fileIds).then(function(response) {
-                    var status = response.status || 500;
-                    var data = response.data || {};
-                    if($scope.debug) {
-                        console.log("server response:: image store :%O", data);
-                    }
+            
+            $scope.handle_file_upload_success = function(response) {
 
-                    if (status != 200 || data.code != 200) {
-                        console.log(response);
-                        var error = data.error || (status + ":error retrieving  data from server");
-                        $scope.showError(error);
-                        return;
-                    }
+                var status = response.status || 500;
+                var data = response.data || {};
+                if($scope.debug) {
+                    console.log("server response :: %O", data);
+                }
 
-                    var message = "images  uploaded successfully!" 
-                    $scope.showMessage(message);
-                    $window.alert(message);
-                    return ;
+                if (status != 200 || data.code != 200) {
+                    console.log(response);
+                    var error = data.error || (status + ": error from server");
+                    console.error(error);
+                    $window.alert(error);
+                    return;
+                }
 
-                },function(response) {
-                    $scope.processResponse(response);
-                });
+                $scope.fileIds.push(data.fileId); 
+                $scope.file_counter = $scope.file_counter - 1 ;
+                if($scope.file_counter == 0) {
+                    $scope.store_images() ;
+                }
 
-        
-        };
-
-        
-        $scope.handle_file_upload_success = function(response) {
-
-            var status = response.status || 500;
-            var data = response.data || {};
-            if($scope.debug) {
-                console.log("server response :: %O", data);
-            }
-
-            if (status != 200 || data.code != 200) {
-                console.log(response);
-                var error = data.error || (status + ": error from server");
-                console.error(error);
-                $window.alert(error);
-                return;
-            }
-
-            $scope.fileIds.push(data.fileId); 
-            $scope.file_counter = $scope.file_counter - 1 ;
-            if($scope.file_counter == 0) {
-                $scope.store_images() ;
-            }
-
-            return ;
-
-        };
-
-        $scope.process_upload = function () {
-
-            if(!angular.isDefined($scope.files)) {
-                // no files on page.
-                var error = "no files found. please select a file first!";
-                $scope.showError(error);
-                $scope.showToastMessage(error);
                 return ;
-            }
 
-            $scope.file_counter = $scope.files.length ;
-            var promises = [];
+            };
 
-            for (var i = 0;  i < $scope.files.length ; i++) {
-                var apromise = fupload.send_file(
-                    $scope.debug, 
-                    $scope.base + "/admin/shim/upload/mpart.php" ,
-                    $scope.files[i], 
-                    { "store" : "database" },
-                    $scope.handle_file_upload_success,
-                    $scope.processResponse);
+            $scope.process_upload = function () {
 
-                promises.push(apromise);
-            }
+                if(!angular.isDefined($scope.files)) {
+                    // no files on page.
+                    var error = "no files found. please select a file first!";
+                    $scope.showError(error);
+                    $scope.showToastMessage(error);
+                    return ;
+                }
+
+                $scope.file_counter = $scope.files.length ;
+                var promises = [];
+
+                for (var i = 0;  i < $scope.files.length ; i++) {
+                    var apromise = fupload.send_file(
+                        $scope.debug, 
+                        $scope.base + "/admin/shim/upload/mpart.php" ,
+                        $scope.files[i], 
+                        { "store" : "database" },
+                        $scope.handle_file_upload_success,
+                        $scope.processResponse);
+
+                    promises.push(apromise);
+                }
+                
+                $q.all(promises).then(function(){
+                    // final callback 
+                    console.log("file upload:: all done...");
+
+                }); 
+
+            };
+
+
+            /*
+            $scope.$on('$viewContentLoaded', () => {
+                $timeout(() => {
+                    componentHandler.upgradeAllRegistered();
+                })
+            }); */
+
+            $scope.errorMessage = "" ;
+            // page params
+            $scope.gparams = <?php echo json_encode($gparams); ?> ;
+            $scope.debug = $scope.gparams.debug;
+            $scope.base = $scope.gparams.base;
+            $scope.lakeId = <?php echo $lakeId ?> ;
+
+            // data initialization
+            $scope.lakeObj = {};
+            $scope.file_counter = 0 ;
+            $scope.fileIds = [] ;
+            $scope.images = [] ;
+
+            // display data init 
+            $scope.display = {} ;
+            $scope.display.lakeEditMenu = {} ;
+            $scope.display.lakeEditMenu.image = true ;
             
-            $q.all(promises).then(function(){
-                // final callback 
-                console.log("file upload:: all done...");
+            // sample data 
+            $scope.samples = [] ;
+            $scope.actionId = "button1";
 
-            }); 
-
-        };
-
-
-        /*
-        $scope.$on('$viewContentLoaded', () => {
-            $timeout(() => {
-                componentHandler.upgradeAllRegistered();
-            })
-        }); */
-
-        $scope.errorMessage = "" ;
-        // page params
-        $scope.gparams = <?php echo json_encode($gparams); ?> ;
-        $scope.debug = $scope.gparams.debug;
-        $scope.base = $scope.gparams.base;
-        $scope.lakeId = <?php echo $lakeId ?> ;
-
-        // data initialization
-        $scope.lakeObj = {};
-        $scope.file_counter = 0 ;
-        $scope.fileIds = [] ;
-        $scope.images = [] ;
-
-        // display data init 
-        $scope.display = {} ;
-        $scope.display.lakeEditMenu = {} ;
-        $scope.display.lakeEditMenu.image = true ;
+            
+            // start:
+            $scope.get_lake_object() ;
         
-        // sample data 
-        $scope.samples = [] ;
-        $scope.actionId = "button1";
 
-        
-        // start:
-        $scope.get_lake_object() ;
-    
-
-    });
-</script>
+        });
+    </script>
 
 
 

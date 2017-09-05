@@ -31,193 +31,201 @@
 
 
 <html  ng-app="YuktixApp">
-<head>
-    <title> Lake zone page </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="stylesheet" href="/assets/mdl/material.min.css" />
-     <link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
-     <link rel="stylesheet" href="/assets/css/main.css?v=1" />
+    <head>
+        <title> Lake zone page </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap-theme.css">
+        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap-theme.min.css" />
+        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.css" />
+        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/test/bootstrap/assets/css/style.css" />
+        <link rel="stylesheet" href="/assets/css/main.css">
+    </head>
+
+    <body  ng-controller="yuktix.admin.lake.zone">
+
+        <div>
+
+            <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-header.inc'); ?>
+           
+        
+            <main >
+                <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-progress.inc'); ?>
+
+                <div class="container">
+                
+                    <div class="row" style="padding:50px">
+                        <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-edit-sidebar.inc'); ?>
+                        <div class="col-md-1"> </div>
+                        <div  class="col-md-6" id ="content">
+                            <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-page-message.inc'); ?>
+                            
+                            <div class="login-style">
+                                <form name="createForm">
+                            
+                            
+                                    <p>
+                                    To add zones and inlet/outlet markers on a map, 
+                                    create the map and layers in google map. save the 
+                                    html embed code together with a description.
+
+                                    </p>
+                                    <div class="form-group">
+                                        <textarea class="form-control" type="text" name="html" id="html" rows="5"
+                                                ng-model="lakeObj.zone.html" required>
+                                        </textarea>
+                                        <label for="html">paste html code here ...</label>
+                                    </div>
+                                
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" name="description" id="description"
+                                                ng-model="lakeObj.zone.description">
+                                        
+                                        <label for="description">description</label>
+                                    </div>
+                                    <br>
+                                    <button class="btn btn-primary" ng-click="save_zone()" type="submit">
+                                        Save zone information 
+                                    </button>
+
+                                </form>
+                            
+                                <div class="zone-container">
+
+                                    <?php foreach($zones as $zone) { ?>
+                                    
+                                        <div class="description">
+                                            <?php echo $zone->description ; ?>
+                                        </div>
+
+                                        <div class="map">
+                                            <?php echo $zone->html ; ?>
+                                        </div>
+                                    
+
+                                        <div class="action">
+                                            <button class="btn btn-primary" ng-click="remove_zone(<?php echo $zone->id ?>)" type="submit">
+                                            remove this zone 
+                                            </button>
+                                        </div>
+
+                                    <?php } ?> 
+                                </div> <!-- zone container -->
 
 
-</head>
-
-<body  ng-controller="yuktix.admin.lake.zone">
-
-<div class="mdl-layout mdl-js-layout" id="container">
-
-    <?php include(APP_WEB_DIR . '/inc/ui/mdl-header.inc'); ?>
-    <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
-   
-    <main class="mdl-components__pages mdl-layout__content ">
-        <?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
-
-        <div class="mdl-grid">
-            <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
-            <div class="mdl-cell mdl-cell--1-col"> </div>
-                <div class="mdl-cell mdl-cell--6-col container-810" >
-                    <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
-                     
-                    <form name="createForm">
-                    
-                     
-                        <p>
-                        To add zones and inlet/outlet markers on a map, 
-                        create the map and layers in google map. save the 
-                        html embed code together with a description.
-
-                        </p>
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <textarea class="mdl-textfield__input" type="text" name="html" id="html" rows="5"
-                                    ng-model="lakeObj.zone.html" required>
-                            </textarea>
-                            <label class="mdl-textfield__label" for="html">paste html code here ...</label>
+                            </div>
                         </div>
-                        
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" name="description" id="description"
-                                    ng-model="lakeObj.zone.description">
-                            
-                            <label class="mdl-textfield__label" for="description">description</label>
-                        </div>
-                        <br>
-                        <button class="mdl-button mdl-js-button mdl-button--raised" ng-click="save_zone()" type="submit">
-                            Save zone information 
-                        </button>
+                    </div> 
+                </div> <!-- grid:content -->
 
-                    </form>
-                    
-                    <div class="zone-container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-footer.inc'); ?>
+                    </div>
 
-                        <?php foreach($zones as $zone) { ?>
-                            
-                            <div class="description">
-                                <?php echo $zone->description ; ?>
-                            </div>
+                </div> <!-- footer -->
 
-                            <div class="map">
-                                <?php echo $zone->html ; ?>
-                            </div>
-                            
+            </main>
+            
+        </div> <!-- container div -->
 
-                            <div class="action">
-                                <button class="mdl-button mdl-js-button mdl-button--raised"ng-click="remove_zone(<?php echo $zone->id ?>)" type="submit">
-                                remove this zone 
-                                </button>
-                            </div>
-
-                        <?php } ?> 
-                    </div> <!-- zone container -->
-
-
-                </div> 
-        </div> <!-- grid:content -->
-
-        <div class="mdl-grid mdl-grid--no-spacing">
-            <div class="mdl-cell mdl-cell--12-col">
-                <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
-            </div>
-
-        </div> <!-- footer -->
-
-    </main>
+    </body>
     
-</div> <!-- container div -->
+    <script src="/assets/js/jquery-2.1.1.min.js"></script>
+    <script src="/test/bootstrap/assets/js/bootstrap.js"></script>
+    <script src="/test/bootstrap/assets/js/npm.js"></script>
+    <script src="/test/bootstrap/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/angular.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+
+    <script>
+
+        yuktixApp.controller("yuktix.admin.lake.zone", function ($scope, lake,$window) {
+
+            $scope.get_lake_object = function() {
+
+                $scope.showProgress("getting lake data from server...");
+                lake.getLakeObject($scope.base,$scope.debug, $scope.lakeId).then( function(response) {
+                        var status = response.status || 500;
+                        var data = response.data || {};
+                        if($scope.debug) {
+                            console.log("server response:: lake object:%O", data);
+                        }
+
+                        if (status != 200 || data.code != 200) {
+                            console.log(response);
+                            var error = data.error || (status + ":error retrieving  data from Server");
+                            $scope.showError(error);
+                            return;
+                        }
+
+                        $scope.lakeObj = data.result ;
+                        $scope.clearPageMessage();
+
+                    },function(response) {
+                        $scope.processResponse(response);
+                    });
+
+            };
+
+            $scope.save_zone = function() {
+
+                if($scope.debug) {
+                    console.log("lake_id for zone is",$scope.lakeObj.id);
+                    console.log("zone object is ", $scope.lakeObj.zone);
+                }
+
+                lake.createZone($scope.base, $scope.debug, $scope.lakeObj.id, $scope.lakeObj.zone).then(function (response) {
+
+                        var status = response.status || 500;
+                        var data = response.data || {};
+
+                        if ($scope.debug) {
+                            console.log("API response :");
+                            console.log(data);
+                        }
+
+                        if (status != 200 || data.code != 200) {
+                            console.log("browser response object: %o" ,response);
+                            var error = data.error || (status + ":error submitting lake create form");
+                            $scope.showError(error);
+                            return;
+                        }
+
+                        $window.location.href = "/admin/lake/zone.php?lake_id=" + $scope.lakeId ;
+
+                    }, function (response) {
+                        $scope.processResponse(response);
+                    });
+            };
+
+            $scope.errorMessage = "" ;
+            // page params
+            $scope.gparams = <?php echo json_encode($gparams); ?> ;
+            $scope.debug = $scope.gparams.debug;
+            $scope.base = $scope.gparams.base;
+            $scope.lakeId = <?php echo $lakeId ?> ;
+
+            // data initialization
+            $scope.lakeObj = {};
+            $scope.lakeObj.zone = {} ;
+            $scope.zones = [] ;
+
+            // init display data 
+            $scope.display = {} ;
+            // lake edit menu display 
+            $scope.display.lakeEditMenu = {} ;
+            $scope.display.lakeEditMenu.zone = true ;
 
 
-<script src="/assets/mdl/material.min.js"></script>
-<script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js?v=1"></script>
+            $scope.get_lake_object() ;
+
+        });
 
 
+    </script>
 
-<script>
-
-    yuktixApp.controller("yuktix.admin.lake.zone", function ($scope, lake,$window) {
-
-         $scope.get_lake_object = function() {
-
-            $scope.showProgress("getting lake data from server...");
-            lake.getLakeObject($scope.base,$scope.debug, $scope.lakeId).then( function(response) {
-                    var status = response.status || 500;
-                    var data = response.data || {};
-                    if($scope.debug) {
-                        console.log("server response:: lake object:%O", data);
-                    }
-
-                    if (status != 200 || data.code != 200) {
-                        console.log(response);
-                        var error = data.error || (status + ":error retrieving  data from Server");
-                        $scope.showError(error);
-                        return;
-                    }
-
-                    $scope.lakeObj = data.result ;
-                    $scope.clearPageMessage();
-
-                },function(response) {
-                    $scope.processResponse(response);
-                });
-
-        };
-
-        $scope.save_zone = function() {
-
-            if($scope.debug) {
-                console.log("lake_id for zone is",$scope.lakeObj.id);
-                console.log("zone object is ", $scope.lakeObj.zone);
-            }
-
-            lake.createZone($scope.base, $scope.debug, $scope.lakeObj.id, $scope.lakeObj.zone).then(function (response) {
-
-                    var status = response.status || 500;
-                    var data = response.data || {};
-
-                    if ($scope.debug) {
-                        console.log("API response :");
-                        console.log(data);
-                    }
-
-                    if (status != 200 || data.code != 200) {
-                        console.log("browser response object: %o" ,response);
-                        var error = data.error || (status + ":error submitting lake create form");
-                        $scope.showError(error);
-                        return;
-                    }
-
-                    $window.location.href = "/admin/lake/zone.php?lake_id=" + $scope.lakeId ;
-
-                }, function (response) {
-                    $scope.processResponse(response);
-                });
-        };
-
-        $scope.errorMessage = "" ;
-        // page params
-        $scope.gparams = <?php echo json_encode($gparams); ?> ;
-        $scope.debug = $scope.gparams.debug;
-        $scope.base = $scope.gparams.base;
-        $scope.lakeId = <?php echo $lakeId ?> ;
-
-        // data initialization
-        $scope.lakeObj = {};
-        $scope.lakeObj.zone = {} ;
-        $scope.zones = [] ;
-
-        // init display data 
-        $scope.display = {} ;
-         // lake edit menu display 
-        $scope.display.lakeEditMenu = {} ;
-        $scope.display.lakeEditMenu.zone = true ;
-
-
-        $scope.get_lake_object() ;
-
-    });
-
-
-</script>
-
- 
-</body>
+    
+    
 
 </html>

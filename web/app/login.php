@@ -1,93 +1,93 @@
 <?php
-		include ("lake-app.inc");
-		include(APP_WEB_DIR.'/inc/header.inc');
+	include ("lake-app.inc");
+	include(APP_WEB_DIR.'/inc/header.inc');
 
-		use \com\indigloo\Url ;
-		use \com\yuktix\lake\auth\Login as Login ;
+	use \com\indigloo\Url ;
+	use \com\yuktix\lake\auth\Login as Login ;
 
-		// already have login?
-		// do not redirect from login page.
-		// we redirect to login page for missing roles as well.
+	// already have login?
+	// do not redirect from login page.
+	// we redirect to login page for missing roles as well.
 
-		$gparams = new \stdClass ;
-		$gparams->debug = false ;
-		$gparams->base = Url::base() ;
-	
-		if(array_key_exists("jsdebug", $_REQUEST)) {
-			$gparams->debug = true ;
-		}
-
+	$gparams = new \stdClass ;
+	$gparams->debug = false ;
+	$gparams->base = Url::base() ;
+		
+	if(array_key_exists("jsdebug", $_REQUEST)) {
+		$gparams->debug = true ;
+	}
 ?>
 
-		<!DOCTYPE html>
-		<html ng-app="YuktixApp">
+<!DOCTYPE html>
+<html ng-app="YuktixApp">
+	
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap-theme.css">
+		<link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap-theme.min.css" />
+        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.css" />
+		<link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.min.css" />
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<link rel="stylesheet" href="/test/bootstrap/assets/css/style.css" />
+		<link rel="stylesheet" href="/assets/css/main.css">
+	</head>
 		
-		<head>
-			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-			<link rel="stylesheet" href="/assets/mdl/material.min.css">
-			<link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
-			<link rel="stylesheet" href="/assets/css/main.css">
-			
-		</head>
-
 	<body ng-controller="yuktix.lake.admin.login">
-
-		<div class="mdl-layout mdl-js-layout" id="container">
-
-			<?php include(APP_WEB_DIR . '/inc/ui/mdl-header.inc'); ?>
-			<?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
-		
-   			<main class="docs-layout-content mdl-layout__content ">
-				<?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
-
-				<div class="mdl-grid">
-					<div  class="mdl-cell mdl-cell--3-col"> </div>
-					<div  class="mdl-cell mdl-cell--6-col container-810">
-					<?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
-
-						<div id = "login-container" class="mdl-card mdl-shadow--2dp wide-mdl-card">
-						<h3 class="mdl-card__title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sign In</h3>
-						
-						<div class="mdl-card__supporting-text">
-							<form name="loginForm">
-								<div class="mdl-textfield mdl-js-textfield">
-									<input name="login" ng-model="login.name"  class="mdl-textfield__input" type="text" id="login" required>
-									<label class="mdl-textfield__label" for="login">Login...</label>
-								</div><br>
-								<div class="mdl-textfield mdl-js-textfield">
-									<input name="password" ng-model="login.password" class="mdl-textfield__input" type="password" id="password" required>
-									<label class="mdl-textfield__label" for="password">Password...</label>
-								</div>
-							
-						</div>
-
-							<div class="mdl-card__actions mdl-card--border">
-								<button ng-disabled="form1.$invalid" ng-click="do_login()" class="mdl-button mdl-js-button mdl-button--raised">
-									Login
-								</button>
-							</div>
-
-						</form> 
-						
-				</div> <!-- login:card  -->
-			</div> 
-		</div> <!-- grid:main -->
-
-		<div class="mdl-grid mdl-grid--no-spacing">
-			<div class="mdl-cell mdl-cell--12-col">
-				<?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
+		<div>
+			<div>
+				<?php include(APP_WEB_DIR . '/inc/ui/bootstrap-header.inc'); ?>	
 			</div>
-		</div> <!-- footer -->
-
-    </main>
-    
-		</div> <!-- container -->
-	</body>
-
-	<script src="/assets/mdl/material.min.js"></script>
+			<main>
+				<?php include(APP_WEB_DIR . '/inc/ui/bootstrap-progress.inc'); ?>
+				<div class="container">
+					<div class="row">
+						<div  class="col-md-2"></div>
+						<div  class="col-md-8" >
+							<?php include(APP_WEB_DIR . '/inc/ui/bootstrap-page-message.inc'); ?>
+							<div class="login-style">	
+								<form name="loginForm">
+									<div class="form-group">
+										<h3>Sign In</h3>
+									</div>
+									<div class="form-group">
+										<img class="img-responsive" src="/assets/images/lake_top_3.jpg" >
+									</div>
+									<div class="form-group">
+										<label for="exampleInputEmail1">Username</label>
+										<input name="login" ng-model="login.name" type="text" class="form-control" id="login" required>
+									</div>
+									<div class="form-group">
+										<label for="exampleInputPassword1">Password</label>
+										<input name="password" ng-model="login.password" type="password" class="form-control" id="password" required>
+									</div>
+									<div class="form-group">
+										<button ng-disabled="form1.$invalid" ng-click="do_login()" class="btn btn-default">
+											Submit
+										</button>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div  class="col-md-2"></div>
+					</div>	
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<?php include(APP_WEB_DIR . '/inc/ui/bootstrap-footer.inc'); ?>
+					</div>
+				</div> 
+			</main>
+		</div>
+	</body>			
+	
+	<script src="/assets/js/jquery-2.1.1.min.js"></script>
+	<script src="/test/bootstrap/assets/js/bootstrap.js"></script>
+	<script src="/test/bootstrap/assets/js/npm.js"></script>
+	<script src="/test/bootstrap/assets/js/bootstrap.min.js"></script>
 	<script src="/assets/js/angular.min.js"></script>
 	<script src="/assets/js/main.js"></script>
-	<script type="text/javascript">
+
+    <script type="text/javascript">
 
 		yuktixApp.controller("yuktix.lake.admin.login",function($scope, user,$window) {
 

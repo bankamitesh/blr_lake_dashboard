@@ -1,29 +1,29 @@
 <?php
 
-include("lake-app.inc");
-include(APP_WEB_DIR . '/inc/header.inc');
+    include("lake-app.inc");
+    include(APP_WEB_DIR . '/inc/header.inc');
 
-use \com\indigloo\Url;
+    use \com\indigloo\Url;
 
-$gparams = new \stdClass;
-$gparams->debug = false;
-$gparams->base = Url::base();
+    $gparams = new \stdClass;
+    $gparams->debug = false;
+    $gparams->base = Url::base();
 
-$lakeId = Url::tryQueryParam("lake_id");
-if(empty($lakeId)) {
-    echo "<h1> required parameter lake_id is missing </h1>" ;
-    exit(1);
-}
+    $lakeId = Url::tryQueryParam("lake_id");
+    if(empty($lakeId)) {
+        echo "<h1> required parameter lake_id is missing </h1>" ;
+        exit(1);
+    }
 
-$featureId = Url::tryQueryParam("feature_id");
-if(empty($featureId)) {
-    echo "<h1> required parameter feature_id is missing </h1>" ;
-    exit(1);
-}
+    $featureId = Url::tryQueryParam("feature_id");
+    if(empty($featureId)) {
+        echo "<h1> required parameter feature_id is missing </h1>" ;
+        exit(1);
+    }
 
-if (array_key_exists("jsdebug", $_REQUEST)) {
-    $gparams->debug = true;
-}
+    if (array_key_exists("jsdebug", $_REQUEST)) {
+        $gparams->debug = true;
+    }
 
 ?>
 
@@ -34,192 +34,219 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 
     <title> Lake Feature edit page </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/mdl/material.min.css" />
-    <link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/test/bootstrap/assets/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/main.css">
 
 </head>
 
 <body ng-controller="yuktix.admin.lake.feature.edit">
 
-    <div class="mdl-layout mdl-js-layout" id="container">
-    <?php include(APP_WEB_DIR . '/inc/ui/mdl-header.inc'); ?>
-    <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
+    <div>
+    
+        <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-header.inc'); ?>
+            
    
-        <main class="docs-layout-content mdl-layout__content ">
-            <?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
-            <div class="mdl-grid">
-                <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
-                <div class="mdl-cell mdl-cell--1-col"> </div>
-                <div class="mdl-cell mdl-cell--6-col container-810">
-                    <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
+        <main>
+            <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-progress.inc'); ?>
+               
+            <div class="container">
+                <div class="row" style="padding:50px">
                     
-                    <form name="createForm">
-                        <h5>Edit inlet/outlet </h5>
+                    <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-edit-sidebar.inc'); ?>
+                    <div class="col-md-1"> </div>
+                    <div  class="col-md-6" id ="content">
                         
-                        <h6>Feature Name </h6>
-                        <div class="mdl-textfield mdl-js-textfield">
-                            <input class="mdl-textfield__input" type="text" name="name" id="name" ng-model="featureObj.name" required>
+                        <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-page-message.inc'); ?>
+                        <div class="login-style">
+                            <form name="createForm">
+                                <h5>Edit inlet/outlet </h5>
                         
-                        </div>
+                                <h6>Feature Name </h6>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="name" id="name" ng-model="featureObj.name" required>
+                        
+                                </div>
                          
                         
-                        <h6> Feature Type </h6>
-                        <div>
-                            <select id="feature_type_select"
-                                    ng-model="featureType"
-                                    ng-change="select_feature_type(featureType)"
-                                    ng-options="featureType.value for featureType in featureTypes">
-                            </select>
-                        </div>
+                                <h6> Feature Type </h6>
+                                <div>
+                                    <select id="feature_type_select"
+                                            ng-model="featureType"
+                                            ng-change="select_feature_type(featureType)"
+                                            ng-options="featureType.value for featureType in featureTypes">
+                                    </select>
+                                </div>
                             
-                        <h6>Latitude</h6>
-                        <div class="mdl-textfield mdl-js-textfield">
-                            <input class="mdl-textfield__input" type="text" name="lat" id="lat" ng-model="featureObj.lat">
-                        </div>
+                                <h6>Latitude</h6>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="lat" id="lat" ng-model="featureObj.lat">
+                                </div>
                             
-                        <h6>Longitude</h6>
-                        <div class="mdl-textfield mdl-js-textfield">
-                            <input class="mdl-textfield__input" type="text" name="lon" id="lon" ng-model="featureObj.lon" >
-                            
-                        </div>
+                                <h6>Longitude</h6>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="lon" id="lon" ng-model="featureObj.lon" >
+                                        
+                                </div>
 
-                        <h6>Width </h6>
-                        <div class="mdl-textfield mdl-js-textfield">
-                            <input class="mdl-textfield__input" type="text" name="width" id="width" ng-model="featureObj.width">
-                        </div>
+                                <h6>Width </h6>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="width" id="width" ng-model="featureObj.width">
+                                </div>
                             
-                        <h6>Max. Height</h6>
-                        <div class="mdl-textfield mdl-js-textfield">
-                            <input class="mdl-textfield__input" type="text" name="maxHeight" id="height" ng-model="featureObj.maxHeight" >
+                                <h6>Max. Height</h6>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="maxHeight" id="height" ng-model="featureObj.maxHeight" >
+                                </div>
+                            </form>
                         </div>
-                    </form>
                         
                       
-                    <p> This feature is using {{featureMonitoring.value}} </p>
-                    <h5> Monitoring status </h5>
-                    <div id="monitoring-container" class="mdl-tabs mdl-js-tabs">
-                        <div class="mdl-tabs__tab-bar">
-                            <a class="mdl-tabs__tab" ng-class="{'is-active':display.tabs.sensor}" ng-click="select_monitoring_tab(1)" href="#sensor-panel">Sensor</a>
-                            <a class="mdl-tabs__tab" ng-class="{'is-active':display.tabs.lake}" ng-click="select_monitoring_tab(2)" href="#lake-panel">Lake Level</a>
-                            <a class="mdl-tabs__tab" ng-class="{'is-active':display.tabs.constant}" ng-click="select_monitoring_tab(3)" href="#rate-panel">Constant</a>
+                        <p> This feature is using {{featureMonitoring.value}} </p>
+                        <h5> Monitoring status </h5>
+                    
+                        <ul class="nav nav-tabs">
+                                <li ng-class="{'is-active':display.tabs.sensor}"><a data-toggle="tab"  ng-click="select_monitoring_tab(1)" href="#sensor-panel">Sensor</a></li>
+                                <li ng-class="{'is-active':display.tabs.lake}"><a data-toggle="tab"  ng-click="select_monitoring_tab(2)" href="#lake-panel">Lake Level</a></li>
+                                <li ng-class="{'is-active':display.tabs.constant}"><a data-toggle="tab"  ng-click="select_monitoring_tab(3)" href="#rate-panel">Constant</a></li>
 
-                        </div>
-
-                        <div class="mdl-tabs__panel" ng-class="{'is-active':display.tabs.sensor}" id="sensor-panel">
+                        </ul>
+                        <div class="tab-content">
+                        
                             
-                            <form name="sensorForm">
-                                <h6>Serial Number</h6>
-                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" name="serialNumber"  ng-model="featureObj.sensor.serialNumber" required>
-                                </div>
-                                <br>
 
-                                <h6>Part Number</h6>
-                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" name="partNumber"  ng-model="featureObj.sensor.partNumber">
-                                </div>
-                                <br>
+                            <div class="tab-pane fade" ng-class="{'is-active':display.tabs.sensor}" id="sensor-panel">
+                                <div class="login-style">
+                                    <form name="sensorForm">
+                                        <h6>Serial Number</h6>
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" name="serialNumber"  ng-model="featureObj.sensor.serialNumber" required>
+                                        </div>
+                                        <br>
 
-                                <h6>Installed by</h6>
-                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" name="installerName"  ng-model="featureObj.sensor.installerName">
-                                </div>
-                                <br>
+                                        <h6>Part Number</h6>
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" name="partNumber"  ng-model="featureObj.sensor.partNumber">
+                                        </div>
+                                        <br>
 
-                                <h6>Install date</h6>
-                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" name="installationDate"  ng-model="featureObj.sensor.installationDate">
-                                </div>
-                                <br>
+                                        <h6>Installed by</h6>
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" name="installerName"  ng-model="featureObj.sensor.installerName">
+                                        </div>
+                                        <br>
 
-                                <h6> Sensor stage flow</h6>
-                                <div>
-                                    <label class="mdl-button mdl-button--colored mdl-js-button">
-                                        <span> <i class="material-icons">attachment</i> </span>
-                                        Upload CSV <input type="file" filelist-bind class="none"  name="files" style="display: none;">
-                                    </label>
-                                </div>
-                                <br>
-                                <div>
-                                    <ul class="mdl-list">
-                                        <li "mdl-list__item" ng-repeat="file in files">
-                                            <span class="mdl-list__item-primary-content">
-                                                <i class="material-icons mdl-list__item-icon">insert_drive_file</i>
-                                                {{ file.name}}, {{file.size/1000}} kb
-                                            </span>
-                                        
-                                        </li>
-                                    </ul>
-                                </div>
-                            </form>
+                                        <h6>Install date</h6>
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" name="installationDate"  ng-model="featureObj.sensor.installationDate">
+                                        </div>
+                                        <br>
 
-                        </div> <!-- tab:sensor -->
+                                        <h6> Sensor stage flow</h6>
+                                        <div class="upload-button-container">
+                                            <label>
+                                                <span class="glyphicon glyphicon-file"></span>
+                                                <font face="Times New Roman">Upload CSV</font><input type="file" filelist-bind class="none"  name="files" style="display: none;">
+                                            </label>
+                                        </div>
+                                    
+                                        <div>
+                                            <ul class="list-group">
+                                                <li class="list-group-item" ng-repeat="file in files">
+                                                    <span>
+                                                        
+                                                        <span> {{ file.name}} </span>
+                                                        <span>{{file.size/1000}} KB</span>
+                                                        
+                                                    </span>
+                                                    <span class="glyphicon glyphicon-check"></span>
 
-                        <div class="mdl-tabs__panel" ng-class="{'is-active':display.tabs.lake}" id="lake-panel">
-                            <form name="lakeForm">
-                                <h6> Lake stage flow</h6>
-                                <div>
-                                    <label class="mdl-button mdl-button--colored mdl-js-button">
-                                        <span> <i class="material-icons">attachment</i> </span>
-                                        Upload CSV <input type="file" filelist-bind class="none"  name="files" style="display: none;">
-                                    </label>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </form>
                                 </div>
-                                <br>
-                                <div>
-                                    <ul class="mdl-list">
-                                        <li "mdl-list__item" ng-repeat="file in files">
-                                            <span class="mdl-list__item-primary-content">
-                                                <i class="material-icons mdl-list__item-icon">insert_drive_file</i>
-                                                {{ file.name}}, {{file.size/1000}} kb
-                                            </span>
-                                        
-                                        </li>
-                                    </ul>
+
+                            </div> <!-- tab:sensor -->
+
+                            <div class="tab-pane fade" ng-class="{'is-active':display.tabs.lake}" id="lake-panel">
+                                <div class="login-style">    
+                                    <form name="lakeForm">
+                                        <h6> Lake stage flow</h6>
+                                        <div class="upload-button-container">
+                                            <label>
+                                                <span class="glyphicon glyphicon-file"></span>
+                                                <font face="Times New Roman">Upload CSV</font><input type="file" filelist-bind class="none"  name="files" style="display: none;">
+                                            </label>
+                                        </div>
+                                
+                                        <div>
+                                            <ul class="list-group">
+                                                <li class="list-group-item" ng-repeat="file in files">
+                                                    <span>
+                                                        
+                                                        <span> {{ file.name}} </span>
+                                                        <span>{{file.size/1000}} KB</span>
+                                                        
+                                                    </span>
+                                                    <span class="glyphicon glyphicon-check"></span>
+
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
-                        </div> <!-- tab:lake -->
+                            </div> <!-- tab:lake -->
 
-                        <div class="mdl-tabs__panel" ng-class="{'is-active':display.tabs.constant}" id="rate-panel">
-                             <form name="constantForm">
-                                <h6>Flow rate</h6>
-                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" name="flowRate"  ng-model="featureObj.flowRate">
+                            <div class="tab-pane fade" ng-class="{'is-active':display.tabs.constant}" id="rate-panel">
+                                <div class="login-style">     
+                                    <form name="constantForm">
+                                        <h6>Flow rate</h6>
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" name="flowRate"  ng-model="featureObj.flowRate">
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
 
-                        </div> <!-- tab: constant -->
+                            </div> <!-- tab: constant -->
 
-                    </div> <!-- monitoring -->
+                        </div> <!-- monitoring -->
                        
                     
-                    <div>
-                        <button class="mdl-button mdl-js-button mdl-button--raised"ng-click="update_feature()" type="submit">
-                        Save information
-                        </button>
-                    </div> 
+                        <div class="form-button-container">
+                            <button class="btn btn-primary" ng-click="update_feature()" type="submit">
+                            Save information
+                            </button>
+                        </div> 
+                    </div>
 
                 </div> 
                     
             </div> <!-- grid:content -->
             
-            <div class="mdl-grid mdl-grid--no-spacing">
-                <div class="mdl-cell mdl-cell--12-col">
-                    <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-footer.inc'); ?>
                 </div>
 
-        </div> <!-- footer -->
+            </div> <!-- footer -->
 
 
         </main>
         
-</div> <!-- container div -->
+    </div> <!-- container div -->
 
 </body>
 
 
 
-<script src="/assets/mdl/material.min.js"></script>
+<script src="/assets/js/jquery-2.1.1.min.js"></script>
+<script src="/test/bootstrap/assets/js/bootstrap.js"></script>
+<script src="/test/bootstrap/assets/js/npm.js"></script>
+<script src="/test/bootstrap/assets/js/bootstrap.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
 <script src="/assets/js/main.js"></script>
 
@@ -580,7 +607,3 @@ if (array_key_exists("jsdebug", $_REQUEST)) {
 </script>
 
 </html>
-
-
-
-

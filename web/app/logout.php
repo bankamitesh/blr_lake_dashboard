@@ -19,7 +19,7 @@
 
     // redirect to a _session free page
     // redirecting to HOME will start a new session
-    header('Location: /index.html');
+    header('Location: /app/login.php');
     exit(0);
 
 ?>

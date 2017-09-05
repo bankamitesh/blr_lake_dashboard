@@ -28,233 +28,211 @@
 
 
 <html  ng-app="YuktixApp">
-<head>
-    <title> Lake evaporation data page </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/mdl/material.min.css" />
-    <link rel="stylesheet" href="/assets/mdl/material.light_green-pink.min.css" />
-    <link rel="stylesheet" href="/assets/css/main.css?v=4" />
+    <head>
+        <title> Lake evaporation data page </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap-theme.css">
+        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap-theme.min.css" />
+        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.css" />
+        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/test/bootstrap/assets/css/style.css" />
+        <link rel="stylesheet" href="/assets/css/main.css">
 
-</head>
+    </head>
 
-<body  ng-controller="yuktix.admin.lake.csv.upload">
+    <body  ng-controller="yuktix.admin.lake.csv.upload">
 
-    <div class="mdl-layout mdl-js-layout">
-        <?php include(APP_WEB_DIR . '/inc/ui/mdl-header.inc'); ?>
-        <?php include(APP_WEB_DIR . '/inc/ui/mdl-drawer.inc'); ?>
-        
-        <main class="mdl-components__pages mdl-layout__content ">
-            <?php include(APP_WEB_DIR . '/inc/ui/mdl-progress.inc'); ?>
-
-                <div class="mdl-grid">
-                    <?php include(APP_WEB_DIR . '/inc/ui/mdl-edit-sidebar.inc'); ?>
-                    <div class="mdl-cell mdl-cell--1-col"> </div>
-                    <div  class="mdl-cell mdl-cell--6-col container-810" >
-                        <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
-                        <form name="csvUploadForm" >
-                          
-                            <p>
-                            Please upload the lake evaporation  data
-                            as comma separated values file (.csv). 
-                            First column is month of year and second column is evaporation in cubic meters (m^3).
+        <div>
+            <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-header.inc'); ?>
+            <main>
+                    <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-progress.inc'); ?>
+                    <div class="container">
+                        <div class="row" style="padding:50px">
                             
-                            </p>
-                             <h5> sample </h5>
-                             <ul class="mdl-list">
-                                <li class="mdl-list__item small-sample" ng-repeat="sample in samples">
-                                    <span class="mdl-list__item-primary-content" ng-bind="sample">  </span>    
-                                </li>
-                            </ul>
-
-                            <div class="upload-button-container">
-                                <label class="mdl-button mdl-button--colored mdl-js-button">
-                                    <span> <i class="material-icons">attach_file</i> </span>
-                                    Select File<input type="file" filelist-bind class="none"  name="files" style="display: none;">
-                                </label>
-                            </div>
-                            
-                            <div>
-                                <ul class="mdl-list">
-                                    <li class="mdl-list__item mdl-list__item--two-line" ng-repeat="file in files">
-                                        <span class="mdl-list__item-primary-content">
-                                            
-                                            <span> {{ file.name}} </span>
-                                            <span class="mdl-list__item-sub-title">{{file.size/1000}} kb</span>
-                                            
-                                        </span>
-                                        <span class="mdl-list__item-secondary-content">
-                                            <i class="material-icons">check</i>
-                                        </span>
-
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="upload-button-container" ng-show="files.length > 0 ">
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" ng-click="process_upload()" type="submit">
-                                    Upload 
-                                </button>
-                            </div>
-                        </form> 
-                       
-                        <div class="file-download-container" ng-show="display.downloadLink">
-                            <h6>System evaporation data file</h6>
-                            <a ng-href="{{base}}/admin/shim/download/file.php?id={{lakeFileObj.fileId}}">
-                                <span> {{lakeFileObj.fileName}} ( {{lakeFileObj.createdOn}} )</span>
-                                <i class="material-icons">file_download</i>
+                            <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-edit-sidebar.inc'); ?>
+                            <div class="col-md-1"> </div>
+                            <div  class="col-md-6" id ="content">
+                                <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-page-message.inc'); ?>
+                                <form name="csvUploadForm" >
                                 
-                            </a>
+                                    <p>
+                                    Please upload the lake evaporation  data
+                                    as comma separated values file (.csv). 
+                                    First column is month of year and second column is evaporation in cubic meters (m^3).
+                                    
+                                    </p>
+                                    <h5> Sample </h5>
+                                    <ul class="list-group">
+                                        <li class="list-group-item" ng-repeat="sample in samples">
+                                            <span ng-bind="sample"></span>    
+                                        </li>
+                                    </ul>
+
+                                    <div class="upload-button-container">
+                                        <label>
+                                            <span class="glyphicon glyphicon-file"></span>
+                                            <font face="Times New Roman">Select File</font><input type="file" filelist-bind class="none"  name="files" style="display: none;">
+                                        </label>
+                                    </div>
+                                    
+                                    <div>
+                                        <ul class="list-group">
+                                            <li class="list-group-item" ng-repeat="file in files">
+                                                <span>
+                                                    
+                                                    <span> {{ file.name}} </span>
+                                                    <span>{{file.size/1000}} KB</span>
+                                                    
+                                                </span>
+                                                <span class="glyphicon glyphicon-check"></span>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="upload-button-container" ng-show="files.length > 0 ">
+                                        <button class="btn btn-primary" ng-click="process_upload()" type="submit">
+                                            Upload 
+                                        </button>
+                                    </div>
+                                </form> 
+                            
+                                <div class="file-download-container" ng-show="display.downloadLink">
+                                    <h6>System evaporation data file</h6>
+                                    
+                                    <span> 
+                                        <font face="Times New Roman">{{lakeFileObj.fileName}} ( {{lakeFileObj.createdOn}} )</font>
+                                    </span>
+                                    <span class="glyphicon glyphicon-download-alt"></span>
+                                    <a ng-href="{{base}}/admin/shim/download/file.php?id={{lakeFileObj.fileId}}">
+                                        <font face="Times New Roman">Download File </font> 
+                                    </a>
+                                </div>
+
+                                <div ng-show="!display.downloadLink">
+                                    <h6> No evaporation data file in the system </h6>
+                                </div>
+                        
+
+                            </div>
+                        </div> <!-- grid:content -->
+                    </div>
+        
+                    <div class="row">
+                        <div class="col-md-12">
+                            <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-footer.inc'); ?>
                         </div>
 
-                        <div ng-show="!display.downloadLink">
-                            <h6>No evaporation data file in the system </h6>
-                        </div>
-                   
+                    </div> <!-- footer -->
 
-                </div>
-        </div> <!-- grid:content -->
-       
-        <div class="mdl-grid mdl-grid--no-spacing">
-            <div class="mdl-cell mdl-cell--12-col">
-                <?php include(APP_WEB_DIR . '/inc/ui/mdl-footer.inc'); ?>
-            </div>
-
-        </div> <!-- footer -->
-
-    </main>
-    
-    
- </div> 
-</body>
+            </main>
+        
+        
+        </div> 
+    </body>
 
 
-<script src="/assets/mdl/material.min.js"></script>
-<script src="/assets/js/angular.min.js"></script>
-<script src="/assets/js/main.js?v=1"></script>
+    <script src="/assets/js/jquery-2.1.1.min.js"></script>
+    <script src="/test/bootstrap/assets/js/bootstrap.js"></script>
+    <script src="/test/bootstrap/assets/js/npm.js"></script>
+    <script src="/test/bootstrap/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/angular.min.js"></script>
+    <script src="/assets/js/main.js"></script>
 
 
 
-<script>
+    <script>
 
-    yuktixApp.controller("yuktix.admin.lake.csv.upload", function ($scope, lake, fupload,$window) {
+        yuktixApp.controller("yuktix.admin.lake.csv.upload", function ($scope, lake, fupload,$window) {
 
-         $scope.get_lake_object = function() {
+            $scope.get_lake_object = function() {
 
-            $scope.showProgress("Getting lake object from server...");
-            lake.getLakeObject($scope.base,$scope.debug, $scope.lakeId).then( function(response) {
-                    var status = response.status || 500;
-                    var data = response.data || {};
-                    if($scope.debug) {
-                        console.log("server response:: lake object:%O", data);
-                    }
+                $scope.showProgress("Getting lake object from server...");
+                lake.getLakeObject($scope.base,$scope.debug, $scope.lakeId).then( function(response) {
+                        var status = response.status || 500;
+                        var data = response.data || {};
+                        if($scope.debug) {
+                            console.log("server response:: lake object:%O", data);
+                        }
 
-                    if (status != 200 || data.code != 200) {
-                        console.log(response);
-                        var error = data.error || (status + ":error retrieving  data from Server");
-                        $scope.showError(error);
-                        return;
-                    }
+                        if (status != 200 || data.code != 200) {
+                            console.log(response);
+                            var error = data.error || (status + ":error retrieving  data from Server");
+                            $scope.showError(error);
+                            return;
+                        }
 
-                    $scope.lakeObj = data.result ;
-                    $scope.get_lake_file() ;
+                        $scope.lakeObj = data.result ;
+                        $scope.get_lake_file() ;
 
-                },function(response) {
-                    $scope.processResponse(response);
-                });
+                    },function(response) {
+                        $scope.processResponse(response);
+                    });
 
-        };
+            };
 
-        $scope.get_lake_file = function() {
+            $scope.get_lake_file = function() {
 
-            $scope.showProgress("getting lake file object from server...");
-            lake.getRelationshipFile($scope.base,$scope.debug, $scope.lakeId,$scope.fileCode).then( function(response) {
-                    var status = response.status || 500;
-                    var data = response.data || {};
+                $scope.showProgress("getting lake file object from server...");
+                lake.getRelationshipFile($scope.base,$scope.debug, $scope.lakeId,$scope.fileCode).then( function(response) {
+                        var status = response.status || 500;
+                        var data = response.data || {};
 
-                    if($scope.debug) {
-                        console.log("server response:: lake file object:%O", data);
-                    }
+                        if($scope.debug) {
+                            console.log("server response:: lake file object:%O", data);
+                        }
 
-                    if (status != 200 || data.code != 200) {
-                        console.log(response);
-                        var error = data.error || (status + ":error retrieving  data from Server");
-                        $scope.showError(error);
-                        return;
-                    }
+                        if (status != 200 || data.code != 200) {
+                            console.log(response);
+                            var error = data.error || (status + ":error retrieving  data from Server");
+                            $scope.showError(error);
+                            return;
+                        }
 
-                    $scope.lakeFileObj = data.result || {} ;
-                    if($scope.debug) {
-                        console.log("lake file obj ::", $scope.lakeFileObj);
-                    }
+                        $scope.lakeFileObj = data.result || {} ;
+                        if($scope.debug) {
+                            console.log("lake file obj ::", $scope.lakeFileObj);
+                        }
 
-                    // set display.downloadLink
-                    if($scope.lakeFileObj.hasOwnProperty("fileId")) {
-                        $scope.display.downloadLink = true ;
-                        $scope.lakeFileObj.createdOn =  new Date($scope.lakeFileObj.tsUnix * 1000).toLocaleString() ;
-                    }
-                    
-                    $scope.clearPageMessage();
-                    
+                        // set display.downloadLink
+                        if($scope.lakeFileObj.hasOwnProperty("fileId")) {
+                            $scope.display.downloadLink = true ;
+                            $scope.lakeFileObj.createdOn =  new Date($scope.lakeFileObj.tsUnix * 1000).toLocaleString() ;
+                        }
+                        
+                        $scope.clearPageMessage();
+                        
 
-                },function(response) {
-                    $scope.processResponse(response);
-                });
+                    },function(response) {
+                        $scope.processResponse(response);
+                    });
 
-        };
+            };
 
-        $scope.upload_file = function (uploadUrl,metadata) {
+            $scope.upload_file = function (uploadUrl,metadata) {
 
-            if(!angular.isDefined($scope.files)) {
-                // no files on page.
-                var error = "no files found. please select a file first!";
-                var xmsg = "no files found during processing. " 
-                    + " please check the you are using filelist-bind directive"
-                    + " with input type = file and  name=files element." ; 
+                if(!angular.isDefined($scope.files)) {
+                    // no files on page.
+                    var error = "no files found. please select a file first!";
+                    var xmsg = "no files found during processing. " 
+                        + " please check the you are using filelist-bind directive"
+                        + " with input type = file and  name=files element." ; 
 
-                $scope.showError(error);
-                console.error(xmsg);
-                return ;
-            }
-
-            var formData = new FormData();
-            var xfile = $scope.files[0] ;
-
-            formData.append("myfile", xfile);
-            formData.append("metadata", angular.toJson(metadata));
-            
-            $scope.showProgress("uploading file...");
-
-            // resolve file upload promise
-            fupload.send_form_data($scope.debug, uploadUrl, formData).then(function (response) {
-
-                var status = response.status || 500;
-                var data = response.data || {};
-
-                if ($scope.debug) {
-                    console.log("API response :");
-                    console.log(data);
-                }
-
-                if (status != 200 || data.code != 200) {
-                    console.error("browser response object: " ,response);
-                    var error  = data.error || (status + ":error while submitting data ");
                     $scope.showError(error);
-                    $scope.showToastMessage(error);
+                    console.error(xmsg);
                     return ;
                 }
+
+                var formData = new FormData();
+                var xfile = $scope.files[0] ;
+
+                formData.append("myfile", xfile);
+                formData.append("metadata", angular.toJson(metadata));
                 
-                $scope.send_file_data(data.fileId) ;
-                return ;
+                $scope.showProgress("uploading file...");
 
-            }, function (response) {
-                $scope.processResponse(response);
-            });
-            
-        };
-
-        $scope.send_file_data = function(fileId) {
-
-            lake.storeRelationshipFile($scope.base, $scope.debug,$scope.lakeId, $scope.fileCode, fileId).then(function (response) {
+                // resolve file upload promise
+                fupload.send_form_data($scope.debug, uploadUrl, formData).then(function (response) {
 
                     var status = response.status || 500;
                     var data = response.data || {};
@@ -265,69 +243,98 @@
                     }
 
                     if (status != 200 || data.code != 200) {
-                        console.log("browser response object: %o" ,response);
-                        var error = data.error || (status + ":error submitting feature create form");
+                        console.error("browser response object: " ,response);
+                        var error  = data.error || (status + ":error while submitting data ");
                         $scope.showError(error);
                         $scope.showToastMessage(error);
-                        return;
+                        return ;
                     }
-
-                    var message = "evaporation data file uploaded!" 
-                    $scope.showToastMessage(message);
-                    $scope.clearPageMessage();
+                    
+                    $scope.send_file_data(data.fileId) ;
+                    return ;
 
                 }, function (response) {
                     $scope.processResponse(response);
-                }); 
-        }
+                });
+                
+            };
 
-        $scope.process_upload = function () {
+            $scope.send_file_data = function(fileId) {
 
-            var uploadUrl = $scope.base + "/admin/shim/upload/mpart.php" ;
-            var metadata = { 
-                "store" : "database"
-            } ;
+                lake.storeRelationshipFile($scope.base, $scope.debug,$scope.lakeId, $scope.fileCode, fileId).then(function (response) {
 
-            $scope.upload_file(uploadUrl, metadata);
-        };
+                        var status = response.status || 500;
+                        var data = response.data || {};
 
-        $scope.errorMessage = "" ;
-        // page params
-        $scope.gparams = <?php echo json_encode($gparams); ?> ;
-        $scope.debug = $scope.gparams.debug;
-        $scope.base = $scope.gparams.base;
-        $scope.lakeId = <?php echo $lakeId ?> ;
+                        if ($scope.debug) {
+                            console.log("API response :");
+                            console.log(data);
+                        }
 
-        // data initialization
-        $scope.lakeObj = {};
-        $scope.lakeFileObj = {} ;
-        $scope.display = {} ;
-        $scope.display.downloadLink = false ;
+                        if (status != 200 || data.code != 200) {
+                            console.log("browser response object: %o" ,response);
+                            var error = data.error || (status + ":error submitting feature create form");
+                            $scope.showError(error);
+                            $scope.showToastMessage(error);
+                            return;
+                        }
 
-         // lake edit menu display 
-        $scope.display.lakeEditMenu = {} ;
-        $scope.display.lakeEditMenu.stageArea = true ;
+                        var message = "evaporation data file uploaded!" 
+                        $scope.showToastMessage(message);
+                        $scope.clearPageMessage();
+
+                    }, function (response) {
+                        $scope.processResponse(response);
+                    }); 
+            }
+
+            $scope.process_upload = function () {
+
+                var uploadUrl = $scope.base + "/admin/shim/upload/mpart.php" ;
+                var metadata = { 
+                    "store" : "database"
+                } ;
+
+                $scope.upload_file(uploadUrl, metadata);
+            };
+
+            $scope.errorMessage = "" ;
+            // page params
+            $scope.gparams = <?php echo json_encode($gparams); ?> ;
+            $scope.debug = $scope.gparams.debug;
+            $scope.base = $scope.gparams.base;
+            $scope.lakeId = <?php echo $lakeId ?> ;
+
+            // data initialization
+            $scope.lakeObj = {};
+            $scope.lakeFileObj = {} ;
+            $scope.display = {} ;
+            $scope.display.downloadLink = false ;
+
+            // lake edit menu display 
+            $scope.display.lakeEditMenu = {} ;
+            $scope.display.lakeEditMenu.stageArea = true ;
 
 
-        // file code: 1 stage-volume
-        // file code: 2 stage-area
-        // file code: 3 evaporation
+            // file code: 1 stage-volume
+            // file code: 2 stage-area
+            // file code: 3 evaporation
 
-        $scope.fileCode = 3 ;
+            $scope.fileCode = 3 ;
 
-        // sample evaporation data 
-        $scope.samples = [] ;
+            // sample evaporation data 
+            $scope.samples = [] ;
+            
+            $scope.samples.push("January , 83685.11716");
+            $scope.samples.push("February , 92708.48279");
+            $scope.samples.push("March , 131164.4071");
+            
+            // start 
+            $scope.get_lake_object() ;
         
-        $scope.samples.push("January , 83685.11716");
-        $scope.samples.push("February , 92708.48279");
-        $scope.samples.push("March , 131164.4071");
-        
-        // start 
-        $scope.get_lake_object() ;
-    
 
-    });
-</script>
+        });
+    </script>
 
 
 

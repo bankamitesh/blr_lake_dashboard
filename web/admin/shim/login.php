@@ -18,11 +18,11 @@
     $user1 = new \stdClass ;
     $user1->loginId = 1 ;
     $user1->sessionKey = "session1";
-    $user1->firstName = "Manju" ;
-    $user1->lastName = "Walikar" ;
-    $user1->email = "mwalikar@yuktix.com" ;
+    $user1->firstName = "Mitesh" ;
+    $user1->lastName = "Banka" ;
+    $user1->email = "banka.mitesh@gmail.com" ;
     $user1->accountName = "Yuktix Technologies";
-    $user1->password =  "mwalikar" ;
+    $user1->password =  "08642" ;
 
     $user2 = new \stdClass ;
     $user2->loginId = 2 ;
@@ -36,7 +36,7 @@
     // PHP $_REQUEST only works for x-www-form-urlencoded content type
     // so we have to get the raw data when content-type is application/json 
     
-    $logins = array ("manju" => $user1 , "rjha94" => $user2) ;
+    $logins = array ("Mitesh" => $user1 , "rjha94" => $user2) ;
     	
     $rawPostData = file_get_contents("php://input");
     $postData = json_decode($rawPostData) ;
