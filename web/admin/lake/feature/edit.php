@@ -38,6 +38,7 @@
     <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap-theme.min.css" />
     <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.css" />
     <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="/test/bootstrap/assets/css/style.css" />
     <link rel="stylesheet" href="/assets/css/main.css">
 
@@ -109,16 +110,16 @@
                         <h5> Monitoring status </h5>
                     
                         <ul class="nav nav-tabs">
-                                <li ng-class="{'is-active':display.tabs.sensor}"><a data-toggle="tab"  ng-click="select_monitoring_tab(1)" href="#sensor-panel">Sensor</a></li>
-                                <li ng-class="{'is-active':display.tabs.lake}"><a data-toggle="tab"  ng-click="select_monitoring_tab(2)" href="#lake-panel">Lake Level</a></li>
-                                <li ng-class="{'is-active':display.tabs.constant}"><a data-toggle="tab"  ng-click="select_monitoring_tab(3)" href="#rate-panel">Constant</a></li>
+                                <li ng-class="{'active':display.tabs.sensor}"><a data-toggle="tab"  ng-click="select_monitoring_tab(1)" href="#sensor-panel">Sensor</a></li>
+                                <li ng-class="{'active':display.tabs.lake}"><a data-toggle="tab"  ng-click="select_monitoring_tab(2)" href="#lake-panel">Lake Level</a></li>
+                                <li ng-class="{'active':display.tabs.constant}"><a data-toggle="tab"  ng-click="select_monitoring_tab(3)" href="#rate-panel">Constant</a></li>
 
                         </ul>
                         <div class="tab-content">
                         
                             
 
-                            <div class="tab-pane fade" ng-class="{'is-active':display.tabs.sensor}" id="sensor-panel">
+                            <div class="tab-pane fade" ng-class="{'in active':display.tabs.sensor}" id="sensor-panel">
                                 <div class="login-style">
                                     <form name="sensorForm">
                                         <h6>Serial Number</h6>
@@ -172,7 +173,7 @@
 
                             </div> <!-- tab:sensor -->
 
-                            <div class="tab-pane fade" ng-class="{'is-active':display.tabs.lake}" id="lake-panel">
+                            <div class="tab-pane fade" ng-class="{'in active':display.tabs.lake}" id="lake-panel">
                                 <div class="login-style">    
                                     <form name="lakeForm">
                                         <h6> Lake stage flow</h6>
@@ -201,7 +202,7 @@
                                 </div>
                             </div> <!-- tab:lake -->
 
-                            <div class="tab-pane fade" ng-class="{'is-active':display.tabs.constant}" id="rate-panel">
+                            <div class="tab-pane fade" ng-class="{'in active':display.tabs.constant}" id="rate-panel">
                                 <div class="login-style">     
                                     <form name="constantForm">
                                         <h6>Flow rate</h6>
@@ -245,7 +246,6 @@
 
 <script src="/assets/js/jquery-2.1.1.min.js"></script>
 <script src="/test/bootstrap/assets/js/bootstrap.js"></script>
-<script src="/test/bootstrap/assets/js/npm.js"></script>
 <script src="/test/bootstrap/assets/js/bootstrap.min.js"></script>
 <script src="/assets/js/angular.min.js"></script>
 <script src="/assets/js/main.js"></script>

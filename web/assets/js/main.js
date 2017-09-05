@@ -234,6 +234,7 @@
 		
 		// run module for upgrading MDL
 		// components inside angularjs pages 
+		/*
 		yuktixApp.run(function () {
 			
 			var mdlUpgradeDom = false;
@@ -253,6 +254,7 @@
 			});
 			
 		});
+		*/
 
         // All controllers of this module can use the 
         // functions defined  inside run()

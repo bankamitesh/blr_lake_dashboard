@@ -82,7 +82,6 @@
 	
 	<script src="/assets/js/jquery-2.1.1.min.js"></script>
 	<script src="/test/bootstrap/assets/js/bootstrap.js"></script>
-	<script src="/test/bootstrap/assets/js/npm.js"></script>
 	<script src="/test/bootstrap/assets/js/bootstrap.min.js"></script>
 	<script src="/assets/js/angular.min.js"></script>
 	<script src="/assets/js/main.js"></script>
