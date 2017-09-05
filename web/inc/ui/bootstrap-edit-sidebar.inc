@@ -1,61 +1,61 @@
 
-<div class="col-md-3" id="sidebar-wrapper" style="background-color:black">
+<div class="col-md-3" >
 
-    <ul class="sidebar-nav">
+    <ul  id="sidebar" class="well nav nav-stacked" style=" padding:50px">
 
         <li class="sidebar-brand">
-            <a href="#">
-                <h2 ng-bind="lakeObj.name">  </h2>
-            </a>
+            <center>
+                <h3 ng-bind="lakeObj.name"></h3>
+            </center>
         </li>
         
-        <li ng-class="{active : display.lakeEditMenu.general} ">
+        <li ng-class="{'active' : display.lakeEditMenu.general} ">
                     <a href="/admin/lake/edit.php?lake_id=<?php echo $lakeId; ?>"> 
-                        <span>General information</span> 
+                        General information
                     </a>
                     
                 </li>
                 
-                <li ng-class="{active : display.lakeEditMenu.waterBalance} ">
+                <li ng-class="{'active' : display.lakeEditMenu.waterBalance} ">
                     <a href="/admin/lake/wb/upload.php?lake_id=<?php echo $lakeId; ?>"> 
-                        <span>Water Balance</span>
+                        Water Balance
                     </a>
                 </li>
 
-                <li ng-class="{active : display.lakeEditMenu.zone} ">
+                <li ng-class="{'active' : display.lakeEditMenu.zone} ">
                     <a href="/admin/lake/zone.php?lake_id=<?php echo $lakeId; ?>"> 
-                        <span>Zones/Boundaries</span> 
+                        Zones/Boundaries 
                     </a>
                    
                 </li>
 
-                 <li ng-class="{active : display.lakeEditMenu.feature} ">
+                 <li ng-class="{'active' : display.lakeEditMenu.feature} ">
                     <a href="/admin/lake/feature/list.php?lake_id=<?php echo $lakeId; ?>"> 
-                        <span>Inlet/Outlets</span> 
+                        Inlet/Outlets 
                     </a>
                 </li>
 
-                <li ng-class="{active : display.lakeEditMenu.bathymetry} ">
+                <li ng-class="{'active' : display.lakeEditMenu.bathymetry} ">
                     <a href="/admin/lake/bathymetry.php?lake_id=<?php echo $lakeId; ?>"> 
-                        <span>Bathymetry</span> 
+                        Bathymetry 
                     </a>
                 </li>
 
-                <li ng-class="{active : display.lakeEditMenu.stageVolume} ">
+                <li ng-class="{'active' : display.lakeEditMenu.stageVolume} ">
                     <a href="/admin/lake/stage-volume.php?lake_id=<?php echo $lakeId; ?>" ng-click="goto_stage_volume_page(lakeId)"> 
-                        <span>Stage volume</span> 
+                        Stage volume 
                     </a>
                 </li>
 
-                 <li ng-class="{active : display.lakeEditMenu.stageArea} ">
+                 <li ng-class="{'active' : display.lakeEditMenu.stageArea} ">
                     <a href="/admin/lake/stage-area.php?lake_id=<?php echo $lakeId; ?>"> 
-                        <span>Stage area</span> 
+                        Stage area 
                     </a>
                 </li>
 
-                <li ng-class="{active : display.lakeEditMenu.evaporation} ">
+                <li ng-class="{'active' : display.lakeEditMenu.evaporation} ">
                     <a href="/admin/lake/evaporation.php?lake_id=<?php echo $lakeId; ?>"> 
-                        <span>Evaporation</span> 
+                        Evaporation 
                     </a>
                 </li>
 
