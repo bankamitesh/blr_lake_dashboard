@@ -94,8 +94,11 @@
                             </span>
                             <span class="pull-right"><b>Address</b></span>
                           </li>
+                          <li class="list-group-item">
+                            <p ng-bind="lake.about"></p>
+                          </li>
                       </ul>
-                      <p ng-bind="lake.about"></p>
+                      
                       
                     </div>
                     <div class="card-footer">
