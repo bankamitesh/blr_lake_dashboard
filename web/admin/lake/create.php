@@ -41,7 +41,7 @@
 
                 <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-progress.inc'); ?>
                 <div class="container">
-                    <div class="row" style="padding:50px">
+                    <div class="row row-padding">
                         <div  class="col-md-2"></div>
                         <div  class="col-md-8" >
                             <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-page-message.inc'); ?>

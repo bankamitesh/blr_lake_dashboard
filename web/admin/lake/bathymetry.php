@@ -39,13 +39,6 @@
         <link rel="stylesheet" href="/test/bootstrap/assets/css/style.css" />
         <link rel="stylesheet" href="/assets/css/main.css">
 
-        <style>
-            #map {
-                width:800px;
-                height:640px ;
-            }
-
-        </style>
 
     </head>
 
@@ -59,7 +52,7 @@
 
                 <div class="container">
                     
-                    <div class="row" style="padding:50px">
+                    <div class="row row-padding">
                         
                         <div  class="col-md-6" id ="content">
                             <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-page-message.inc'); ?>

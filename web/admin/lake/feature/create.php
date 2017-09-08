@@ -50,7 +50,7 @@
                    
                 <div class="container">
                     
-                    <div class="row" style="padding:50px">
+                    <div class="row row-padding">
                         
                         
                         <div  class="col-md-6" id ="content">

@@ -52,7 +52,7 @@
 
                 <div class="container">
                 
-                    <div class="row" style="padding:50px">
+                    <div class="row row-padding">
                         
                         <div  class="col-md-6" id ="content">
                             <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-page-message.inc'); ?>
@@ -117,7 +117,7 @@
                                 </div>
                             </form>
                         
-                            <div style="padding-top:30px;" ng-if="preview.errors.length > 0 || preview.snapshots.length > 0">
+                            <div class="div-style" ng-if="preview.errors.length > 0 || preview.snapshots.length > 0">
                             
                                 <p> <span ng-bind="preview.errors"> </span> </p> 
                                 <div ng-repeat="snapshot in preview.snapshots">

@@ -49,13 +49,13 @@
                     
                 <div class="container">
                         
-                    <div class="row" style="padding:50px">
+                    <div class="row row-padding" >
                             
                         <div  class="col-md-6" id ="content">
                             <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-page-message.inc'); ?>
                             
-                            <div class="card" style="width: 40rem; border-color: black;" ng-show="display.notable">
-                                <img class="card-img-top" src="/assets/images/dog.png" style="background-color: pink">
+                            <div class="card card-style" ng-show="display.notable">
+                                <img class="card-img-top card-image" src="/assets/images/dog.png" >
                                 <div class="card-block">    
                                     <h4 class="card-title"> No Lake Features Found! </h4>
                                     <p class="card-text">
@@ -71,12 +71,12 @@
                             </div> <!-- no content card -->
 
                             <div class="table-container" ng-show="display.table">
-                                <div ng-repeat="feature in features" class="card" style="width: 40rem; border-color: black;">
+                                <div ng-repeat="feature in features" class="card card-style" >
                                     <div class="card-block"> 
                                         <div class="card-header">
                                             <div class='btn-toolbar pull-right'>
                                                 <div class='btn-group'>
-                                                    <button class="glyphicon glyphicon-plus" ng-click="goto_create()"></button>
+                                                    <i class="glyphicon glyphicon-plus" ng-click="goto_create()"></i>
                                                 </div>
                                             </div>
                                         </div> 
@@ -84,25 +84,29 @@
                                         <div class="card--text" >
                                             <ul class="list-group">
                                                 <li class="list-group-item">
-                                                    <span class="glyphicon glyphicon-record">
-                                                    {{feature.iocodeValue}} / {{feature.featureTypeValue}}
+                                                    <i class="glyphicon glyphicon-record">&nbsp;</i>
+                                                    <span>
+                                                         {{feature.iocodeValue}} / {{feature.featureTypeValue}}
                                                     </span>
                                                 </li>
                                                 <li class="list-group-item">
-                                                    <span class="glyphicon glyphicon-map-marker">
-                                                    {{feature.lat}}, {{feature.lon}}
+                                                    <i class="glyphicon glyphicon-map-marker">&nbsp;</i>
+                                                    <span>
+                                                        {{feature.lat}}, {{feature.lon}}
                                                     </span>
                                                     <span class="pull-right"><b>Location</b></span>
                                                 </li>
                                                 <li class="list-group-item"> 
-                                                    <span class="glyphicon glyphicon-th-large">
-                                                    {{feature.width}},{{feature.maxHeight}}
+                                                    <i class="glyphicon glyphicon-th-large">&nbsp;</i>
+                                                    <span>
+                                                        {{feature.width}}, {{feature.maxHeight}}
                                                     </span> 
                                                     <span class="pull-right"><b>Width/Height</b></span>
                                                 </li>
                                                 <li class="list-group-item"> 
-                                                    <span class="glyphicon glyphicon-eye-open">
-                                                    {{feature.monitoringValue}}
+                                                    <i class="glyphicon glyphicon-eye-open">&nbsp;</i>
+                                                    <span>
+                                                        {{feature.monitoringValue}}
                                                     </span>
                                                     <span class="pull-right"><b>Monitoring</b></span>
                                                 </li>
@@ -110,9 +114,9 @@
                                         
                                         </div>
                                         <div class="card-footer">
-                                            <button class="glyphicon glyphicon-pencil" ng-click="goto_edit(feature.id)"></button>
+                                            <i class="glyphicon glyphicon-pencil" ng-click="goto_edit(feature.id)"></i>
                                             &nbsp;
-                                            <button class="glyphicon glyphicon-trash"></button>
+                                            <i class="glyphicon glyphicon-trash"></i>
                                         </div>
                                     </div> 
                                 </div> <!-- card --> 

@@ -40,13 +40,13 @@
         <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-progress.inc'); ?>
 
         <div class="container">
-          <div class="row" style="padding:50px">
+          <div class="row row-padding">
             <div  class="col-md-3"></div>
             <div  class="col-md-9">
               <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-page-message.inc'); ?>
                 
-              <div class="card" style="width: 40rem; border-color: black;" ng-show="display.notable">
-                <img class="card-img-top" src="/assets/images/dog.png" style="background-color: pink">
+              <div class="card card-style" ng-show="display.notable">
+                <img class="card-img-top card-image" src="/assets/images/dog.png" >
                 <div class="card-block">
                   <h4 class="card-title">No Lake Found</h4>
                   <p class="card-text"> 
@@ -61,12 +61,12 @@
               </div>
                 
               <div class="table-container" ng-show="display.table">
-                <div ng-repeat="lake in lakes" class="card" style="width: 40rem; border-color: black;">
+                <div ng-repeat="lake in lakes" class="card card-style" >
                   <div class="card-block"> 
                     <div class="card-header">
                       <div class='btn-toolbar pull-right'>
                         <div class='btn-group'>
-                          <button class="glyphicon glyphicon-plus" ng-click="goto_create()"></button>
+                          <i class="glyphicon glyphicon-plus" ng-click="goto_create()"></i>
                         </div>
                       </div>
                     </div> 
@@ -74,32 +74,34 @@
                     <div class="card--text" >
                       <ul class="list-group">
                           <li class="list-group-item">
-                            <span class="glyphicon glyphicon-map-marker">
+                            <i class="glyphicon glyphicon-map-marker">&nbsp;</i>
+                            <span>
                               {{lake.lat}}, {{lake.lon}}
                             </span>
                             <span class="pull-right"><b>Location</b></span>
                           </li>
                           <li class="list-group-item"> 
-                            <span class="glyphicon glyphicon-tint">
-                              {{lake.maxArea}},{{lake.maxVolume}}
+                            <i class="glyphicon glyphicon-tint">&nbsp;</i>
+                            <span>
+                              {{lake.maxArea}}, {{lake.maxVolume}}
                             </span> 
                             <span class="pull-right"><b>Area/Volume</b></span>
                           </li>
                           <li class="list-group-item"> 
-                            <span class="glyphicon glyphicon-home">
+                            <i class="glyphicon glyphicon-home">&nbsp;</i>
+                            <span>
                               {{lake.address}}
                             </span>
                             <span class="pull-right"><b>Address</b></span>
                           </li>
                       </ul>
-                      
                       <p ng-bind="lake.about"></p>
                       
                     </div>
                     <div class="card-footer">
-                      <button class="glyphicon glyphicon-pencil" ng-click="goto_edit(lake.id)"></button>
+                      <i class="glyphicon glyphicon-pencil" ng-click="goto_edit(lake.id)"></i>
                       &nbsp;
-                      <button class="glyphicon glyphicon-trash"></button>
+                      <i class="glyphicon glyphicon-trash"></i>
                     </div>
                   </div> 
                 </div> <!-- card --> 

@@ -39,35 +39,6 @@
         <link rel="stylesheet" href="/test/bootstrap/assets/css/style.css" />
         <link rel="stylesheet" href="/assets/css/main.css">
 
-    
-        <style>
-        
-            .mdl-card__media {
-                margin: 0;
-            }
-
-            .mdl-card__media > img {
-                max-width: 100%;
-                height: 240px ;
-            }
-
-            .mdl-card__actions {
-                display: flex;
-                box-sizing:border-box;
-                align-items: center;
-            }
-            .mdl-card__actions > .mdl-button--icon {
-                margin-right: 3px;
-                margin-left: 3px;
-            }
-
-            .image-mdl-card {
-                width:320px ;
-                
-            }
-
-        </style>
-
     </head>
 
     <body  ng-controller="yuktix.admin.lake.image.upload">
@@ -80,7 +51,7 @@
 
                 <div class="container">
                 
-                    <div class="row" style="padding:50px">
+                    <div class="row row-padding">
                         <div  class="col-md-12" >
                             <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-page-message.inc'); ?>
                         </div>

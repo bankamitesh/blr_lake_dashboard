@@ -6,7 +6,27 @@
     max-width: 100%;
     height: auto;
 }
-body, h1, h2, h3, h4, h5, p, span, ul, li, form, button, main, label, div{
+body, h1, h2, h3, h4, h5, p, span, ul, li, form, button, main, label, div, a{
     font-family: 'Roboto', sans-serif;
 }
 
+.row-padding{
+    padding:50px;
+}
+
+.card-style{
+    width: 40rem; border-color: black;
+}
+
+.card-image{
+    background-color: pink;
+}
+
+#map {
+    width:800px;
+    height:640px ;
+}
+
+.div-style{
+    padding-top:30px;
+}

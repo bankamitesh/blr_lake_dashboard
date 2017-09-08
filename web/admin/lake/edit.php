@@ -32,7 +32,7 @@
         <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap-theme.min.css" />
         <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.css" />
         <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.min.css" />
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto" >
         <link rel="stylesheet" href="/test/bootstrap/assets/css/style.css" />
         <link rel="stylesheet" href="/assets/css/main.css">
     </head> 
@@ -50,7 +50,7 @@
                
                 <div class="container">
                 
-                    <div class="row" style="padding:50px">
+                    <div class="row row-padding">
                     
                         
                         <div  class="col-md-6" id ="content">
