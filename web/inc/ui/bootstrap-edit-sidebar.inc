@@ -1,5 +1,7 @@
 
 <head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="/test/bootstrap/assets/css/style.css" />
     <style>
         .bs-docs-sidebar li {
             cursor : pointer ;

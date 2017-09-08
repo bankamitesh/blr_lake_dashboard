@@ -6,7 +6,7 @@
     max-width: 100%;
     height: auto;
 }
-body, h1, h2, h3, h4, h5, p, span, ul, li, form, button, main, label, div, a{
+body, h1, h2, h3, h4, h5, p, span, ul, li, form, button, main, label, div, a, header, footer{
     font-family: 'Roboto', sans-serif;
 }
 
@@ -18,7 +18,7 @@ body, h1, h2, h3, h4, h5, p, span, ul, li, form, button, main, label, div, a{
     width: 40rem; border-color: black;
 }
 
-.card-image{
+.card > .card-image{
     background-color: pink;
 }
 
