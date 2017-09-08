@@ -149,7 +149,7 @@
                                         <div class="upload-button-container">
                                             <label>
                                                 <span class="glyphicon glyphicon-file"></span>
-                                                <font face="Times New Roman">Upload CSV</font><input type="file" filelist-bind class="none"  name="files" style="display: none;">
+                                                Upload CSV<input type="file" filelist-bind class="none"  name="files" style="display: none;">
                                             </label>
                                         </div>
                                     
@@ -179,7 +179,7 @@
                                         <div class="upload-button-container">
                                             <label>
                                                 <span class="glyphicon glyphicon-file"></span>
-                                                <font face="Times New Roman">Upload CSV</font><input type="file" filelist-bind class="none"  name="files" style="display: none;">
+                                                Upload CSV<input type="file" filelist-bind class="none"  name="files" style="display: none;">
                                             </label>
                                         </div>
                                 

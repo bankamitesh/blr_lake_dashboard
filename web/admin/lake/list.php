@@ -75,26 +75,26 @@
                       <ul class="list-group">
                           <li class="list-group-item">
                             <span class="glyphicon glyphicon-map-marker">
-                              <font face="Times New Roman">{{lake.lat}}, {{lake.lon}}</font>
+                              {{lake.lat}}, {{lake.lon}}
                             </span>
                             <span class="pull-right"><b>Location</b></span>
                           </li>
                           <li class="list-group-item"> 
                             <span class="glyphicon glyphicon-tint">
-                              <font face="Times New Roman">{{lake.maxArea}},{{lake.maxVolume}}</font>
+                              {{lake.maxArea}},{{lake.maxVolume}}
                             </span> 
                             <span class="pull-right"><b>Area/Volume</b></span>
                           </li>
                           <li class="list-group-item"> 
                             <span class="glyphicon glyphicon-home">
-                              <font face="Times New Roman">{{lake.address}}</font>
+                              {{lake.address}}
                             </span>
                             <span class="pull-right"><b>Address</b></span>
                           </li>
                       </ul>
-                      <font face="Times New Roman">
-                        <p ng-bind="lake.about"></p>
-                      </font>
+                      
+                      <p ng-bind="lake.about"></p>
+                      
                     </div>
                     <div class="card-footer">
                       <button class="glyphicon glyphicon-pencil" ng-click="goto_edit(lake.id)"></button>

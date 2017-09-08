@@ -79,7 +79,7 @@
                                 <div class="upload-button-container">
                                     <label>
                                         <span class="glyphicon glyphicon-file"></span>
-                                        <font face="Times New Roman">Select File</font><input type="file" filelist-bind class="none"  name="files" style="display: none;">
+                                        Select File<input type="file" filelist-bind class="none"  name="files" style="display: none;">
                                     </label>
                                 </div>
                                 
@@ -109,11 +109,11 @@
                                 
                                 <h6>System Bathymetry data file</h6>
                                 <span>
-                                    <font face="Times New Roman">{{lakeFileObj.fileName}} ( {{lakeFileObj.createdOn}} )</font>
+                                    {{lakeFileObj.fileName}} ( {{lakeFileObj.createdOn}} )
                                 </span>
                                 <span class="glyphicon glyphicon-download-alt"></span>
                                 <a ng-href="{{base}}/admin/shim/download/file.php?id={{lakeFileObj.fileId}}">
-                                    <font face="Times New Roman">Download File</font>
+                                    Download File
                                 </a>
                                     
                             </div>

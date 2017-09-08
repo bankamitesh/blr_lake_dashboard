@@ -91,7 +91,7 @@
                                 <div class="upload-button-container">
                                     <label>
                                     <span class="glyphicon glyphicon-file"></span>
-                                    <font face="Times New Roman">Select File</font><input type="file" filelist-bind class="none"  name="files" style="display: none;" multiple>
+                                    Select File<input type="file" filelist-bind class="none"  name="files" style="display: none;" multiple>
                                     </label>
                                 </div>
                                 

@@ -85,24 +85,24 @@
                                             <ul class="list-group">
                                                 <li class="list-group-item">
                                                     <span class="glyphicon glyphicon-record">
-                                                    <font face="Times New Roman">{{feature.iocodeValue}} / {{feature.featureTypeValue}}</font>
+                                                    {{feature.iocodeValue}} / {{feature.featureTypeValue}}
                                                     </span>
                                                 </li>
                                                 <li class="list-group-item">
                                                     <span class="glyphicon glyphicon-map-marker">
-                                                    <font face="Times New Roman">{{feature.lat}}, {{feature.lon}}</font>
+                                                    {{feature.lat}}, {{feature.lon}}
                                                     </span>
                                                     <span class="pull-right"><b>Location</b></span>
                                                 </li>
                                                 <li class="list-group-item"> 
                                                     <span class="glyphicon glyphicon-th-large">
-                                                    <font face="Times New Roman">{{feature.width}},{{feature.maxHeight}}</font>
+                                                    {{feature.width}},{{feature.maxHeight}}
                                                     </span> 
                                                     <span class="pull-right"><b>Width/Height</b></span>
                                                 </li>
                                                 <li class="list-group-item"> 
                                                     <span class="glyphicon glyphicon-eye-open">
-                                                    <font face="Times New Roman">{{feature.monitoringValue}}</font>
+                                                    {{feature.monitoringValue}}
                                                     </span>
                                                     <span class="pull-right"><b>Monitoring</b></span>
                                                 </li>
