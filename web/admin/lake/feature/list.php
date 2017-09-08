@@ -51,8 +51,6 @@
                         
                     <div class="row" style="padding:50px">
                             
-                        <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-edit-sidebar.inc'); ?>
-                        <div class="col-md-1"> </div>
                         <div  class="col-md-6" id ="content">
                             <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-page-message.inc'); ?>
                             
@@ -84,33 +82,33 @@
                                         </div> 
                                         <h3 class="card-title" ng-bind="feature.name"></h3>
                                         <div class="card--text" >
-                                        <ul class="list-group">
-                                            <li class="list-group-item">
-                                                <span class="glyphicon glyphicon-record">
-                                                <font face="Times New Roman">{{feature.iocodeValue}} / {{feature.featureTypeValue}}</font>
-                                                </span>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <span class="glyphicon glyphicon-map-marker">
-                                                <font face="Times New Roman">{{feature.lat}}, {{feature.lon}}</font>
-                                                </span>
-                                                <span class="pull-right"><b>Location</b></span>
-                                            </li>
-                                            <li class="list-group-item"> 
-                                                <span class="glyphicon glyphicon-th-large">
-                                                <font face="Times New Roman">{{feature.width}},{{feature.maxHeight}}</font>
-                                                </span> 
-                                                <span class="pull-right"><b>Width/Height</b></span>
-                                            </li>
-                                            <li class="list-group-item"> 
-                                                <span class="glyphicon glyphicon-eye-open">
-                                                <font face="Times New Roman">{{feature.monitoringValue}}</font>
-                                                </span>
-                                                <span class="pull-right"><b>Monitoring</b></span>
-                                            </li>
-                                        </ul>
+                                            <ul class="list-group">
+                                                <li class="list-group-item">
+                                                    <span class="glyphicon glyphicon-record">
+                                                    <font face="Times New Roman">{{feature.iocodeValue}} / {{feature.featureTypeValue}}</font>
+                                                    </span>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <span class="glyphicon glyphicon-map-marker">
+                                                    <font face="Times New Roman">{{feature.lat}}, {{feature.lon}}</font>
+                                                    </span>
+                                                    <span class="pull-right"><b>Location</b></span>
+                                                </li>
+                                                <li class="list-group-item"> 
+                                                    <span class="glyphicon glyphicon-th-large">
+                                                    <font face="Times New Roman">{{feature.width}},{{feature.maxHeight}}</font>
+                                                    </span> 
+                                                    <span class="pull-right"><b>Width/Height</b></span>
+                                                </li>
+                                                <li class="list-group-item"> 
+                                                    <span class="glyphicon glyphicon-eye-open">
+                                                    <font face="Times New Roman">{{feature.monitoringValue}}</font>
+                                                    </span>
+                                                    <span class="pull-right"><b>Monitoring</b></span>
+                                                </li>
+                                            </ul>
                                         
-                                    
+                                        </div>
                                         <div class="card-footer">
                                             <button class="glyphicon glyphicon-pencil" ng-click="goto_edit(feature.id)"></button>
                                             &nbsp;
@@ -120,11 +118,13 @@
                                 </div> <!-- card --> 
                             </div> <!-- display table: container -->  
 
-                                
-                            
-
                         </div> 
+
+                        <div class="col-md-1"></div>
+                        <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-edit-sidebar.inc'); ?>
+                    
                     </div>
+
                 </div> <!-- grid:content -->
 
                 <div class="row">

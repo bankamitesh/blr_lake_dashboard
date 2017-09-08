@@ -82,7 +82,7 @@
                 
                     <div class="row" style="padding:50px">
                         <div  class="col-md-12" >
-                            <?php include(APP_WEB_DIR . '/inc/ui/mdl-page-message.inc'); ?>
+                            <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-page-message.inc'); ?>
                         </div>
                     </div> <!-- grid:1 -->
                     

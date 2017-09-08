@@ -50,8 +50,7 @@
                     <div class="container">
                         <div class="row" style="padding:50px">
                             
-                            <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-edit-sidebar.inc'); ?>
-                            <div class="col-md-1"> </div>
+                            
                             <div  class="col-md-6" id ="content">
                                 <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-page-message.inc'); ?>
                                 <form name="csvUploadForm" >
@@ -113,9 +112,11 @@
                                 <div ng-show="!display.downloadLink">
                                     <h6> No evaporation data file in the system </h6>
                                 </div>
-                        
+                                
 
                             </div>
+                            <div class="col-md-1"> </div>
+                        <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-edit-sidebar.inc'); ?>
                         </div> <!-- grid:content -->
                     </div>
         
@@ -313,7 +314,7 @@
 
             // lake edit menu display 
             $scope.display.lakeEditMenu = {} ;
-            $scope.display.lakeEditMenu.stageArea = true ;
+            $scope.display.lakeEditMenu.evaporation = true ;
 
 
             // file code: 1 stage-volume

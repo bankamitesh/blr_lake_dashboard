@@ -56,8 +56,7 @@
                 <div class="container">
                 
                     <div class="row" style="padding:50px">
-                        <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-edit-sidebar.inc'); ?>
-                        <div class="col-md-1"> </div>
+                        
                         <div  class="col-md-6" id ="content">
                             <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-page-message.inc'); ?>
                             
@@ -116,6 +115,9 @@
 
                             </div>
                         </div>
+                        <div class="col-md-1"> </div>
+                        <?php include(APP_WEB_DIR . '/inc/ui/bootstrap-edit-sidebar.inc'); ?>
+                        
                     </div> 
                 </div> <!-- grid:content -->
 
