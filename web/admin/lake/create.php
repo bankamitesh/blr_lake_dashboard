@@ -23,13 +23,10 @@
 	
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap-theme.css">
         <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap-theme.min.css" />
-        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.css" />
         <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.min.css" />
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <link rel="stylesheet" href="/test/bootstrap/assets/css/style.css" />
-        <link rel="stylesheet" href="/assets/css/main.css">
     </head>
 
     <body ng-controller="yuktix.admin.lake.create">
@@ -72,7 +69,8 @@
                                     <h5> Lake Type </h5>
 
                                     <div>
-                                        <select id="lake_type_select"
+                                        <select id="lake-agency-selector"
+                                            class="lake-agency-selector"
                                             ng-model="lakeType"
                                             ng-change="select_lake_type(lakeType)"
                                             ng-options="lakeType.value for lakeType in lakeTypes">
@@ -117,7 +115,9 @@
 
                                     <h5> Agency</h5> 
                                     <div>
-                                        <select id="agency_select" name="agency"
+                                        <select id="lake-agency-selector"
+                                            class="lake-agency-selector"
+                                            name="agency"
                                             ng-model="lakeAgency"
                                             ng-change="select_agency(lakeAgency)"
                                             ng-options="agency.value for agency in lakeAgencies"
@@ -170,9 +170,8 @@
 
     </body>
 
-    <script src="/assets/js/jquery-2.1.1.min.js"></script>
-	<script src="/test/bootstrap/assets/js/bootstrap.js"></script>
-	<script src="/test/bootstrap/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/jquery-2.1.1.min.js"></script>	
+    <script src="/test/bootstrap/assets/js/bootstrap.min.js"></script>
 	<script src="/assets/js/angular.min.js"></script>
 	<script src="/assets/js/main.js"></script>
 

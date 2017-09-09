@@ -34,13 +34,10 @@
     <head>
         <title> Lake zone page </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap-theme.css">
         <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap-theme.min.css" />
-        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.css" />
         <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.min.css" />
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <link rel="stylesheet" href="/test/bootstrap/assets/css/style.css" />
-        <link rel="stylesheet" href="/assets/css/main.css">
     </head>
 
     <body  ng-controller="yuktix.admin.lake.zone">
@@ -135,7 +132,6 @@
     </body>
     
     <script src="/assets/js/jquery-2.1.1.min.js"></script>
-    <script src="/test/bootstrap/assets/js/bootstrap.js"></script>
     <script src="/test/bootstrap/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/angular.min.js"></script>
     <script src="/assets/js/main.js"></script>

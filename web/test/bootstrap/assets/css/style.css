@@ -30,3 +30,13 @@ body, h1, h2, h3, h4, h5, p, span, ul, li, form, button, main, label, div, a, he
 .div-style{
     padding-top:30px;
 }
+
+#lake-agency-selector.lake-agency-selector, select{
+
+min-width: 50%;
+background: white;
+font-size: 14px;
+height: 31px;
+border: 2px solid #bdbdbd;
+
+}
