@@ -28,12 +28,10 @@
 <html  ng-app="YuktixApp">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap-theme.min.css" />
-
-        <link rel="stylesheet" href="/test/bootstrap/assets/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto" >
-        <link rel="stylesheet" href="/test/bootstrap/assets/css/style.css" />
+        <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap-theme.min.css"/>
+		<link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto"/>
+		<link rel="stylesheet" href="/assets/bootstrap/css/style.css"/>
 
     </head> 
 
@@ -184,11 +182,9 @@
         </div> 
     </body>
     <script src="/assets/js/jquery-2.1.1.min.js"></script>
->
-	<script src="/test/bootstrap/assets/js/bootstrap.min.js"></script>
+	<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
 	<script src="/assets/js/angular.min.js"></script>
-    <script src="/assets/js/main.js"></script>
-
+	<script src="/assets/js/main.js"></script>
     <script>
 
         
